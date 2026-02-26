@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Performance Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2877f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                        "card-dark": "#1b212d",
+                        "text-secondary": "#9ca7ba",
+                        "success": "#0bda5e",
+                        "warning": "#eab308",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white pb-20">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+<button class="flex h-10 w-10 items-center justify-center rounded-full text-slate-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold">Performance</h1>
+<button class="flex items-center gap-1 rounded-full bg-gray-200 dark:bg-gray-800 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-text-secondary">
+<span>Last 30 Days</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</header>
+<main class="flex flex-col gap-6 p-4">
+<!-- 1RM Trend Chart -->
+<section class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Estimated 1RM Trend</h2>
+<div class="flex items-end justify-between">
+<div>
+<span class="text-3xl font-bold tracking-tight">315 lbs</span>
+<span class="text-sm font-medium text-text-secondary ml-1">Squat</span>
+</div>
+<div class="flex items-center gap-1 text-success bg-success/10 px-2 py-1 rounded text-sm font-bold">
+<span class="material-symbols-outlined text-base">trending_up</span>
+<span>+5%</span>
+</div>
+</div>
+</div>
+<div class="rounded-xl bg-white dark:bg-card-dark border border-gray-200 dark:border-gray-800 p-4 shadow-sm">
+<div class="relative h-48 w-full">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between text-xs text-text-secondary font-medium">
+<div class="border-b border-gray-100 dark:border-gray-700/50 pb-1">320</div>
+<div class="border-b border-gray-100 dark:border-gray-700/50 pb-1">300</div>
+<div class="border-b border-gray-100 dark:border-gray-700/50 pb-1">280</div>
+<div class="border-b border-gray-100 dark:border-gray-700/50 pb-1">260</div>
+</div>
+<!-- Chart SVG -->
+<svg class="absolute inset-0 h-full w-full pt-6 pb-2" preserveaspectratio="none" viewbox="0 0 100 50">
+<defs>
+<lineargradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#2877f6" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#2877f6" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 45 C 10 42, 20 40, 30 35 C 40 30, 50 32, 60 25 C 70 18, 80 15, 90 10 L 100 5 V 50 H 0 Z" fill="url(#gradient)"></path>
+<path d="M0 45 C 10 42, 20 40, 30 35 C 40 30, 50 32, 60 25 C 70 18, 80 15, 90 10 L 100 5" fill="none" stroke="#2877f6" stroke-linecap="round" stroke-width="2"></path>
+<!-- Data Points -->
+<circle class="dark:stroke-card-dark stroke-white" cx="30" cy="35" fill="#2877f6" r="1.5" stroke-width="0.5"></circle>
+<circle class="dark:stroke-card-dark stroke-white" cx="60" cy="25" fill="#2877f6" r="1.5" stroke-width="0.5"></circle>
+<circle cx="100" cy="5" fill="#white" r="2.5" stroke="#2877f6" stroke-width="1.5"></circle>
+</svg>
+<!-- Tooltip approximation -->
+<div class="absolute top-0 right-0 -mt-2 bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-lg transform translate-x-1/4">
+                        PR!
+                    </div>
+</div>
+<div class="flex justify-between mt-2 text-xs text-text-secondary font-bold px-1">
+<span>W1</span>
+<span>W2</span>
+<span>W3</span>
+<span>W4</span>
+</div>
+</div>
+</section>
+<!-- Muscle Balance Heatmap -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<h2 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Muscle Balance</h2>
+<h3 class="text-lg font-bold">Volume Distribution</h3>
+</div>
+<button class="bg-gray-200 dark:bg-gray-800 text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-900 dark:text-white transition-colors">
+                    Posterior
+                </button>
+</div>
+<div class="rounded-xl bg-white dark:bg-card-dark border border-gray-200 dark:border-gray-800 p-6 flex flex-col md:flex-row gap-8 items-center justify-between relative overflow-hidden">
+<!-- Decorative background glow -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex-1 flex justify-center relative w-full max-w-[200px]">
+<!-- Abstract Muscle Map SVG -->
+<svg class="h-64 drop-shadow-2xl" viewbox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+<!-- Head -->
+<circle cx="100" cy="30" fill="#3b4454" r="20"></circle>
+<!-- Chest (Green - Balanced) -->
+<path d="M70 60 Q 100 100 130 60 L 120 110 Q 100 120 80 110 Z" fill="#0bda5e" opacity="0.8"></path>
+<!-- Abs (Green - Balanced) -->
+<rect fill="#0bda5e" height="50" opacity="0.6" rx="5" width="30" x="85" y="115"></rect>
+<!-- Shoulders (Yellow - Undertrained) -->
+<circle cx="60" cy="70" fill="#eab308" opacity="0.9" r="15"></circle>
+<circle cx="140" cy="70" fill="#eab308" opacity="0.9" r="15"></circle>
+<!-- Arms -->
+<rect fill="#3b4454" height="60" rx="5" width="15" x="45" y="90"></rect>
+<rect fill="#3b4454" height="60" rx="5" width="15" x="140" y="90"></rect>
+<!-- Quads (Green - Balanced) -->
+<path d="M75 170 L 95 170 L 90 260 L 70 250 Z" fill="#0bda5e" opacity="0.9"></path>
+<path d="M105 170 L 125 170 L 130 250 L 110 260 Z" fill="#0bda5e" opacity="0.9"></path>
+<!-- Calves -->
+<path d="M75 270 L 90 270 L 85 350 L 80 350 Z" fill="#3b4454"></path>
+<path d="M110 270 L 125 270 L 120 350 L 115 350 Z" fill="#3b4454"></path>
+</svg>
+<!-- Floating Labels -->
+<div class="absolute top-[18%] left-[0%] bg-warning/20 border border-warning/30 text-warning text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                        Delts Low
+                    </div>
+</div>
+<div class="flex flex-col gap-4 w-full md:w-auto">
+<div class="p-3 rounded-lg bg-background-light dark:bg-background-dark/50 border border-gray-100 dark:border-gray-700">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-2 h-2 rounded-full bg-success"></div>
+<span class="text-sm font-semibold">Balanced</span>
+</div>
+<p class="text-xs text-text-secondary pl-4">Quads, Chest, Core</p>
+</div>
+<div class="p-3 rounded-lg bg-background-light dark:bg-background-dark/50 border border-gray-100 dark:border-gray-700">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-2 h-2 rounded-full bg-warning"></div>
+<span class="text-sm font-semibold">Undertrained</span>
+</div>
+<p class="text-xs text-text-secondary pl-4">Deltoids, Upper Traps</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Wall of Fame -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Wall of Fame</h2>
+<a class="text-primary text-xs font-bold" href="#">View All</a>
+</div>
+<div class="flex overflow-x-auto gap-4 pb-4 -mx-4 px-4 hide-scrollbar snap-x">
+<!-- Card 1 -->
+<div class="snap-center shrink-0 w-72 rounded-xl bg-gradient-to-br from-card-dark to-[#161b24] dark:from-[#1b212d] dark:to-[#161b24] bg-white border border-gray-200 dark:border-gray-800 p-0 overflow-hidden shadow-lg group">
+<div class="h-32 w-full bg-cover bg-center relative" data-alt="Athletic person lifting weights in a gym with dramatic lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAyuQA55R8nyNdZWGSJNR0wiAAGDU0VVOn6oK71N6P5vF4EXHSkOeSAuOuQzs7yA8roZbzA5LD51Cuxx33sohDwTdwSkSs-np6_5SsToyfgWU9aZGIC-MrVhWm505PEeCbGfE-k2gyHv9sj-HPbrhJb-OVITUmFzAntRV7Gtc0H7xE-7KgLutIhevSfMIPe78jm9u56o4ztIXRp_v5tUBb2v0OyQ_gBVAStJY_OF-HGAs9dKV4L6Pg3IeR86hIYnQaCh8MkbVSTg');">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<div class="flex items-center gap-1.5 mb-0.5">
+<span class="material-symbols-outlined text-warning text-sm">emoji_events</span>
+<span class="text-warning text-xs font-bold uppercase tracking-wider">New Record</span>
+</div>
+<h3 class="text-white font-bold text-lg">Deadlift PR</h3>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div>
+<p class="text-text-secondary text-xs uppercase font-bold">Weight</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">405 <span class="text-sm font-medium text-text-secondary">lbs</span></p>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="snap-center shrink-0 w-72 rounded-xl bg-gradient-to-br from-card-dark to-[#161b24] dark:from-[#1b212d] dark:to-[#161b24] bg-white border border-gray-200 dark:border-gray-800 p-0 overflow-hidden shadow-lg">
+<div class="h-32 w-full bg-cover bg-center relative" data-alt="Runner sprinting on a track with motion blur" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-UxoR6BvGree6w_MUGItLc1qumCqhS6ujDEinCiVY6IwsAkh31kjnS-CwXhsAt696F3EhZkPi2pffqsFCbQ5xbzKtm776pztIsD5FO1YLXEzrY0wQcwQA0PkJMIm52qnjMFI0bYWI2mQfRtD4kWUUk2d2YzTI6m_PdcQvK-eV6yGBdzEuMX1ZjB9BI-unL4ff80GRP1B0B2uloZzyW1pyYJuagNTmWDLOIdW0gKlJ-mcyhn7_LGljedHRbcrQumSiQ4WKuAcSiA');">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<h3 class="text-white font-bold text-lg">5K Run</h3>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div>
+<p class="text-text-secondary text-xs uppercase font-bold">Time</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">20:15 <span class="text-sm font-medium text-text-secondary">min</span></p>
+</div>
+<div class="h-10 w-10 rounded-full bg-success/20 flex items-center justify-center text-success">
+<span class="material-symbols-outlined">timer</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Consistency Heatmap -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-text-secondary text-xs font-bold uppercase tracking-wider">Consistency</h2>
+<h3 class="text-lg font-bold">Training Frequency</h3>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs text-text-secondary font-medium">Current Streak</span>
+<span class="text-primary font-bold">12 Days 🔥</span>
+</div>
+</div>
+<div class="rounded-xl bg-white dark:bg-card-dark border border-gray-200 dark:border-gray-800 p-4 overflow-x-auto">
+<div class="min-w-[300px] flex flex-col gap-1">
+<div class="flex justify-between text-[10px] text-text-secondary font-bold mb-1 px-1">
+<span>Jan</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Apr</span>
+<span>May</span>
+<span>Jun</span>
+</div>
+<div class="grid grid-rows-7 grid-flow-col gap-1 h-[120px]">
+<!-- Generating a random-looking heatmap pattern -->
+<!-- Using inline styles for quick repetition simulation, ideally generated by JS -->
+<!-- Col 1 -->
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary/60"></div>
+<!-- Col 2 -->
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/20"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<!-- Col 3 -->
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/60"></div>
+<!-- Col 4 -->
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/20"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<!-- Col 5 -->
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary/60"></div>
+<!-- Col 6 -->
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/60"></div>
+<!-- Col 7 -->
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary/20"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<!-- Col 8 -->
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary/60"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<!-- Col 9 -->
+<div class="w-full h-full rounded-sm bg-primary/20"></div>
+<div class="w-full h-full rounded-sm bg-primary/20"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-primary/80"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<!-- Col 10 -->
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-primary/40"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<!-- Col 11 (Current Week) -->
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary"></div>
+<div class="w-full h-full rounded-sm bg-primary animate-pulse"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-full h-full rounded-sm bg-gray-100 dark:bg-gray-800"></div>
+</div>
+<div class="flex items-center justify-end gap-2 mt-2">
+<span class="text-[10px] text-text-secondary">Less</span>
+<div class="flex gap-0.5">
+<div class="w-2.5 h-2.5 rounded-[2px] bg-gray-100 dark:bg-gray-800"></div>
+<div class="w-2.5 h-2.5 rounded-[2px] bg-primary/30"></div>
+<div class="w-2.5 h-2.5 rounded-[2px] bg-primary/60"></div>
+<div class="w-2.5 h-2.5 rounded-[2px] bg-primary"></div>
+</div>
+<span class="text-[10px] text-text-secondary">More</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 pb-safe pt-2 px-6">
+<div class="flex items-center justify-between max-w-md mx-auto h-16">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined filled">analytics</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">fitness_center</span>
+<span class="text-[10px] font-bold">Workout</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-text-secondary hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+</div>
+</nav>
+<div class="h-6"></div> <!-- Spacer for safe area -->
+</body></html>
