@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { TrainingStylePicker } from './TrainingStylePicker';
+import { DifficultyPicker } from './DifficultyPicker';
 import { EquipmentPicker } from './EquipmentPicker';
 import { DaySelector } from './DaySelector';
 import { DurationSlider } from './DurationSlider';
@@ -16,17 +17,18 @@ interface GeneratorFormProps {
 
 export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
   const [trainingStyle, setTrainingStyle] = useState<'strength' | 'hypertrophy' | 'endurance'>('hypertrophy');
+  const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'expert'>('intermediate');
   const [equipment, setEquipment] = useState<string[]>([]);
   const [daysPerWeek, setDaysPerWeek] = useState<number>(3);
   const [timePerSession, setTimePerSession] = useState<number>(45);
   const [excludeExercises, setExcludeExercises] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Pre-fill from saved user preferences
   useEffect(() => {
     db.userPreferences.get('default').then((prefs) => {
       if (!prefs) return;
       setTrainingStyle(prefs.trainingStyle);
+      setDifficulty(prefs.difficulty);
       setEquipment(prefs.availableEquipment);
       setDaysPerWeek(prefs.daysPerWeek);
       setTimePerSession(prefs.timePerSession);
@@ -37,6 +39,7 @@ export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
   const handleSubmit = () => {
     const data = {
       trainingStyle,
+      difficulty,
       availableEquipment: [...new Set([...equipment, 'body only'])],
       daysPerWeek,
       timePerSession,
@@ -56,11 +59,9 @@ export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
 
     setErrors({});
 
-    // Save preferences for next time
     db.userPreferences.put({
       id: 'default',
       ...data,
-      difficulty: 'intermediate',
       excludedExercises: excludeExercises,
     });
 
@@ -69,19 +70,23 @@ export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
 
   return (
     <>
-      <Card variant="outlined" className="space-y-4">
+      <Card>
         <TrainingStylePicker value={trainingStyle} onChange={setTrainingStyle} />
       </Card>
 
-      <Card variant="outlined" className="space-y-4">
+      <Card>
+        <DifficultyPicker value={difficulty} onChange={setDifficulty} />
+      </Card>
+
+      <Card>
         <DaySelector value={daysPerWeek} onChange={setDaysPerWeek} />
       </Card>
 
-      <Card variant="outlined" className="space-y-4">
+      <Card>
         <DurationSlider value={timePerSession} onChange={setTimePerSession} />
       </Card>
 
-      <Card variant="outlined" className="space-y-4">
+      <Card>
         <EquipmentPicker
           value={equipment}
           onChange={setEquipment}
@@ -89,7 +94,7 @@ export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
         />
       </Card>
 
-      <Card variant="outlined" className="space-y-4">
+      <Card>
         <ExerciseExcluder
           value={excludeExercises}
           onChange={setExcludeExercises}

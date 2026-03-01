@@ -15,7 +15,6 @@ export function GeneratorPage() {
   const handleGenerate = async (constraints: WeeklyPlanConstraints) => {
     setLoading(true);
     try {
-      //TODO: wire up generateWeeklyPlan(constraints) from engine
       const generated = await generateWeeklyPlan(constraints);
       await savePlan(generated);
       setPlan(generated);
