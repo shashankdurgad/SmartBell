@@ -6,15 +6,18 @@ export async function generateWeeklyPlan(
   constraints: WeeklyPlanConstraints
 ): Promise<WeeklyPlan> { 
     /*
-    REQUIREMENTS:
-    
-    PER EXERCISE:
-        sets/reps/rest (from experience / discipline)
-
-    PER WORKOUT:
-        duration (from set/reps)
-        total sets = maxSessionTime / (sets + rest)
-        exercises (from querying / amount by total sets and MG%)
+        
+    LOGIC:
+        globals: SETS/REPS/REST (from experience / discipline)
+        total sets = ceiling( maxSessionTime / (SETS + REST))
+        
+        for day in split
+            for muscle in day
+                muscle_sets = ceileing (MG/100 * total sets)
+                exercise_num = ceiling (muscle_sets / SETS)
+                exercises = (from querying) Limit to exercise_num
+        
+        CLAMP RESULTS
 
     */ 
     const split = SPLIT_TEMPLATES[constraints.daysPerWeek];
