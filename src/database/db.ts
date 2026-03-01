@@ -10,6 +10,16 @@ export interface AppSettings {
   defaultTrainingStyle: 'strength' | 'hypertrophy' | 'endurance';
 }
 
+export interface UserPreferences {
+  id: string; // 'default'
+  daysPerWeek: number;
+  availableEquipment: string[];
+  timePerSession: number;
+  trainingStyle: 'strength' | 'hypertrophy' | 'endurance';
+  difficulty: 'beginner' | 'intermediate' | 'expert';
+  excludedExercises: string[];
+}
+
 export class SmartBellDB extends Dexie {
   exercises!: Table<Exercise, string>;
   weeklyPlans!: Table<WeeklyPlan, string>;
@@ -17,17 +27,20 @@ export class SmartBellDB extends Dexie {
   workoutSessions!: Table<WorkoutSession, string>;
   personalRecords!: Table<PersonalRecord, string>;
   settings!: Table<AppSettings, string>;
+  userPreferences!: Table<UserPreferences, string>;
 
   constructor() {
     super('SmartBellDB');
 
-    this.version(1).stores({
+    this.version(2).stores({
+      // ...existing code...
       exercises: 'id, name, *primaryMuscles, equipment, level, category, mechanic',
       weeklyPlans: 'id, createdAt, daysPerWeek, trainingStyle',
       dailyWorkouts: 'id, dayNumber, name',
       workoutSessions: 'id, weeklyPlanId, dailyWorkoutId, date, dayNumber',
       personalRecords: 'id, exerciseId, type, date',
       settings: 'id',
+      userPreferences: 'id',
     });
   }
 }
