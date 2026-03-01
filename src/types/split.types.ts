@@ -20,10 +20,20 @@ export interface DayTemplate {
   intensity?: 'light' | 'normal' | 'heavy';
 }
 
+export interface MuscleAllocation {
+  muscle: MuscleGroup;
+  percentage: number; // 0-100, all muscles in a day should sum to 100
+}
+
+export interface SplitDay {
+  name: string;
+  muscles: MuscleAllocation[];
+}
+
 export interface SplitTemplate {
   name: string;
   description: string;
-  days: DayTemplate[];
+  days: SplitDay[];
 }
 
 export interface VolumeConfig {

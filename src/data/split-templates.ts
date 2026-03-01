@@ -1,181 +1,266 @@
-import type { SplitTemplate, MuscleGroup } from '../types';
-
-const ALL_MUSCLE_GROUPS: MuscleGroup[] = [
-  'chest', 'lats', 'middle back', 'lower back', 'shoulders', 'traps',
-  'biceps', 'triceps', 'forearms',
-  'quadriceps', 'hamstrings', 'glutes', 'calves',
-  'abdominals', 'abductors', 'adductors', 'neck',
-];
+import type { SplitTemplate } from '../types/split.types';
 
 export const SPLIT_TEMPLATES: Record<number, SplitTemplate> = {
+  // ─── 1-Day Full Body ───
   1: {
     name: 'Full Body',
     description: 'All major muscle groups in one comprehensive session',
     days: [
       {
         name: 'Full Body',
-        muscles: ALL_MUSCLE_GROUPS,
+        muscles: [
+          { muscle: 'quadriceps',   percentage: 15 },
+          { muscle: 'chest',        percentage: 13 },
+          { muscle: 'lats',         percentage: 13 },
+          { muscle: 'hamstrings',   percentage: 10 },
+          { muscle: 'glutes',       percentage: 10 },
+          { muscle: 'shoulders',    percentage: 10 },
+          { muscle: 'biceps',       percentage: 7  },
+          { muscle: 'triceps',      percentage: 7  },
+          { muscle: 'calves',       percentage: 5  },
+          { muscle: 'abdominals',   percentage: 5  },
+          { muscle: 'lower back',   percentage: 5  },
+        ],
       },
     ],
   },
 
+  // ─── 2-Day Upper/Lower ───
   2: {
     name: 'Upper/Lower',
     description: 'Alternate between upper and lower body focus',
     days: [
       {
-        name: 'Upper Body',
-        muscles: ['chest', 'lats', 'middle back', 'shoulders', 'traps', 'biceps', 'triceps', 'forearms'],
+        name: 'Upper',
+        muscles: [
+          { muscle: 'chest',        percentage: 20 },
+          { muscle: 'lats',         percentage: 20 },
+          { muscle: 'shoulders',    percentage: 20 },
+          { muscle: 'biceps',       percentage: 15 },
+          { muscle: 'triceps',      percentage: 15 },
+          { muscle: 'traps',        percentage: 10 },
+        ],
       },
       {
-        name: 'Lower Body',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves', 'abdominals', 'lower back'],
+        name: 'Lower',
+        muscles: [
+          { muscle: 'quadriceps',   percentage: 25 },
+          { muscle: 'hamstrings',   percentage: 25 },
+          { muscle: 'glutes',       percentage: 20 },
+          { muscle: 'calves',       percentage: 10 },
+          { muscle: 'abdominals',   percentage: 10 },
+          { muscle: 'lower back',   percentage: 10 },
+        ],
       },
     ],
   },
-
+  // ─── 3-Day Push/Pull/Legs ───
   3: {
     name: 'Push/Pull/Legs',
     description: 'Classic 3-way split for balanced development',
     days: [
       {
         name: 'Push',
-        muscles: ['chest', 'shoulders', 'triceps'],
+        muscles: [
+          { muscle: 'chest',      percentage: 40 },
+          { muscle: 'shoulders',  percentage: 30 },
+          { muscle: 'triceps',    percentage: 30 },
+        ],
       },
       {
         name: 'Pull',
-        muscles: ['lats', 'middle back', 'traps', 'biceps', 'forearms'],
+        muscles: [
+          { muscle: 'lats',         percentage: 30 },
+          { muscle: 'middle back',  percentage: 20 },
+          { muscle: 'biceps',       percentage: 20 },
+          { muscle: 'traps',        percentage: 20 },
+          { muscle: 'forearms',     percentage: 10 },
+        ],
       },
       {
-        name: 'Legs & Core',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves', 'abdominals', 'lower back'],
+        name: 'Legs',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 25 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 20 },
+          { muscle: 'calves',      percentage: 10 },
+          { muscle: 'abdominals',  percentage: 10 },
+          { muscle: 'lower back',   percentage: 10  },
+        ],
       },
     ],
   },
 
+  // ─── 4-Day Upper/Lower ───
   4: {
     name: 'Upper/Lower x2',
     description: 'Each muscle group trained twice per week',
     days: [
       {
         name: 'Upper A (Strength)',
-        muscles: ['chest', 'lats', 'middle back', 'shoulders', 'biceps', 'triceps'],
-        focus: 'strength',
+        muscles: [
+          { muscle: 'chest',       percentage: 25 },
+          { muscle: 'lats',        percentage: 25 },
+          { muscle: 'shoulders',   percentage: 20 },
+          { muscle: 'triceps',     percentage: 15 },
+          { muscle: 'biceps',      percentage: 15 },
+        ],
       },
       {
         name: 'Lower A (Strength)',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves'],
-        focus: 'strength',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 25 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 20 },
+          { muscle: 'calves',      percentage: 10 },
+          { muscle: 'abdominals',  percentage: 10 },
+          { muscle: 'lower back',   percentage: 10  },
+        ],
       },
       {
-        name: 'Upper B (Hypertrophy)',
-        muscles: ['chest', 'lats', 'middle back', 'shoulders', 'traps', 'biceps', 'triceps', 'forearms'],
-        focus: 'hypertrophy',
+        name: 'Upper B (Volume)',
+        muscles: [
+          { muscle: 'chest',        percentage: 20 },
+          { muscle: 'middle back',  percentage: 20 },
+          { muscle: 'shoulders',    percentage: 20 },
+          { muscle: 'biceps',       percentage: 15 },
+          { muscle: 'triceps',      percentage: 15 },
+          { muscle: 'traps',        percentage: 10 },
+        ],
       },
       {
-        name: 'Lower B (Hypertrophy)',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves', 'abdominals', 'lower back'],
-        focus: 'hypertrophy',
+        name: 'Lower B (Volume)',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 25 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 20 },
+          { muscle: 'calves',      percentage: 15 },
+          { muscle: 'abductors',   percentage: 8  },
+          { muscle: 'adductors',   percentage: 7  },
+        ],
       },
     ],
   },
 
+  // ─── 5-Day ULPPL ───
   5: {
-    name: 'Push/Pull/Legs/Upper/Lower',
+    name: 'Upper/Lower/Push/Pull/Legs',
     description: 'High frequency training with varied stimulus',
     days: [
       {
+        name: 'Upper',
+        muscles: [
+          { muscle: 'chest',       percentage: 20 },
+          { muscle: 'lats',        percentage: 20 },
+          { muscle: 'shoulders',   percentage: 20 },
+          { muscle: 'biceps',      percentage: 15 },
+          { muscle: 'triceps',     percentage: 15 },
+          { muscle: 'traps',       percentage: 10 },
+        ],
+      },
+      {
+        name: 'Lower',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 30 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 25 },
+          { muscle: 'calves',      percentage: 10 },
+          { muscle: 'abdominals',  percentage: 10 },
+        ],
+      },
+      {
         name: 'Push',
-        muscles: ['chest', 'shoulders', 'triceps'],
+        muscles: [
+          { muscle: 'chest',      percentage: 40 },
+          { muscle: 'shoulders',  percentage: 30 },
+          { muscle: 'triceps',    percentage: 30 },
+        ],
       },
       {
         name: 'Pull',
-        muscles: ['lats', 'middle back', 'traps', 'biceps', 'forearms'],
+        muscles: [
+          { muscle: 'lats',         percentage: 30 },
+          { muscle: 'middle back',  percentage: 20 },
+          { muscle: 'biceps',       percentage: 20 },
+          { muscle: 'traps',        percentage: 20 },
+          { muscle: 'forearms',     percentage: 10 },
+        ],
       },
       {
         name: 'Legs',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves'],
-      },
-      {
-        name: 'Upper Body',
-        muscles: ['chest', 'lats', 'middle back', 'shoulders', 'biceps', 'triceps'],
-      },
-      {
-        name: 'Lower & Core',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves', 'abdominals', 'lower back'],
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 25 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 20 },
+          { muscle: 'calves',      percentage: 10 },
+          { muscle: 'abdominals',  percentage: 10 },
+          { muscle: 'lower back',   percentage: 10  },
+        ],
       },
     ],
   },
 
+  // ─── 6-Day PPL x2 ───
   6: {
     name: 'Push/Pull/Legs x2',
     description: 'Each workout performed twice per week for maximum frequency',
     days: [
       {
-        name: 'Push A',
-        muscles: ['chest', 'shoulders', 'triceps'],
-        intensity: 'heavy',
+        name: 'Push A (Heavy)',
+        muscles: [
+          { muscle: 'chest',      percentage: 40 },
+          { muscle: 'shoulders',  percentage: 30 },
+          { muscle: 'triceps',    percentage: 30 },
+        ],
       },
       {
-        name: 'Pull A',
-        muscles: ['lats', 'middle back', 'traps', 'biceps', 'forearms'],
-        intensity: 'heavy',
+        name: 'Pull A (Heavy)',
+        muscles: [
+          { muscle: 'lats',         percentage: 35 },
+          { muscle: 'middle back',  percentage: 20 },
+          { muscle: 'biceps',       percentage: 20 },
+          { muscle: 'traps',        percentage: 15 },
+          { muscle: 'forearms',     percentage: 10 },
+        ],
       },
       {
-        name: 'Legs A',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves'],
-        intensity: 'heavy',
+        name: 'Legs A (Heavy)',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 35 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 25 },
+          { muscle: 'calves',      percentage: 15 },
+        ],
       },
       {
-        name: 'Push B',
-        muscles: ['chest', 'shoulders', 'triceps'],
-        intensity: 'normal',
+        name: 'Push B (Volume)',
+        muscles: [
+          { muscle: 'chest',       percentage: 30 },
+          { muscle: 'shoulders',   percentage: 30 },
+          { muscle: 'triceps',     percentage: 25 },
+          { muscle: 'abdominals',  percentage: 15 },
+        ],
       },
       {
-        name: 'Pull B',
-        muscles: ['lats', 'middle back', 'traps', 'biceps', 'forearms'],
-        intensity: 'normal',
+        name: 'Pull B (Volume)',
+        muscles: [
+          { muscle: 'lats',         percentage: 25 },
+          { muscle: 'middle back',  percentage: 25 },
+          { muscle: 'biceps',       percentage: 25 },
+          { muscle: 'traps',        percentage: 15 },
+          { muscle: 'forearms',     percentage: 10 },
+        ],
       },
       {
-        name: 'Legs B & Core',
-        muscles: ['quadriceps', 'hamstrings', 'glutes', 'calves', 'abdominals', 'lower back'],
-        intensity: 'normal',
-      },
-    ],
-  },
-
-  7: {
-    name: 'Body Part Split + Recovery',
-    description: 'Dedicated focus days with active recovery',
-    days: [
-      {
-        name: 'Chest',
-        muscles: ['chest'],
-      },
-      {
-        name: 'Back',
-        muscles: ['lats', 'middle back', 'lower back', 'traps'],
-      },
-      {
-        name: 'Shoulders & Arms',
-        muscles: ['shoulders', 'biceps', 'triceps', 'forearms'],
-      },
-      {
-        name: 'Quadriceps & Calves',
-        muscles: ['quadriceps', 'calves'],
-      },
-      {
-        name: 'Hamstrings & Glutes',
-        muscles: ['hamstrings', 'glutes'],
-      },
-      {
-        name: 'Core & Accessories',
-        muscles: ['abdominals', 'lower back', 'forearms', 'calves'],
-      },
-      {
-        name: 'Active Recovery',
-        muscles: ALL_MUSCLE_GROUPS,
-        intensity: 'light',
+        name: 'Legs B (Volume)',
+        muscles: [
+          { muscle: 'quadriceps',  percentage: 25 },
+          { muscle: 'hamstrings',  percentage: 25 },
+          { muscle: 'glutes',      percentage: 20 },
+          { muscle: 'calves',      percentage: 10 },
+          { muscle: 'abdominals',  percentage: 10 },
+          { muscle: 'lower back',   percentage: 10  },
+        ],
       },
     ],
   },
