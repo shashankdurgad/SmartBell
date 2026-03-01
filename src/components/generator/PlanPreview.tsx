@@ -38,7 +38,7 @@ export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
       ))}
 
       <div className="flex items-center justify-between text-xs text-zinc-500">
-        <span>{plan.daysPerWeek} days/week • {plan.splitType}</span>
+        <span>{plan.daysPerWeek} days/week</span>
         <span>~{plan.estimatedWeeklyDuration} min/week</span>
       </div>
 

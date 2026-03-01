@@ -25,7 +25,6 @@ export interface WeeklyPlan {
   name: string;
   createdAt: Date;
   daysPerWeek: number;
-  splitType: string;
   trainingStyle: TrainingStyle;
   totalWeeklyVolume: number;
   estimatedWeeklyDuration: number;

@@ -1,16 +1,60 @@
 import type { WeeklyPlanConstraints } from '../utils/validators';
 import type { WeeklyPlan } from '../types';
+import { SPLIT_TEMPLATES } from '@/data/split-templates';
 
 export async function generateWeeklyPlan(
   constraints: WeeklyPlanConstraints
-): Promise<WeeklyPlan> {
-  // Hardcoded plan for testing
+): Promise<WeeklyPlan> { 
+    /*
+    REQUIREMENTS:
+    
+    PER EXERCISE:
+        sets/reps/rest (from experience / discipline)
+
+    PER WORKOUT:
+        duration (from set/reps)
+        total sets = maxSessionTime / (sets + rest)
+        exercises (from querying / amount by total sets and MG%)
+
+    */ 
+    const split = SPLIT_TEMPLATES[constraints.daysPerWeek];
+    console.log(split);
+
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    // Hardcoded plan for testing
   const plan: WeeklyPlan = {
     id: crypto.randomUUID(),
     name: `${constraints.trainingStyle} ${constraints.daysPerWeek}-Day Plan`,
     createdAt: new Date(),
     daysPerWeek: constraints.daysPerWeek,
-    splitType: 'Push / Pull / Legs',
     trainingStyle: constraints.trainingStyle,
     totalWeeklyVolume: 60,
     estimatedWeeklyDuration: constraints.timePerSession * constraints.daysPerWeek,
@@ -130,4 +174,5 @@ export async function generateWeeklyPlan(
   };
 
   return plan;
+
 }
