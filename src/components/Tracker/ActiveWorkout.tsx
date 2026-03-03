@@ -1,0 +1,260 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { Badge } from '../shared/Badge';
+import { Modal } from '../shared/Modal';
+import { useWorkoutStore } from '../../stores/useWorkoutStore';
+import { useUserStore } from '../../stores/useUserStore';
+import { getWeightRecommendation } from '../../engine/weightRecommender';
+import { personalRecordRepo } from '../../database/repositories/personalRecordRepo';
+import { estimatedMax, calculateSetVolume, generateId } from '../../utils/calculations';
+import { formatTimer, formatWeight } from '../../utils/formatters';
+import type { WorkoutSet, WeightRecommendation, PersonalRecord } from '../../types';
+
+function RestTimer({ seconds, onSkip }: { seconds: number; onSkip: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-dark-900/95 flex flex-col items-center justify-center gap-6">
+      <p className="text-gray-text text-sm uppercase tracking-widest">Rest</p>
+      <p className="text-7xl font-bold text-white tabular-nums">{formatTimer(seconds)}</p>
+      <Button variant="secondary" onClick={onSkip}>Skip Rest</Button>
+    </div>
+  );
+}
+
+interface SetLoggerProps {
+  setNumber: number;
+  targetReps: number;
+  recommendation: WeightRecommendation | null;
+  weightUnit: 'lbs' | 'kg';
+  onLog: (set: WorkoutSet) => void;
+}
+
+function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }: SetLoggerProps) {
+  const [weight, setWeight] = useState<number>(recommendation?.recommendedWeight ?? 0);
+  const [reps, setReps] = useState<number>(targetReps);
+  const [rpe, setRpe] = useState<number>(7);
+  const [isWarmup, setIsWarmup] = useState(false);
+  const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
+
+  useEffect(() => {
+    if (recommendation?.recommendedWeight) {
+      setWeight(recommendation.recommendedWeight);
+    }
+  }, [recommendation]);
+
+  const handleLog = () => {
+    onLog({ setNumber, weight, targetReps, completedReps: reps, rpe, isWarmup });
+  };
+
+  return (
+    <div className="space-y-4">
+      {recommendation && (
+        <div className="bg-blue-primary/10 border border-blue-primary/30 rounded-xl p-3">
+          <p className="text-xs text-blue-light">{recommendation.message}</p>
+        </div>
+      )}
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-text">Set {setNumber} {isWarmup ? '(Warmup)' : ''}</span>
+        <button
+          onClick={() => setIsWarmup(!isWarmup)}
+          className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+            isWarmup
+              ? 'border-yellow-accent text-yellow-accent bg-yellow-accent/10'
+              : 'border-dark-500 text-gray-text'
+          }`}
+        >Warmup</button>
+      </div>
+      <div>
+        <p className="text-xs text-gray-text mb-2">Weight ({weightUnit})</p>
+        <div className="flex items-center gap-3">
+          <button onClick={() => setWeight((w) => Math.max(0, w - increment))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={weight} onChange={(e) => setWeight(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
+          <button onClick={() => setWeight((w) => w + increment)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+        </div>
+      </div>
+      <div>
+        <p className="text-xs text-gray-text mb-2">Reps</p>
+        <div className="flex items-center gap-3">
+          <button onClick={() => setReps((r) => Math.max(0, r - 1))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={reps} onChange={(e) => setReps(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
+          <button onClick={() => setReps((r) => r + 1)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs text-gray-text">RPE (how hard)</p>
+          <span className="text-sm font-bold text-blue-primary">{rpe}/10</span>
+        </div>
+        <input type="range" min={1} max={10} value={rpe} onChange={(e) => setRpe(Number(e.target.value))} className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-dark-600 accent-blue-primary" />
+        <div className="flex justify-between text-xs text-gray-text mt-1">
+          <span>Easy</span>
+          <span>Max effort</span>
+        </div>
+      </div>
+      <Button fullWidth size="lg" onClick={handleLog}>Log Set</Button>
+    </div>
+  );
+}
+
+export function ActiveWorkout() {
+  const navigate = useNavigate();
+  const {
+    activeSession,
+    currentExerciseIndex,
+    isResting,
+    restTimeRemaining,
+    logSet,
+    startRest,
+    tickRest,
+    skipRest,
+    setCurrentExerciseIndex,
+    endSession,
+    cancelSession,
+  } = useWorkoutStore();
+
+  const { weightUnit } = useUserStore();
+  const [recommendations, setRecommendations] = useState<Record<string, WeightRecommendation>>({});
+  const [newPRs, setNewPRs] = useState<string[]>([]);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
+  useEffect(() => {
+    if (!activeSession) navigate('/workout');
+  }, [activeSession, navigate]);
+
+  useEffect(() => {
+    if (!isResting) return;
+    const interval = setInterval(tickRest, 1000);
+    return () => clearInterval(interval);
+  }, [isResting, tickRest]);
+
+  useEffect(() => {
+    if (!activeSession) return;
+    activeSession.exercises.forEach(async (ex) => {
+      const rec = await getWeightRecommendation(ex.exerciseId, weightUnit);
+      setRecommendations((prev) => ({ ...prev, [ex.exerciseId]: rec }));
+    });
+  }, [activeSession, weightUnit]);
+
+  if (!activeSession) return null;
+
+  const currentExercise = activeSession.exercises[currentExerciseIndex];
+  const totalExercises = activeSession.exercises.length;
+  const progress = (currentExerciseIndex / totalExercises) * 100;
+  const loggedSets = currentExercise?.sets ?? [];
+
+  const handleLogSet = async (set: WorkoutSet) => {
+    logSet(currentExerciseIndex, set);
+    if (!set.isWarmup && set.weight > 0 && set.completedReps > 0) {
+      const exerciseId = currentExercise.exerciseId;
+      const checks: Array<{ type: 'weight' | 'reps' | 'volume' | 'estimated_1rm'; value: number }> = [
+        { type: 'weight', value: set.weight },
+        { type: 'reps', value: set.completedReps },
+        { type: 'volume', value: calculateSetVolume(set.weight, set.completedReps) },
+        { type: 'estimated_1rm', value: estimatedMax(set.weight, set.completedReps) },
+      ];
+      for (const check of checks) {
+        const existing = await personalRecordRepo.getBestForExercise(exerciseId, check.type);
+        if (!existing || check.value > existing.value) {
+          const pr: PersonalRecord = {
+            id: generateId(),
+            exerciseId,
+            type: check.type,
+            value: check.value,
+            date: new Date(),
+            previousValue: existing?.value,
+            improvement: existing ? check.value - existing.value : undefined,
+          };
+          await personalRecordRepo.save(pr);
+          setNewPRs((prev) => [...prev, check.type]);
+          setTimeout(() => setNewPRs((prev) => prev.filter((t) => t !== check.type)), 3000);
+        }
+      }
+    }
+    startRest(90);
+  };
+
+  const handleFinish = async () => {
+    const session = await endSession();
+    if (session) navigate('/workout/complete', { state: { session } });
+  };
+
+  const handleCancel = () => {
+    cancelSession();
+    navigate('/workout');
+  };
+
+  return (
+    <div className="min-h-screen pb-24 bg-dark-900">
+      {isResting && <RestTimer seconds={restTimeRemaining} onSkip={skipRest} />}
+      {newPRs.length > 0 && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 bg-yellow-accent text-dark-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
+          PR: {newPRs[newPRs.length - 1].replace('_', ' ')}!
+        </div>
+      )}
+      <div className="sticky top-0 z-30 bg-dark-900/90 backdrop-blur-lg border-b border-dark-700 px-4 py-3">
+        <div className="max-w-lg mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <p className="text-xs text-gray-text">{activeSession.dayName}</p>
+              <p className="text-sm font-semibold text-white">Exercise {currentExerciseIndex + 1} of {totalExercises}</p>
+            </div>
+            <button onClick={() => setShowCancelModal(true)} className="text-xs text-gray-text hover:text-red-accent transition-colors">Cancel</button>
+          </div>
+          <div className="w-full h-1.5 bg-dark-700 rounded-full">
+            <div className="h-1.5 bg-blue-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      </div>
+      <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">{currentExercise?.exerciseId}</h2>
+          <div className="flex items-center gap-2 mt-1">
+            <Badge variant="blue">{loggedSets.length} sets logged</Badge>
+            {recommendations[currentExercise?.exerciseId] && (
+              <Badge variant="green">{recommendations[currentExercise.exerciseId].reasoning.replace('_', ' ')}</Badge>
+            )}
+          </div>
+        </div>
+        {loggedSets.length > 0 && (
+          <Card variant="outlined" padding="sm">
+            <p className="text-xs text-gray-text mb-2">Logged Sets</p>
+            <div className="space-y-1">
+              {loggedSets.map((set, i) => (
+                <div key={i} className="flex justify-between text-sm">
+                  <span className="text-gray-text">Set {set.setNumber} {set.isWarmup ? '(W)' : ''}</span>
+                  <span className="text-white font-medium">{formatWeight(set.weight, weightUnit)} x {set.completedReps} reps</span>
+                  <span className="text-gray-text">RPE {set.rpe}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+        <Card>
+          <SetLogger
+            setNumber={loggedSets.length + 1}
+            targetReps={8}
+            recommendation={recommendations[currentExercise?.exerciseId] ?? null}
+            weightUnit={weightUnit}
+            onLog={handleLogSet}
+          />
+        </Card>
+        <div className="flex gap-3">
+          <Button variant="secondary" fullWidth disabled={currentExerciseIndex === 0} onClick={() => setCurrentExerciseIndex(currentExerciseIndex - 1)}>Previous</Button>
+          {currentExerciseIndex < totalExercises - 1 ? (
+            <Button fullWidth onClick={() => setCurrentExerciseIndex(currentExerciseIndex + 1)}>Next Exercise</Button>
+          ) : (
+            <Button fullWidth onClick={handleFinish}>Finish Workout</Button>
+          )}
+        </div>
+      </div>
+      <Modal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} title="Cancel Workout?">
+        <p className="text-gray-text text-sm mb-4">Your progress will be lost. Are you sure?</p>
+        <div className="flex gap-3">
+          <Button variant="secondary" fullWidth onClick={() => setShowCancelModal(false)}>Keep Going</Button>
+          <Button variant="danger" fullWidth onClick={handleCancel}>Cancel Workout</Button>
+        </div>
+      </Modal>
+    </div>
+  );
+}
