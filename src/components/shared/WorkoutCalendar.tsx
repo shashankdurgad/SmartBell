@@ -41,8 +41,23 @@ export default function WorkoutCalendar({ days }: Props) {
     weeks.push(currentWeek);
   }
 
+  // Build month labels based on first non-zero volume day in each week
+  const monthLabels = weeks.map((week) => {
+    const real = week.find((d) => d.volume > 0);
+    const date = real ? real.date : week[0].date;
+    return date.toLocaleString('default', { month: 'short' });
+  });
+
   return (
     <div>
+      {/* month label row */}
+      <div className="flex gap-1 justify-center text-xs text-gray-text mb-1">
+        {monthLabels.map((m, i) => (
+          <div key={`ml-${i}`} className="w-11 text-center">
+            {i === 0 || m !== monthLabels[i - 1] ? m : ''}
+          </div>
+        ))}
+      </div>
       <div className="flex gap-1 justify-center">
         {weeks.map((week, weekIdx) => (
           <div key={`week-${weekIdx}`} className="flex flex-col gap-1">
