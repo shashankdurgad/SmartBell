@@ -8,6 +8,8 @@ import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
+import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
+import { useExercises } from '../hooks/useExercises';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -24,6 +26,46 @@ export function DashboardPage() {
   const recentWorkouts = history.slice(0, 3);
   const totalVolume = history.reduce((sum, s) => sum + s.totalVolume, 0);
   const totalWorkouts = history.length;
+
+  // Exercises for dropdown
+  const { exercises } = useExercises();
+  const [selectedExercise, setSelectedExercise] = useState<string>('');
+
+  // Helper to extract total volume for a given exercise name from a session
+  // NOTE: Adjust this function if your session schema differs.
+  function getExerciseVolumeFromSession(session: any, exerciseName: string): number {
+    if (!exerciseName) return 0;
+    // Expected shape: session.exercises: Array<{ name: string, sets: Array<{ reps: number, weight: number }> }>
+    // Fallbacks included in case your shape uses volume directly per exercise
+    const items = (session.exercises || []).filter((e: any) => (e.name || e.exerciseName) === exerciseName);
+    if (items.length === 0) return 0;
+    let vol = 0;
+    for (const e of items) {
+      if (typeof e.totalVolume === 'number') {
+        vol += e.totalVolume;
+        continue;
+      }
+      const sets = e.sets || [];
+      for (const s of sets) {
+        const reps = Number(s.reps) || 0;
+        const weight = Number(s.weight) || 0;
+        vol += reps * weight;
+      }
+    }
+    return vol;
+  }
+
+  // Build series from history for the selected exercise
+  const series: SeriesPoint[] = history
+    .map((session: any, idx: number) => ({
+      date: new Date(session.date),
+      x: new Date(session.date).getTime(),
+      y: getExerciseVolumeFromSession(session, selectedExercise),
+    }))
+    .filter(p => p.y > 0)
+    .sort((a, b) => a.x - b.x)
+    .map((p, i) => ({ x: p.x, y: p.y }));
+
 
   return (
     <div className="min-h-screen pb-24">
@@ -91,7 +133,39 @@ export function DashboardPage() {
           )}
         </section>
 
-        {/* Recent Workouts */}
+        
+      {/* Exercise Progress */}
+      <section>
+        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
+          Performance
+        </h2>
+        <Card variant="outlined" className="mt-6">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold mb-0">Estimated 1RM Progress</h3>
+              <div className="flex items-center gap-3">
+                <select
+                  id="exercise-select"
+                  value={selectedExercise}
+                  onChange={(e) => setSelectedExercise(e.target.value)}
+                  className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
+                >
+                  <option value="">Select exercise…</option>
+                  {exercises.map((ex: any) => (
+                    <option key={ex.id || ex.name} value={ex.name}>{ex.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="p-4 overflow-x-auto">
+              <ExerciseProgressChart points={series} width={640} height={260} />
+            </div>
+          </div>
+        </Card>
+      </section>
+
+      {/* Recent Workouts */}
+
         <section>
           <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
             Recent Workouts
