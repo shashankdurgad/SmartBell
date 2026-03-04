@@ -6,6 +6,7 @@ import { Button } from '../components/shared/Button';
 import { EmptyState } from '../components/shared/EmptyState';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
+import { useUserStore } from '../stores/useUserStore';
 import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
@@ -16,6 +17,7 @@ export function DashboardPage() {
   const navigate = useNavigate();
   const { plans, activePlan, loadPlans } = useWeeklyPlanStore();
   const { history, loadHistory } = useWorkoutStore();
+  const { weightUnit } = useUserStore();
   const [exerciseCount, setExerciseCount] = useState(0);
 
   useEffect(() => {
@@ -138,6 +140,14 @@ export function DashboardPage() {
 
     const estimated1RM = calculateEstimated1RM();
 
+    // Convert estimated 1RM to user's selected weight unit
+    // Default stored unit is lbs, convert if user selected kg
+    const displayedEstimated1RM = estimated1RM
+      ? weightUnit === 'kg'
+        ? estimated1RM * 0.453592
+        : estimated1RM
+      : null;
+
 
   return (
     <div className="min-h-screen pb-24">
@@ -219,9 +229,12 @@ export function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
-                <h3 className="text-3xl font-bold text-blue-primary">
-                  {estimated1RM ? Math.round(estimated1RM) : '—'}
-                </h3>
+                <div className="flex items-baseline gap-2">
+                  <h3 className="text-4xl font-bold text-white-primary">
+                    {displayedEstimated1RM ? Math.round(displayedEstimated1RM) : '—'}
+                  </h3>
+                  <span className="text-sm text-gray-text">{displayedEstimated1RM ? weightUnit : ''}</span>
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <select
