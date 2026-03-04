@@ -109,7 +109,7 @@ export function DashboardPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-blue-light">
-                        {formatVolume(session.totalVolume)} vol
+                        Vol: {formatVolume(session.totalVolume)}
                       </p>
                       <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                     </div>
@@ -145,7 +145,7 @@ export function DashboardPage() {
                     <div>
                       <p className="font-medium text-white">{plan.name}</p>
                       <p className="text-sm text-gray-text">
-                        {plan.daysPerWeek} days &middot; {plan.splitType} &middot; {plan.trainingStyle}
+                        {plan.daysPerWeek} days &middot; {plan.trainingStyle}
                       </p>
                     </div>
                     <svg className="w-5 h-5 text-gray-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">

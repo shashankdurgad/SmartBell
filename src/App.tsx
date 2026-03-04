@@ -7,6 +7,7 @@ import { GeneratorPage } from './pages/GeneratorPage';
 import { WorkoutPage } from './pages/WorkoutPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { PlanDetailsPage } from './pages/PlanDetailsPage';
 import { seedDatabase } from './database/seed';
 import { useUserStore } from './stores/useUserStore';
 import { ActiveWorkout } from './components/Tracker/ActiveWorkout';
@@ -41,6 +42,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/workout/active" element={<ActiveWorkout />} />
           <Route path="/workout/complete" element={<WorkoutComplete />} />
+          <Route path="/plan/:planId" element={<PlanDetailsPage />} />
         </Routes>
         <BottomNav />
       </div>

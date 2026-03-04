@@ -6,9 +6,13 @@ import type { WeeklyPlan } from '../../types';
 interface PlanPreviewProps {
   plan: WeeklyPlan;
   onRegenerate: () => void;
+  regenerateLabel?: string;
+  showRegenerateButton?: boolean;
+  onSetActive?: () => void;
+  onDelete?: () => void;
 }
 
-export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
+export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate', showRegenerateButton = true, onSetActive, onDelete }: PlanPreviewProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -42,9 +46,23 @@ export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
         <span>~{plan.estimatedWeeklyDuration} min/week</span>
       </div>
 
-      <Button fullWidth variant="secondary" onClick={onRegenerate}>
-        Regenerate
-      </Button>
+      <div className="flex gap-2">
+        {onSetActive && (
+          <Button variant="primary" onClick={onSetActive} className="flex-1">
+            Set Active
+          </Button>
+        )}
+        {onDelete && (
+          <Button variant="danger" onClick={onDelete} className="flex-1">
+            Delete
+          </Button>
+        )}
+        {showRegenerateButton && (
+          <Button variant="secondary" onClick={onRegenerate} className="flex-1">
+            {regenerateLabel}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
