@@ -10,6 +10,7 @@ import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { useExercises } from '../hooks/useExercises';
+import WorkoutCalendar from '../components/shared/WorkoutCalendar';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -65,6 +66,26 @@ export function DashboardPage() {
     .filter(p => p.y > 0)
     .sort((a, b) => a.x - b.x)
     .map((p, i) => ({ x: p.x, y: p.y }));
+
+    // Build volume totals per calendar day (YYYY-MM-DD)
+    const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s: any) => {
+      const d = new Date(s.date);
+      const key = d.toISOString().slice(0, 10);
+      acc[key] = (acc[key] || 0) + (Number(s.totalVolume) || 0);
+      return acc;
+    }, {});
+
+    const last60Days = (() => {
+      const arr: { date: Date; volume: number }[] = [];
+      const today = new Date();
+      for (let i = 59; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = d.toISOString().slice(0, 10);
+        arr.push({ date: d, volume: volumesByDate[key] || 0 });
+      }
+      return arr;
+    })();
 
 
   return (
@@ -139,10 +160,13 @@ export function DashboardPage() {
         <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
           Performance
         </h2>
-        <Card variant="outlined" className="mt-6">
+        <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
+          Estimated 1RM Trend
+        </h1>
+        <Card className="mt-2">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold mb-0">Estimated 1RM Progress</h3>
+              <h3 className="text-lg font-semibold mb-0">Current PR</h3>
               <div className="flex items-center gap-3">
                 <select
                   id="exercise-select"
@@ -157,9 +181,22 @@ export function DashboardPage() {
                 </select>
               </div>
             </div>
-            <div className="p-4 overflow-x-auto">
-              <ExerciseProgressChart points={series} width={640} height={260} />
-            </div>
+            <Card variant="outlined" className="mt-6">
+              <div className="p-4 overflow-x-auto">
+                <ExerciseProgressChart points={series} width={640} height={260} />
+              </div>
+            </Card>
+          </div>
+        </Card>
+        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mt-4">
+          Consistency
+        </h2>
+        <h1 className="text-lg font-semibold text-white-text tracking-wider">
+          Training Frequency
+        </h1>
+        <Card className="mt-4">
+          <div>
+            <WorkoutCalendar days={last60Days} />
           </div>
         </Card>
       </section>
