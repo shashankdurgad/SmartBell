@@ -32,6 +32,13 @@ export function DashboardPage() {
   const { exercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<string>('');
 
+  // when exercises load, default to first
+  useEffect(() => {
+    if (!selectedExercise && exercises.length > 0) {
+      setSelectedExercise(exercises[0].name);
+    }
+  }, [exercises, selectedExercise]);
+
   // Helper to extract total volume for a given exercise name from a session
   // NOTE: Adjust this function if your session schema differs.
   function getExerciseVolumeFromSession(session: any, exerciseName: string): number {
@@ -58,14 +65,14 @@ export function DashboardPage() {
 
   // Build series from history for the selected exercise
   const series: SeriesPoint[] = history
-    .map((session: any, idx: number) => ({
+    .map((session: any, _: number) => ({
       date: new Date(session.date),
       x: new Date(session.date).getTime(),
       y: getExerciseVolumeFromSession(session, selectedExercise),
     }))
     .filter(p => p.y > 0)
     .sort((a, b) => a.x - b.x)
-    .map((p, i) => ({ x: p.x, y: p.y }));
+    .map((p, _) => ({ x: p.x, y: p.y }));
 
     // Build volume totals per calendar day (YYYY-MM-DD)
     const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s: any) => {
@@ -86,6 +93,50 @@ export function DashboardPage() {
       }
       return arr;
     })();
+
+    // Calculate estimated 1RM using Epley and Brzycki formulas
+    function calculateEstimated1RM(): number | null {
+      if (!selectedExercise) return null;
+
+      // Find the last set for the selected exercise with highest weight
+      let maxWeight = 0;
+      let repsAtMax = 0;
+
+      for (const session of history) {
+        for (const exercise of session.exercises || []) {
+          // Match exercise - check by name or ID
+          const matchesName = exercise.exerciseId === selectedExercise;
+          const exerciseData = exercises.find((ex: any) => ex.id === exercise.exerciseId);
+          const matchesById = exerciseData && exerciseData.name === selectedExercise;
+
+          if (matchesName || matchesById) {
+            for (const set of exercise.sets || []) {
+              const weight = set.weight || 0;
+              const reps = set.completedReps || set.completedReps || 0;
+              if (weight > 0 && reps > 0) {
+                if (weight > maxWeight) {
+                  maxWeight = weight;
+                  repsAtMax = reps;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (maxWeight === 0 || repsAtMax === 0) return null;
+
+      // Epley formula: 1RM = weight × (1 + reps/30)
+      const epley = maxWeight * (1 + repsAtMax / 30);
+
+      // Brzycki formula: 1RM = weight / (1.0278 - 0.0278 × reps)
+      const brzycki = maxWeight / (1.0278 - 0.0278 * repsAtMax);
+
+      // Average the two
+      return (epley + brzycki) / 2;
+    }
+
+    const estimated1RM = calculateEstimated1RM();
 
 
   return (
@@ -157,7 +208,7 @@ export function DashboardPage() {
         
       {/* Exercise Progress */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
+        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
           Performance
         </h2>
         <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
@@ -166,7 +217,12 @@ export function DashboardPage() {
         <Card className="mt-2">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold mb-0">Current PR</h3>
+              <div>
+                <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
+                <h3 className="text-3xl font-bold text-blue-primary">
+                  {estimated1RM ? Math.round(estimated1RM) : '—'}
+                </h3>
+              </div>
               <div className="flex items-center gap-3">
                 <select
                   id="exercise-select"
