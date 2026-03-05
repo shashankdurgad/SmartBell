@@ -40,7 +40,7 @@ export function WorkoutComplete() {
             <p className="text-xs text-gray-text mt-1">Sets</p>
           </Card>
           <Card variant="elevated" padding="sm" className="text-center">
-            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(session.totalVolume)}</p>
+            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(session.totalVolume, weightUnit, 'lbs')}</p>
             <p className="text-xs text-gray-text mt-1">Volume</p>
           </Card>
         </div>

@@ -165,7 +165,7 @@ export function DashboardPage() {
             <p className="text-xs text-gray-text mt-1">Workouts</p>
           </Card>
           <Card variant="elevated" padding="sm" className="text-center">
-            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume)}</p>
+            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume, weightUnit, 'lbs')}</p>
             <p className="text-xs text-gray-text mt-1">Volume</p>
           </Card>
         </div>
@@ -289,7 +289,7 @@ export function DashboardPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-blue-light">
-                        Vol: {formatVolume(session.totalVolume)}
+                        Vol: {formatVolume(session.totalVolume, weightUnit, 'lbs')} {weightUnit}
                       </p>
                       <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                     </div>
