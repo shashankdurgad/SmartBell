@@ -31,7 +31,7 @@ export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate'
           <ul className="space-y-1">
             {day.exercises.map((ex, j) => (
               <li key={j} className="flex justify-between text-sm">
-                <span className="text-zinc-300">{ex.exerciseName}</span>
+                <span className="text-zinc-300">{ex.exerciseName.replace(/_/g, ' ')}</span>
                 <span className="text-zinc-500">
                   {ex.sets} × {ex.reps}
                 </span>

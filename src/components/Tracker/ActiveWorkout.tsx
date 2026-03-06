@@ -8,7 +8,7 @@ import { useWorkoutStore } from '../../stores/useWorkoutStore';
 import { useUserStore } from '../../stores/useUserStore';
 import { getWeightRecommendation } from '../../engine/weightRecommender';
 import { personalRecordRepo } from '../../database/repositories/personalRecordRepo';
-import { estimatedMax, calculateSetVolume, generateId } from '../../utils/calculations';
+import { estimatedMax, calculateSetVolume, generateId, lbsToKg, kgToLbs } from '../../utils/calculations';
 import { formatTimer, formatWeight } from '../../utils/formatters';
 import type { WorkoutSet, WeightRecommendation, PersonalRecord } from '../../types';
 
@@ -24,24 +24,44 @@ function RestTimer({ seconds, onSkip }: { seconds: number; onSkip: () => void })
 
 interface SetLoggerProps {
   setNumber: number;
+  targetSets: number;
   targetReps: number;
   recommendation: WeightRecommendation | null;
   weightUnit: 'lbs' | 'kg';
+  loggedSets: WorkoutSet[];
   onLog: (set: WorkoutSet) => void;
 }
 
-function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }: SetLoggerProps) {
-  const [weight, setWeight] = useState<number>(recommendation?.recommendedWeight ?? 0);
+function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUnit, loggedSets, onLog }: SetLoggerProps) {
+  // Use recommendation weight if available, otherwise use last logged set weight, otherwise 0
+  const getInitialWeight = () => {
+    if (recommendation?.recommendedWeight != null) {
+      return recommendation.recommendedWeight;
+    }
+    if (loggedSets.length > 0) {
+      const lastSet = loggedSets[loggedSets.length - 1];
+      // loggedSets store weight in kg, convert to display unit
+      return weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight;
+    }
+    return 0;
+  };
+  const [weight, setWeight] = useState<number>(getInitialWeight());
   const [reps, setReps] = useState<number>(targetReps);
   const [rpe, setRpe] = useState<number>(7);
   const [isWarmup, setIsWarmup] = useState(false);
   const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
 
   useEffect(() => {
-    if (recommendation?.recommendedWeight) {
+    if (recommendation?.recommendedWeight != null) {
       setWeight(recommendation.recommendedWeight);
+    } else if (loggedSets.length > 0) {
+      const lastSet = loggedSets[loggedSets.length - 1];
+      // loggedSets store weight in kg, convert to display unit
+      setWeight(weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight);
+    } else {
+      setWeight(0);
     }
-  }, [recommendation]);
+  }, [recommendation, loggedSets, weightUnit]);
 
   const handleLog = () => {
     onLog({ setNumber, weight, targetReps, completedReps: reps, rpe, isWarmup });
@@ -49,13 +69,8 @@ function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }:
 
   return (
     <div className="space-y-4">
-      {recommendation && (
-        <div className="bg-blue-primary/10 border border-blue-primary/30 rounded-xl p-3">
-          <p className="text-xs text-blue-light">{recommendation.message}</p>
-        </div>
-      )}
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-text">Set {setNumber} {isWarmup ? '(Warmup)' : ''}</span>
+        <span className="text-sm text-gray-text">Set {setNumber} of {targetSets} {isWarmup ? '(Warmup)' : ''}</span>
         <button
           onClick={() => setIsWarmup(!isWarmup)}
           className={`text-xs px-3 py-1 rounded-full border transition-colors ${
@@ -65,6 +80,11 @@ function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }:
           }`}
         >Warmup</button>
       </div>
+      {recommendation && (
+        <div className="bg-blue-primary/10 border border-blue-primary/30 rounded-xl p-3">
+          <p className="text-xs text-blue-light">{recommendation.message}</p>
+        </div>
+      )}
       <div>
         <p className="text-xs text-gray-text mb-2">Weight ({weightUnit})</p>
         <div className="flex items-center gap-3">
@@ -113,7 +133,7 @@ export function ActiveWorkout() {
     cancelSession,
   } = useWorkoutStore();
 
-  const { weightUnit } = useUserStore();
+  const { weightUnit, defaultRestSeconds } = useUserStore();
   const [recommendations, setRecommendations] = useState<Record<string, WeightRecommendation>>({});
   const [newPRs, setNewPRs] = useState<string[]>([]);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -144,14 +164,17 @@ export function ActiveWorkout() {
   const loggedSets = currentExercise?.sets ?? [];
 
   const handleLogSet = async (set: WorkoutSet) => {
-    logSet(currentExerciseIndex, set);
+    // Convert weight to kg before storing
+    const weightInKg = weightUnit === 'lbs' ? lbsToKg(set.weight) : set.weight;
+    const normalizedSet = { ...set, weight: weightInKg };
+    logSet(currentExerciseIndex, normalizedSet);
     if (!set.isWarmup && set.weight > 0 && set.completedReps > 0) {
       const exerciseId = currentExercise.exerciseId;
       const checks: Array<{ type: 'weight' | 'reps' | 'volume' | 'estimated_1rm'; value: number }> = [
-        { type: 'weight', value: set.weight },
+        { type: 'weight', value: weightInKg },
         { type: 'reps', value: set.completedReps },
-        { type: 'volume', value: calculateSetVolume(set.weight, set.completedReps) },
-        { type: 'estimated_1rm', value: estimatedMax(set.weight, set.completedReps) },
+        { type: 'volume', value: calculateSetVolume(weightInKg, set.completedReps) },
+        { type: 'estimated_1rm', value: estimatedMax(weightInKg, set.completedReps) },
       ];
       for (const check of checks) {
         const existing = await personalRecordRepo.getBestForExercise(exerciseId, check.type);
@@ -171,7 +194,7 @@ export function ActiveWorkout() {
         }
       }
     }
-    startRest(90);
+    startRest(defaultRestSeconds);
   };
 
   const handleFinish = async () => {
@@ -208,9 +231,8 @@ export function ActiveWorkout() {
       </div>
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-white">{currentExercise?.exerciseId}</h2>
+          <h2 className="text-2xl font-bold text-white">{currentExercise?.exerciseId.replace(/_/g, ' ')}</h2>
           <div className="flex items-center gap-2 mt-1">
-            <Badge variant="blue">{loggedSets.length} sets logged</Badge>
             {recommendations[currentExercise?.exerciseId] && (
               <Badge variant="green">{recommendations[currentExercise.exerciseId].reasoning.replace('_', ' ')}</Badge>
             )}
@@ -233,9 +255,11 @@ export function ActiveWorkout() {
         <Card>
           <SetLogger
             setNumber={loggedSets.length + 1}
+            targetSets={currentExercise?.targetSets ?? 0}
             targetReps={8}
             recommendation={recommendations[currentExercise?.exerciseId] ?? null}
             weightUnit={weightUnit}
+            loggedSets={loggedSets}
             onLog={handleLogSet}
           />
         </Card>

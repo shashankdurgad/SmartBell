@@ -165,7 +165,7 @@ export function DashboardPage() {
             <p className="text-xs text-gray-text mt-1">Workouts</p>
           </Card>
           <Card variant="elevated" padding="sm" className="text-center">
-            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume, weightUnit, 'lbs')}</p>
+            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume, weightUnit)}</p>
             <p className="text-xs text-gray-text mt-1">Volume</p>
           </Card>
         </div>
@@ -279,7 +279,7 @@ export function DashboardPage() {
           {recentWorkouts.length > 0 ? (
             <div className="space-y-2">
               {recentWorkouts.map((session) => (
-                <Card key={session.id} variant="outlined" padding="sm">
+                <Card key={session.id} padding="sm">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-white">{session.dayName}</p>
@@ -289,7 +289,7 @@ export function DashboardPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-blue-light">
-                        Vol: {formatVolume(session.totalVolume, weightUnit, 'lbs')} {weightUnit}
+                        Vol: {formatVolume(session.totalVolume, weightUnit)} {weightUnit}
                       </p>
                       <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                     </div>
@@ -298,7 +298,7 @@ export function DashboardPage() {
               ))}
             </div>
           ) : (
-            <Card variant="outlined">
+            <Card>
               <p className="text-center text-gray-text text-sm py-4">
                 No workouts logged yet. Complete your first workout to see history.
               </p>
@@ -316,7 +316,6 @@ export function DashboardPage() {
               {plans.map((plan) => (
                 <Card
                   key={plan.id}
-                  variant="outlined"
                   padding="sm"
                   className="cursor-pointer hover:border-blue-primary/50 transition-colors"
                   onClick={() => navigate(`/plan/${plan.id}`)}

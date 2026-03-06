@@ -13,6 +13,7 @@ export interface WorkoutSet {
 export interface WorkoutExercise {
   exerciseId: string;
   sets: WorkoutSet[];
+  targetSets: number;
   personalRecord?: PRType;
 }
 

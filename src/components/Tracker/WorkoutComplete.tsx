@@ -40,7 +40,7 @@ export function WorkoutComplete() {
             <p className="text-xs text-gray-text mt-1">Sets</p>
           </Card>
           <Card variant="elevated" padding="sm" className="text-center">
-            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(session.totalVolume, weightUnit, 'lbs')}</p>
+            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(session.totalVolume, weightUnit)}</p>
             <p className="text-xs text-gray-text mt-1">Volume</p>
           </Card>
         </div>
@@ -51,7 +51,7 @@ export function WorkoutComplete() {
             <div className="space-y-2">
               {prs.map((ex, i) => (
                 <div key={i} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-text">{ex.exerciseId}</span>
+                  <span className="text-sm text-gray-text">{ex.exerciseId.replace(/_/g, ' ')}</span>
                   <Badge variant="yellow">PR {ex.personalRecord}</Badge>
                 </div>
               ))}
@@ -70,7 +70,7 @@ export function WorkoutComplete() {
               );
               return (
                 <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-text">{ex.exerciseId}</span>
+                  <span className="text-gray-text">{ex.exerciseId.replace(/_/g, ' ')}</span>
                   <div className="text-right">
                     <span className="text-white font-medium">{workingSets.length} sets</span>
                     {topSet && (

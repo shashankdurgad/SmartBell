@@ -60,7 +60,7 @@ export function PlanDetailsPage() {
           plan={plan} 
           onRegenerate={() => navigate('/')}
           regenerateLabel="Dashboard"
-          showRegenerateButton={true}
+          showRegenerateButton={false}
           onSetActive={handleSetActive}
           onDelete={() => setShowDeleteConfirm(true)}
         />

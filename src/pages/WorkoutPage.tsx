@@ -32,6 +32,7 @@ export function WorkoutPage() {
       startTime: new Date(),
       exercises: day.exercises.map((ex) => ({
         exerciseId: ex.exerciseId,
+        targetSets: ex.sets,
         sets: [],
       })),
     });
@@ -51,7 +52,7 @@ export function WorkoutPage() {
               </h2>
               <div className="space-y-3">
                 {activePlan.workouts.map((day, index) => (
-                  <Card key={day.id} variant="outlined">
+                  <Card key={day.id}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="w-8 h-8 rounded-full bg-blue-primary/20 flex items-center justify-center text-sm font-bold text-blue-primary">
@@ -95,7 +96,7 @@ export function WorkoutPage() {
                 </h2>
                 <div className="space-y-2">
                   {history.slice(0, 5).map((session) => (
-                    <Card key={session.id} variant="outlined" padding="sm">
+                    <Card key={session.id} padding="sm">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium text-white">{session.dayName}</p>
@@ -105,7 +106,7 @@ export function WorkoutPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-medium text-blue-light">
-                            {formatVolume(session.totalVolume, weightUnit, 'lbs')} {weightUnit}
+                            {formatVolume(session.totalVolume, weightUnit)} {weightUnit}
                           </p>
                           <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                         </div>

@@ -1,3 +1,12 @@
+// Weight conversion utilities
+export function lbsToKg(lbs: number): number {
+  return Math.round(lbs / 2.20462 * 100) / 100;
+}
+
+export function kgToLbs(kg: number): number {
+  return Math.round(kg * 2.20462 * 100) / 100;
+}
+
 // Epley Formula
 export function calculate1RM(weight: number, reps: number): number {
   if (reps === 1) return weight;

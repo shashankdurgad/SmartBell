@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import type { WeightUnit } from '../types';
+import { kgToLbs } from './calculations';
 
 const LBS_TO_KG = 2.20462;
 
@@ -22,13 +23,14 @@ export function formatDuration(minutes: number): string {
   return mins > 0 ? `${hrs}h ${mins}m` : `${hrs}h`;
 }
 
-export function formatWeight(weight: number, unit: 'lbs' | 'kg'): string {
-  return `${weight} ${unit}`;
+export function formatWeight(weightKg: number, displayUnit: 'lbs' | 'kg'): string {
+  const displayWeight = displayUnit === 'lbs' ? kgToLbs(weightKg) : weightKg;
+  return `${displayWeight} ${displayUnit}`;
 }
 
 /**
  * Convert volume between weight units
- * Assumes volumes are stored in the unit they were created in
+ * Note: Volumes are now always stored in kg (weight in kg × reps)
  * Conversion factor: 1kg = 2.20462 lbs
  */
 export function convertVolume(volume: number, fromUnit: WeightUnit, toUnit: WeightUnit): number {
@@ -44,14 +46,14 @@ export function convertVolume(volume: number, fromUnit: WeightUnit, toUnit: Weig
 
 /**
  * Format volume with optional unit conversion
- * If currentUnit is provided, assumes volumes are stored in that unit and converts to displayUnit
+ * Note: Volumes are always stored in kg internally, specify displayUnit to convert for display
  */
-export function formatVolume(volume: number, displayUnit?: WeightUnit, currentUnit?: WeightUnit): string {
+export function formatVolume(volume: number, displayUnit?: WeightUnit): string {
   let displayVolume = volume;
   
-  // Convert volume if units provided and different
-  if (displayUnit && currentUnit && displayUnit !== currentUnit) {
-    displayVolume = convertVolume(volume, currentUnit, displayUnit);
+  // Convert from kg to display unit if needed
+  if (displayUnit && displayUnit !== 'kg') {
+    displayVolume = convertVolume(volume, 'kg', displayUnit);
   }
   
   if (displayVolume >= 1000) {

@@ -27,7 +27,7 @@ export function ProfilePage() {
 
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
         {/* Weight Unit */}
-        <Card variant="outlined" className="space-y-3">
+        <Card className="space-y-3">
           <h3 className="font-semibold text-white">Weight Unit</h3>
           <div className="flex gap-2">
             {(['lbs', 'kg'] as WeightUnit[]).map((unit) => (
@@ -47,7 +47,7 @@ export function ProfilePage() {
         </Card>
 
         {/* Default Rest Timer */}
-        <Card variant="outlined" className="space-y-3">
+        <Card className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-white">Default Rest Timer</h3>
             <span className="text-blue-primary font-semibold">{defaultRestSeconds}s</span>
@@ -68,7 +68,7 @@ export function ProfilePage() {
         </Card>
 
         {/* Default Training Style */}
-        <Card variant="outlined" className="space-y-3">
+        <Card className="space-y-3">
           <h3 className="font-semibold text-white">Default Training Style</h3>
           <div className="flex gap-2">
             {(['strength', 'hypertrophy', 'endurance'] as TrainingStyle[]).map((style) => (
@@ -88,7 +88,7 @@ export function ProfilePage() {
         </Card>
 
         {/* Data Management */}
-        <Card variant="outlined" className="space-y-3">
+        <Card className="space-y-3">
           <h3 className="font-semibold text-white">Data Management</h3>
           <div className="space-y-2">
             <Button variant="secondary" fullWidth disabled>
@@ -107,7 +107,7 @@ export function ProfilePage() {
         </Card>
 
         {/* App Info */}
-        <Card variant="outlined" padding="sm">
+        <Card padding="sm">
           <div className="text-center">
             <p className="text-sm font-medium text-white">SmartBell v0.1.0</p>
             <p className="text-xs text-gray-text mt-1">All data stored locally on your device</p>
