@@ -4,25 +4,27 @@ import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
 import { EmptyState } from '../components/shared/EmptyState';
 import { Button } from '../components/shared/Button';
-import { Badge } from '../components/shared/Badge';
+import { Modal } from '../components/shared/Modal';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { formatDate, formatDuration, formatVolume } from '../utils/formatters';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { DailyWorkout } from '../types';
 
 export function WorkoutPage() {
   const navigate = useNavigate();
   const { activePlan } = useWeeklyPlanStore();
-  const { history, loadHistory, startSession } = useWorkoutStore();
+  const { history, loadHistory, startSession, activeSession, cancelSession } = useWorkoutStore();
   const { weightUnit } = useUserStore();
+  const [showReplaceWorkoutModal, setShowReplaceWorkoutModal] = useState(false);
+  const [pendingWorkout, setPendingWorkout] = useState<DailyWorkout | null>(null);
 
   useEffect(() => {
     loadHistory();
   }, [loadHistory]);
 
-  const handleStart = (day: DailyWorkout) => {
+  const startWorkout = (day: DailyWorkout) => {
     startSession({
       weeklyPlanId: activePlan!.id,
       dailyWorkoutId: day.id,
@@ -37,6 +39,23 @@ export function WorkoutPage() {
       })),
     });
     navigate('/workout/active');
+  };
+
+  const handleStart = (day: DailyWorkout) => {
+    if (activeSession) {
+      setPendingWorkout(day);
+      setShowReplaceWorkoutModal(true);
+      return;
+    }
+    startWorkout(day);
+  };
+
+  const handleConfirmReplaceWorkout = () => {
+    if (!pendingWorkout) return;
+    cancelSession();
+    startWorkout(pendingWorkout);
+    setPendingWorkout(null);
+    setShowReplaceWorkoutModal(false);
   };
 
   return (
@@ -136,6 +155,34 @@ export function WorkoutPage() {
           </Card>
         )}
       </div>
+
+      <Modal
+        isOpen={showReplaceWorkoutModal}
+        onClose={() => {
+          setShowReplaceWorkoutModal(false);
+          setPendingWorkout(null);
+        }}
+        title="Start New Workout?"
+      >
+        <p className="text-gray-text text-sm mb-4">
+          Starting a new workout will end your current workout and discard its unsaved progress.
+        </p>
+        <div className="flex gap-3">
+          <Button
+            variant="secondary"
+            fullWidth
+            onClick={() => {
+              setShowReplaceWorkoutModal(false);
+              setPendingWorkout(null);
+            }}
+          >
+            Keep Current
+          </Button>
+          <Button variant="danger" fullWidth onClick={handleConfirmReplaceWorkout}>
+            End And Start New
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

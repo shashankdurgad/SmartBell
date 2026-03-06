@@ -1,13 +1,12 @@
 
 // components/charts/ExerciseProgressChart.tsx
-import React from 'react';
 
 export type SeriesPoint = { x: number; y: number; label?: string };
 
 export function ExerciseProgressChart({
   points,
-  width = 640,
-  height = 240,
+  width = 480,
+  height = 200,
   stroke = '#4F8FF0',
   fill = 'rgba(79, 143, 240, 0.15)',
 }: {
@@ -25,7 +24,7 @@ export function ExerciseProgressChart({
     );
   }
 
-  const padding = { top: 12, right: 16, bottom: 24, left: 36 };
+  const padding = { top: 10, right: 12, bottom: 20, left: 32 };
   const innerW = width - padding.left - padding.right;
   const innerH = height - padding.top - padding.bottom;
 
@@ -54,7 +53,7 @@ export function ExerciseProgressChart({
   const yTicks = Array.from({ length: ticks + 1 }, (_, i) => (yMax * i) / ticks);
 
   return (
-    <svg width={width} height={height} role="img" aria-label="Exercise progress chart">
+    <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label="Exercise progress chart">
       {/* Axes */}
       <line x1={padding.left} y1={padding.top} x2={padding.left} y2={height - padding.bottom} stroke="#2A2F3A" />
       <line x1={padding.left} y1={height - padding.bottom} x2={width - padding.right} y2={height - padding.bottom} stroke="#2A2F3A" />

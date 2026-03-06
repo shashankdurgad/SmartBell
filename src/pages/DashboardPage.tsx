@@ -12,6 +12,7 @@ import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { useExercises } from '../hooks/useExercises';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
+import { estimatedMax, kgToLbs } from '../utils/calculations';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -34,47 +35,69 @@ export function DashboardPage() {
   const { exercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<string>('');
 
+  // Filter exercises to only show those with recorded data
+  const exercisesWithData = exercises.filter((ex: any) => {
+    return history.some((session: any) => 
+      (session.exercises || []).some((e: any) => e.exerciseId === ex.id)
+    );
+  });
+
   // when exercises load, default to first
   useEffect(() => {
-    if (!selectedExercise && exercises.length > 0) {
-      setSelectedExercise(exercises[0].name);
+    if (!selectedExercise && exercisesWithData.length > 0) {
+      setSelectedExercise(exercisesWithData[0].id);
     }
-  }, [exercises, selectedExercise]);
+  }, [exercisesWithData.length, selectedExercise]);
 
-  // Helper to extract total volume for a given exercise name from a session
-  // NOTE: Adjust this function if your session schema differs.
-  function getExerciseVolumeFromSession(session: any, exerciseName: string): number {
-    if (!exerciseName) return 0;
-    // Expected shape: session.exercises: Array<{ name: string, sets: Array<{ reps: number, weight: number }> }>
-    // Fallbacks included in case your shape uses volume directly per exercise
-    const items = (session.exercises || []).filter((e: any) => (e.name || e.exerciseName) === exerciseName);
-    if (items.length === 0) return 0;
-    let vol = 0;
-    for (const e of items) {
-      if (typeof e.totalVolume === 'number') {
-        vol += e.totalVolume;
-        continue;
-      }
-      const sets = e.sets || [];
-      for (const s of sets) {
-        const reps = Number(s.reps) || 0;
-        const weight = Number(s.weight) || 0;
-        vol += reps * weight;
+  // Helper to get estimated 1RM for a given exercise from a session
+  function getEstimated1RMFromSession(session: any, exerciseName: string): number | null {
+    if (!exerciseName) return null;
+
+    // Find the exercise in the session
+    const exercise = (session.exercises || []).find((e: any) => e.exerciseId === exerciseName);
+    if (!exercise || !exercise.sets || exercise.sets.length === 0) return null;
+
+    // Find the heaviest working set (non-warmup)
+    let maxWeight = 0;
+    let repsAtMax = 0;
+
+    for (const set of exercise.sets) {
+      if (set.isWarmup) continue;
+      const weight = set.weight || 0;
+      const reps = set.completedReps || 0;
+      if (weight > 0 && reps > 0 && weight > maxWeight) {
+        maxWeight = weight;
+        repsAtMax = reps;
       }
     }
-    return vol;
+
+    if (maxWeight === 0 || repsAtMax === 0) return null;
+
+    // Calculate estimated 1RM (weights are stored in kg)
+    const est1RM = estimatedMax(maxWeight, repsAtMax);
+    
+    // Convert to display unit
+    return weightUnit === 'lbs' ? kgToLbs(est1RM) : est1RM;
   }
 
-  // Build series from history for the selected exercise
+  // Build series from history for the selected exercise (estimated 1RM trend)
+  // Filter to last 2 months (60 days)
+  const twoMonthsAgo = new Date();
+  twoMonthsAgo.setDate(twoMonthsAgo.getDate() - 60);
+  const twoMonthsAgoTimestamp = twoMonthsAgo.getTime();
+
   const series: SeriesPoint[] = history
-    .map((session: any, _: number) => ({
-      date: new Date(session.date),
-      x: new Date(session.date).getTime(),
-      y: getExerciseVolumeFromSession(session, selectedExercise),
-    }))
-    .filter(p => p.y > 0)
+    .map((session: any) => {
+      const est1RM = getEstimated1RMFromSession(session, selectedExercise);
+      return {
+        date: new Date(session.date),
+        x: new Date(session.date).getTime(),
+        y: est1RM || 0,
+      };
+    })
+    .filter(p => p.y > 0 && p.x >= twoMonthsAgoTimestamp)
     .sort((a, b) => a.x - b.x)
-    .map((p, _) => ({ x: p.x, y: p.y }));
+    .map((p) => ({ x: p.x, y: p.y }));
 
     // Build volume totals per calendar day (YYYY-MM-DD)
     const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s: any) => {
@@ -100,53 +123,21 @@ export function DashboardPage() {
     function calculateEstimated1RM(): number | null {
       if (!selectedExercise) return null;
 
-      // Find the last set for the selected exercise with highest weight
-      let maxWeight = 0;
-      let repsAtMax = 0;
+      // Find the highest estimated 1RM across all sessions for this exercise
+      let maxEstimated1RM = 0;
 
       for (const session of history) {
-        for (const exercise of session.exercises || []) {
-          // Match exercise - check by name or ID
-          const matchesName = exercise.exerciseId === selectedExercise;
-          const exerciseData = exercises.find((ex: any) => ex.id === exercise.exerciseId);
-          const matchesById = exerciseData && exerciseData.name === selectedExercise;
-
-          if (matchesName || matchesById) {
-            for (const set of exercise.sets || []) {
-              const weight = set.weight || 0;
-              const reps = set.completedReps || set.completedReps || 0;
-              if (weight > 0 && reps > 0) {
-                if (weight > maxWeight) {
-                  maxWeight = weight;
-                  repsAtMax = reps;
-                }
-              }
-            }
-          }
+        const est1RM = getEstimated1RMFromSession(session, selectedExercise);
+        if (est1RM && est1RM > maxEstimated1RM) {
+          maxEstimated1RM = est1RM;
         }
       }
 
-      if (maxWeight === 0 || repsAtMax === 0) return null;
-
-      // Epley formula: 1RM = weight × (1 + reps/30)
-      const epley = maxWeight * (1 + repsAtMax / 30);
-
-      // Brzycki formula: 1RM = weight / (1.0278 - 0.0278 × reps)
-      const brzycki = maxWeight / (1.0278 - 0.0278 * repsAtMax);
-
-      // Average the two
-      return (epley + brzycki) / 2;
+      return maxEstimated1RM > 0 ? maxEstimated1RM : null;
     }
 
     const estimated1RM = calculateEstimated1RM();
-
-    // Convert estimated 1RM to user's selected weight unit
-    // Default stored unit is lbs, convert if user selected kg
-    const displayedEstimated1RM = estimated1RM
-      ? weightUnit === 'kg'
-        ? estimated1RM * 0.453592
-        : estimated1RM
-      : null;
+    const displayedEstimated1RM = estimated1RM;
 
 
   return (
@@ -244,15 +235,15 @@ export function DashboardPage() {
                   className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
                 >
                   <option value="">Select exercise…</option>
-                  {exercises.map((ex: any) => (
-                    <option key={ex.id || ex.name} value={ex.name}>{ex.name}</option>
+                  {exercisesWithData.map((ex: any) => (
+                    <option key={ex.id || ex.name} value={ex.id}>{ex.name.replace(/_/g, ' ')}</option>
                   ))}
                 </select>
               </div>
             </div>
             <Card variant="outlined" className="mt-6">
-              <div className="p-4 overflow-x-auto">
-                <ExerciseProgressChart points={series} width={640} height={260} />
+              <div className="p-4">
+                <ExerciseProgressChart points={series} width={480} height={200} />
               </div>
             </Card>
           </div>

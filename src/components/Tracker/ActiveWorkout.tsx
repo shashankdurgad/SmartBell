@@ -164,6 +164,11 @@ export function ActiveWorkout() {
   const loggedSets = currentExercise?.sets ?? [];
 
   const handleLogSet = async (set: WorkoutSet) => {
+    // Don't save sets with 0 reps
+    if (set.completedReps <= 0) {
+      return;
+    }
+
     // Convert weight to kg before storing
     const weightInKg = weightUnit === 'lbs' ? lbsToKg(set.weight) : set.weight;
     const normalizedSet = { ...set, weight: weightInKg };

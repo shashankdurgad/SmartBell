@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { BottomNav } from './components/shared/BottomNav';
+import { ActiveWorkoutBanner } from './components/shared/ActiveWorkoutBanner';
 import { FullPageSpinner } from './components/shared/Spinner';
 import { DashboardPage } from './pages/DashboardPage';
 import { GeneratorPage } from './pages/GeneratorPage';
@@ -44,6 +45,7 @@ function App() {
           <Route path="/workout/complete" element={<WorkoutComplete />} />
           <Route path="/plan/:planId" element={<PlanDetailsPage />} />
         </Routes>
+        <ActiveWorkoutBanner />
         <BottomNav />
       </div>
     </BrowserRouter>
