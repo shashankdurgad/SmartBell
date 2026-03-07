@@ -33,8 +33,8 @@ interface SetLoggerProps {
 }
 
 function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUnit, loggedSets, onLog }: SetLoggerProps) {
-  // Use recommendation weight if available, otherwise use last logged set weight, otherwise 0
-  const getInitialWeight = () => {
+  // Use recommendation weight if available, otherwise use last logged set weight, otherwise empty
+  const getPlaceholderWeight = () => {
     if (recommendation?.recommendedWeight != null) {
       return recommendation.recommendedWeight;
     }
@@ -45,26 +45,24 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
     }
     return 0;
   };
-  const [weight, setWeight] = useState<number>(getInitialWeight());
-  const [reps, setReps] = useState<number>(targetReps);
+  const [weight, setWeight] = useState<string>('');
+  const [reps, setReps] = useState<string>('');
   const [rpe, setRpe] = useState<number>(7);
   const [isWarmup, setIsWarmup] = useState(false);
   const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
+  const placeholderWeight = getPlaceholderWeight();
+  const placeholderReps = loggedSets.length > 0 ? loggedSets[loggedSets.length - 1].completedReps : targetReps;
 
   useEffect(() => {
-    if (recommendation?.recommendedWeight != null) {
-      setWeight(recommendation.recommendedWeight);
-    } else if (loggedSets.length > 0) {
-      const lastSet = loggedSets[loggedSets.length - 1];
-      // loggedSets store weight in kg, convert to display unit
-      setWeight(weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight);
-    } else {
-      setWeight(0);
-    }
-  }, [recommendation, loggedSets, weightUnit]);
+    // Reset inputs when moving to next set
+    setWeight('');
+    setReps('');
+  }, [setNumber]);
 
   const handleLog = () => {
-    onLog({ setNumber, weight, targetReps, completedReps: reps, rpe, isWarmup });
+    const finalWeight = weight === '' ? placeholderWeight : Number(weight);
+    const finalReps = reps === '' ? placeholderReps : Number(reps);
+    onLog({ setNumber, weight: finalWeight, targetReps, completedReps: finalReps, rpe, isWarmup });
   };
 
   return (
@@ -88,17 +86,29 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
       <div>
         <p className="text-xs text-gray-text mb-2">Weight ({weightUnit})</p>
         <div className="flex items-center gap-3">
-          <button onClick={() => setWeight((w) => Math.max(0, w - increment))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={weight} onChange={(e) => setWeight(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
-          <button onClick={() => setWeight((w) => w + increment)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+          <button onClick={() => setWeight((w) => {
+            const current = w === '' ? placeholderWeight : Number(w);
+            return String(Math.max(0, current - increment));
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder={String(placeholderWeight)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <button onClick={() => setWeight((w) => {
+            const current = w === '' ? placeholderWeight : Number(w);
+            return String(current + increment);
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
         </div>
       </div>
       <div>
         <p className="text-xs text-gray-text mb-2">Reps</p>
         <div className="flex items-center gap-3">
-          <button onClick={() => setReps((r) => Math.max(0, r - 1))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={reps} onChange={(e) => setReps(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
-          <button onClick={() => setReps((r) => r + 1)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+          <button onClick={() => setReps((r) => {
+            const current = r === '' ? placeholderReps : Number(r);
+            return String(Math.max(0, current - 1));
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={reps} onChange={(e) => setReps(e.target.value)} placeholder={String(placeholderReps)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <button onClick={() => setReps((r) => {
+            const current = r === '' ? placeholderReps : Number(r);
+            return String(current + 1);
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
         </div>
       </div>
       <div>

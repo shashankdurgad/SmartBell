@@ -125,7 +125,7 @@ export function WorkoutPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-medium text-blue-light">
-                            {formatVolume(session.totalVolume, weightUnit)} {weightUnit}
+                            Vol: {formatVolume(session.totalVolume, weightUnit)} {weightUnit}
                           </p>
                           <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                         </div>

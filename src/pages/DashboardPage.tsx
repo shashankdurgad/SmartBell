@@ -13,6 +13,7 @@ import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/Ex
 import { useExercises } from '../hooks/useExercises';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
+import type { WorkoutSession } from '../types';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -35,26 +36,49 @@ export function DashboardPage() {
   const { exercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<string>('');
 
-  // Filter exercises to only show those with recorded data
-  const exercisesWithData = exercises.filter((ex: any) => {
-    return history.some((session: any) => 
-      (session.exercises || []).some((e: any) => e.exerciseId === ex.id)
-    );
-  });
+  // Progress chart displays last 60 days only.
+  const nowTimestamp = Date.now();
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const sixtyDaysAgoTimestamp = sixtyDaysAgo.getTime();
 
-  // when exercises load, default to first
+  function hasProgressDataForExercise(session: WorkoutSession, exerciseId: string): boolean {
+    const exercise = session.exercises.find((e) => e.exerciseId === exerciseId);
+    if (!exercise) return false;
+
+    return exercise.sets.some(
+      (set) => !set.isWarmup && (set.weight ?? 0) > 0 && (set.completedReps ?? 0) > 0
+    );
+  }
+
+  // Only include exercises that can produce at least one valid progress point.
+  const exercisesWithData = exercises.filter((ex) =>
+    history.some(
+      (session) =>
+        new Date(session.date).getTime() >= sixtyDaysAgoTimestamp &&
+        hasProgressDataForExercise(session, ex.id)
+    )
+  );
+
+  // Keep selection valid when data changes.
   useEffect(() => {
-    if (!selectedExercise && exercisesWithData.length > 0) {
+    if (exercisesWithData.length === 0) {
+      if (selectedExercise) setSelectedExercise('');
+      return;
+    }
+
+    const selectedStillValid = exercisesWithData.some((ex) => ex.id === selectedExercise);
+    if (!selectedStillValid) {
       setSelectedExercise(exercisesWithData[0].id);
     }
-  }, [exercisesWithData.length, selectedExercise]);
+  }, [exercisesWithData, selectedExercise]);
 
   // Helper to get estimated 1RM for a given exercise from a session
-  function getEstimated1RMFromSession(session: any, exerciseName: string): number | null {
-    if (!exerciseName) return null;
+  function getEstimated1RMFromSession(session: WorkoutSession, exerciseId: string): number | null {
+    if (!exerciseId) return null;
 
     // Find the exercise in the session
-    const exercise = (session.exercises || []).find((e: any) => e.exerciseId === exerciseName);
+    const exercise = session.exercises.find((e) => e.exerciseId === exerciseId);
     if (!exercise || !exercise.sets || exercise.sets.length === 0) return null;
 
     // Find the heaviest working set (non-warmup)
@@ -82,12 +106,8 @@ export function DashboardPage() {
 
   // Build series from history for the selected exercise (estimated 1RM trend)
   // Filter to last 2 months (60 days)
-  const twoMonthsAgo = new Date();
-  twoMonthsAgo.setDate(twoMonthsAgo.getDate() - 60);
-  const twoMonthsAgoTimestamp = twoMonthsAgo.getTime();
-
   const series: SeriesPoint[] = history
-    .map((session: any) => {
+    .map((session) => {
       const est1RM = getEstimated1RMFromSession(session, selectedExercise);
       return {
         date: new Date(session.date),
@@ -95,12 +115,12 @@ export function DashboardPage() {
         y: est1RM || 0,
       };
     })
-    .filter(p => p.y > 0 && p.x >= twoMonthsAgoTimestamp)
+    .filter(p => p.y > 0 && p.x >= sixtyDaysAgoTimestamp)
     .sort((a, b) => a.x - b.x)
     .map((p) => ({ x: p.x, y: p.y }));
 
     // Build volume totals per calendar day (YYYY-MM-DD)
-    const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s: any) => {
+    const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s) => {
       const d = new Date(s.date);
       const key = d.toISOString().slice(0, 10);
       acc[key] = (acc[key] || 0) + (Number(s.totalVolume) || 0);
@@ -235,17 +255,21 @@ export function DashboardPage() {
                   className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
                 >
                   <option value="">Select exercise…</option>
-                  {exercisesWithData.map((ex: any) => (
+                  {exercisesWithData.map((ex) => (
                     <option key={ex.id || ex.name} value={ex.id}>{ex.name.replace(/_/g, ' ')}</option>
                   ))}
                 </select>
               </div>
             </div>
-            <Card variant="outlined" className="mt-6">
-              <div className="p-4">
-                <ExerciseProgressChart points={series} width={480} height={200} />
-              </div>
-            </Card>
+            <div>
+              <ExerciseProgressChart
+                points={series}
+                width={480}
+                height={240}
+                xTickDays={10}
+                xDomain={[sixtyDaysAgoTimestamp, nowTimestamp]}
+              />
+            </div>
           </div>
         </Card>
         <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mt-4">

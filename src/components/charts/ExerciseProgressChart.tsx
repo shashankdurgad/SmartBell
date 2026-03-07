@@ -9,12 +9,16 @@ export function ExerciseProgressChart({
   height = 200,
   stroke = '#4F8FF0',
   fill = 'rgba(79, 143, 240, 0.15)',
+  xTickDays = 10,
+  xDomain,
 }: {
   points: SeriesPoint[];
   width?: number;
   height?: number;
   stroke?: string;
   fill?: string;
+  xTickDays?: number;
+  xDomain?: [number, number];
 }) {
   if (!points || points.length === 0) {
     return (
@@ -24,14 +28,16 @@ export function ExerciseProgressChart({
     );
   }
 
-  const padding = { top: 10, right: 12, bottom: 20, left: 32 };
+  const padding = { top: 10, right: 12, bottom: 30, left: 32 };
   const innerW = width - padding.left - padding.right;
   const innerH = height - padding.top - padding.bottom;
 
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
-  const xMin = Math.min(...xs);
-  const xMax = Math.max(...xs);
+  const dataXMin = Math.min(...xs);
+  const dataXMax = Math.max(...xs);
+  const xMin = xDomain ? xDomain[0] : dataXMin;
+  const xMax = xDomain ? xDomain[1] : dataXMax;
   const yMin = 0;
   const yMax = Math.max(1, Math.max(...ys));
 
@@ -52,6 +58,24 @@ export function ExerciseProgressChart({
   const ticks = 5;
   const yTicks = Array.from({ length: ticks + 1 }, (_, i) => (yMax * i) / ticks);
 
+  const oneDayMs = 24 * 60 * 60 * 1000;
+  const tickStepMs = Math.max(1, xTickDays) * oneDayMs;
+  const firstTick = xDomain ? xMin : Math.floor(xMin / tickStepMs) * tickStepMs;
+  const xTicks: number[] = [];
+
+  for (let t = firstTick; t <= xMax; t += tickStepMs) {
+    if (t >= xMin) xTicks.push(t);
+  }
+
+  if (xTicks.length === 0 || xTicks[xTicks.length - 1] < xMax) {
+    xTicks.push(xMax);
+  }
+
+  const formatTickLabel = (timestamp: number) => {
+    const d = new Date(timestamp);
+    return `${d.getMonth() + 1}/${d.getDate()}`;
+  };
+
   return (
     <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label="Exercise progress chart">
       {/* Axes */}
@@ -66,6 +90,32 @@ export function ExerciseProgressChart({
             <line x1={padding.left} y1={y} x2={width - padding.right} y2={y} stroke="#2A2F3A" opacity={0.2} />
             <text x={padding.left - 8} y={y} textAnchor="end" dominantBaseline="middle" fill="#8A90A0" fontSize={10}>
               {Math.round(t)}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* X ticks & labels (time scale) */}
+      {xTicks.map((t, i) => {
+        const x = xScale(t);
+        return (
+          <g key={`x-${i}`}>
+            <line
+              x1={x}
+              y1={padding.top}
+              x2={x}
+              y2={height - padding.bottom}
+              stroke="#2A2F3A"
+              opacity={0.18}
+            />
+            <text
+              x={x}
+              y={height - padding.bottom + 14}
+              textAnchor="middle"
+              fill="#8A90A0"
+              fontSize={10}
+            >
+              {formatTickLabel(t)}
             </text>
           </g>
         );
