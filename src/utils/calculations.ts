@@ -16,12 +16,14 @@ export function calculate1RM(weight: number, reps: number): number {
 // Brzycki Formula
 export function calculate1RMBrzycki(weight: number, reps: number): number {
   if (reps === 1) return weight;
+  if (reps >= 37) return 0; // Invalid: would cause division by zero
   return Math.round(weight * (36 / (37 - reps)));
 }
 
 // Average of both for better accuracy
 export function estimatedMax(weight: number, reps: number): number {
   if (reps <= 0 || weight <= 0) return 0;
+  if (reps >= 37) return 0; // Brzycki formula becomes invalid at 37+ reps
   const epley = calculate1RM(weight, reps);
   const brzycki = calculate1RMBrzycki(weight, reps);
   return Math.round((epley + brzycki) / 2);

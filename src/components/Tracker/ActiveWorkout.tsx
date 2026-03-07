@@ -145,7 +145,7 @@ export function ActiveWorkout() {
 
   const { weightUnit, defaultRestSeconds } = useUserStore();
   const [recommendations, setRecommendations] = useState<Record<string, WeightRecommendation>>({});
-  const [newPRs, setNewPRs] = useState<string[]>([]);
+  const [latestPRExerciseName, setLatestPRExerciseName] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
 
   useEffect(() => {
@@ -204,8 +204,8 @@ export function ActiveWorkout() {
             improvement: existing ? check.value - existing.value : undefined,
           };
           await personalRecordRepo.save(pr);
-          setNewPRs((prev) => [...prev, check.type]);
-          setTimeout(() => setNewPRs((prev) => prev.filter((t) => t !== check.type)), 3000);
+          setLatestPRExerciseName(exerciseId.replace(/_/g, ' '));
+          setTimeout(() => setLatestPRExerciseName(null), 3000);
         }
       }
     }
@@ -225,9 +225,9 @@ export function ActiveWorkout() {
   return (
     <div className="min-h-screen pb-24 bg-dark-900">
       {isResting && <RestTimer seconds={restTimeRemaining} onSkip={skipRest} />}
-      {newPRs.length > 0 && (
+      {latestPRExerciseName && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 bg-yellow-accent text-dark-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
-          PR: {newPRs[newPRs.length - 1].replace('_', ' ')}!
+          New PR Achieved: {latestPRExerciseName}
         </div>
       )}
       <div className="sticky top-0 z-30 bg-dark-900/90 backdrop-blur-lg border-b border-dark-700 px-4 py-3">

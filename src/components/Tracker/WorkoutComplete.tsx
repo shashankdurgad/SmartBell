@@ -47,12 +47,12 @@ export function WorkoutComplete() {
 
         {prs.length > 0 && (
           <Card variant="outlined" className="space-y-3">
-            <h3 className="font-semibold text-white">Personal Records 🏆</h3>
+            <h3 className="font-semibold text-white">New PR Achievements 🏆</h3>
             <div className="space-y-2">
               {prs.map((ex, i) => (
                 <div key={i} className="flex items-center justify-between">
                   <span className="text-sm text-gray-text">{ex.exerciseId.replace(/_/g, ' ')}</span>
-                  <Badge variant="yellow">PR {ex.personalRecord}</Badge>
+                  <Badge variant="yellow">New PR Achieved</Badge>
                 </div>
               ))}
             </div>

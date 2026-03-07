@@ -37,16 +37,17 @@ export async function seedDatabase(): Promise<void> {
     console.log(`Seeded ${exercises.length} exercises`);
   }
 
-  // Add dummy workout sessions if none exist or fewer than 200
-  const workoutCount = await db.workoutSessions.count();
-  if (workoutCount < 200) {
-    // Find bench press exercise ID
-    const benchPress = await db.exercises.where('name').equals('Bench Press - Powerlifting').first();
-    const benchPressId = benchPress?.id || 'Bench Press - Powerlifting';
+  // Clear previous workout sessions and add new dummy data
+  await db.workoutSessions.clear();
 
-    const sessions: any[] = [];
-    const now = new Date();
-    for (let i = 0; i < 50; i++) {
+  // Add dummy workout sessions
+  // Find bench press exercise ID
+  const benchPress = await db.exercises.where('name').equals('Bench Press - Powerlifting').first();
+  const benchPressId = benchPress?.id || 'Bench Press - Powerlifting';
+
+  const sessions: any[] = [];
+  const now = new Date();
+  for (let i = 0; i < 50; i++) {
       const offset = Math.floor(Math.random() * 90); // within last 90 days
       const date = new Date(now);
       date.setDate(now.getDate() - offset);
@@ -96,6 +97,7 @@ export async function seedDatabase(): Promise<void> {
         exercises: [
           {
             exerciseId: benchPressId,
+            targetSets: numSets,
             sets,
           },
         ],
@@ -107,6 +109,5 @@ export async function seedDatabase(): Promise<void> {
     }
     await db.workoutSessions.bulkAdd(sessions as never[]);
     console.log(`Seeded ${sessions.length} dummy workout sessions with bench press`);
-  }
 }
 

@@ -9,6 +9,7 @@ import { WorkoutPage } from './pages/WorkoutPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { PlanDetailsPage } from './pages/PlanDetailsPage';
+import { PerformanceAnalysisPage } from './pages/PerformanceAnalysisPage';
 import { seedDatabase } from './database/seed';
 import { useUserStore } from './stores/useUserStore';
 import { ActiveWorkout } from './components/Tracker/ActiveWorkout';
@@ -44,6 +45,7 @@ function App() {
           <Route path="/workout/active" element={<ActiveWorkout />} />
           <Route path="/workout/complete" element={<WorkoutComplete />} />
           <Route path="/plan/:planId" element={<PlanDetailsPage />} />
+          <Route path="/performance" element={<PerformanceAnalysisPage />} />
         </Routes>
         <ActiveWorkoutBanner />
         <BottomNav />

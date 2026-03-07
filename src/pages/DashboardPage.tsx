@@ -11,7 +11,6 @@ import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { useExercises } from '../hooks/useExercises';
-import WorkoutCalendar from '../components/shared/WorkoutCalendar';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import type { WorkoutSession } from '../types';
 
@@ -119,26 +118,6 @@ export function DashboardPage() {
     .sort((a, b) => a.x - b.x)
     .map((p) => ({ x: p.x, y: p.y }));
 
-    // Build volume totals per calendar day (YYYY-MM-DD)
-    const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s) => {
-      const d = new Date(s.date);
-      const key = d.toISOString().slice(0, 10);
-      acc[key] = (acc[key] || 0) + (Number(s.totalVolume) || 0);
-      return acc;
-    }, {});
-
-    const last60Days = (() => {
-      const arr: { date: Date; volume: number }[] = [];
-      const today = new Date();
-      for (let i = 59; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        const key = d.toISOString().slice(0, 10);
-        arr.push({ date: d, volume: volumesByDate[key] || 0 });
-      }
-      return arr;
-    })();
-
     // Calculate estimated 1RM using Epley and Brzycki formulas
     function calculateEstimated1RM(): number | null {
       if (!selectedExercise) return null;
@@ -235,7 +214,10 @@ export function DashboardPage() {
         <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
           Estimated 1RM Trend
         </h1>
-        <Card className="mt-2">
+        <Card 
+          className="mt-2 cursor-pointer hover:border-blue-primary/50 transition-colors" 
+          onClick={() => navigate('/performance')}
+        >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div>
@@ -251,7 +233,10 @@ export function DashboardPage() {
                 <select
                   id="exercise-select"
                   value={selectedExercise}
-                  onChange={(e) => setSelectedExercise(e.target.value)}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    setSelectedExercise(e.target.value);
+                  }}
                   className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
                 >
                   <option value="">Select exercise…</option>
@@ -270,17 +255,6 @@ export function DashboardPage() {
                 xDomain={[sixtyDaysAgoTimestamp, nowTimestamp]}
               />
             </div>
-          </div>
-        </Card>
-        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mt-4">
-          Consistency
-        </h2>
-        <h1 className="text-lg font-semibold text-white-text tracking-wider">
-          Training Frequency
-        </h1>
-        <Card className="mt-4">
-          <div>
-            <WorkoutCalendar days={last60Days} />
           </div>
         </Card>
       </section>
