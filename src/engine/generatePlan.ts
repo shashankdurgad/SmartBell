@@ -1,7 +1,7 @@
 import type { WeeklyPlanConstraints } from '../utils/validators';
 import type { WeeklyPlan, DailyWorkout, RoutineExercise } from '../types';
 import type { MuscleGroup } from '../types/exercise.types';
-import type { SplitDay } from '../types/split.types';
+import type { SplitDay, MuscleAllocation } from '../types/split.types';
 import { SPLIT_TEMPLATES } from '@/data/split-templates';
 import { db } from '../database/db';
 
@@ -53,6 +53,44 @@ async function queryExercises(
     .slice(0, limit);
 }
 
+function allocateSetsToMuscles(
+  muscles: MuscleAllocation[],
+  totalSets: number
+): { muscle: MuscleGroup; sets: number }[] {
+  const raw = muscles.map((m) => ({
+    muscle: m.muscle,
+    exact: (m.percentage / 100) * totalSets,
+  }));
+
+  const floored = raw.map((r) => ({
+    muscle: r.muscle,
+    sets: Math.floor(r.exact),
+    remainder: r.exact - Math.floor(r.exact),
+  }));
+
+  // Distribute leftover sets by largest remainder
+  let leftover = totalSets - floored.reduce((s, f) => s + f.sets, 0);
+  const sorted = [...floored].sort((a, b) => b.remainder - a.remainder);
+  for (const f of sorted) {
+    if (leftover <= 0) break;
+    f.sets++;
+    leftover--;
+  }
+
+  // Every muscle gets at least 1 set
+  const result = floored.map((f) => ({ muscle: f.muscle, sets: f.sets }));
+  for (const r of result) {
+    if (r.sets === 0) {
+      r.sets = 1;
+      // Steal from the muscle with most sets
+      const largest = result.reduce((a, b) => (a.sets > b.sets ? a : b));
+      largest.sets--;
+    }
+  }
+
+  return result;
+}
+
 async function buildDay(
   template: SplitDay,
   dayNumber: number,
@@ -62,13 +100,12 @@ async function buildDay(
   rest: number,
 ): Promise<DailyWorkout> {
   const totalSets = calcTotalSets(constraints.timePerSession, rest, style, diff);
+  const muscleAllocation = allocateSetsToMuscles(template.muscles, totalSets);
 
   const exercises: RoutineExercise[] = [];
   const usedIds = new Set<string>();
 
-  for (const muscle of template.muscles) {
-    const muscleSets = Math.max(1, Math.ceil((muscle.percentage / 100) * totalSets));
-
+  for (const { muscle, sets: muscleSets } of muscleAllocation) {
     const exCount = Math.min(
       Math.ceil(muscleSets / style.setsMax),
       diff.exPerMuscle
@@ -77,7 +114,7 @@ async function buildDay(
     const setsPerEx = distributeSetsAcrossExercises(muscleSets, exCount);
 
     const candidates = await queryExercises(
-      muscle.muscle,
+      muscle,
       constraints.availableEquipment,
       [...(constraints.excludeExercises ?? []), ...usedIds],
       constraints.trainingStyle,
@@ -88,8 +125,8 @@ async function buildDay(
       const matched = candidates[i];
 
       exercises.push({
-        exerciseId: matched?.id ?? `fallback_${muscle.muscle}_${i}`,
-        exerciseName: matched?.name ?? `${muscle.muscle} exercise ${i + 1}`,
+        exerciseId: matched?.id ?? `fallback_${muscle}_${i}`,
+        exerciseName: matched?.name ?? `${muscle} exercise ${i + 1}`,
         sets: setsPerEx[i],
         reps: style.reps,
         restSeconds: rest,
@@ -127,7 +164,7 @@ export async function generateWeeklyPlan(
   console.log('[Engine] prefs from DB:', prefs);
   console.log('[Engine] rest used:', rest);
 
-  
+
     const workouts = await Promise.all(
     split.days.map((day, i) =>
       buildDay(day, i + 1, style, diff, constraints, rest)
