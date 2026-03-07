@@ -6,22 +6,21 @@ import { SPLIT_TEMPLATES } from '@/data/split-templates';
 import { db } from '../database/db';
 
 const STYLE_CONFIG = {
-  strength:    { reps: '3-6',   setsMin: 4, setsMax: 5, restMin: 120, restMax: 180, setDuration: 35 },
-  hypertrophy: { reps: '8-12',  setsMin: 3, setsMax: 4, restMin: 60,  restMax: 90,  setDuration: 45 },
-  endurance:   { reps: '15-20', setsMin: 2, setsMax: 3, restMin: 30,  restMax: 45,  setDuration: 60 },
+  strength:    { reps: '3-6',   setsMax: 5, defaultRest: 180, setDuration: 40 },
+  hypertrophy: { reps: '8-12',  setsMax: 4, defaultRest: 120, setDuration: 60 },
+  endurance:   { reps: '15-20', setsMax: 3, defaultRest: 60,  setDuration: 60 },
 } as const;
 
 const DIFFICULTY_CONFIG = {
   beginner:     { maxSets: 16, exPerMuscle: 1, restMod:  15 },
-  intermediate: { maxSets: 22, exPerMuscle: 2, restMod:   0 },
-  expert:       { maxSets: 28, exPerMuscle: 3, restMod: 0 },
+  intermediate: { maxSets: 18, exPerMuscle: 2, restMod:   0 },
+  expert:       { maxSets: 21, exPerMuscle: 3, restMod: 0 },
 } as const;
 
 type Style = typeof STYLE_CONFIG[keyof typeof STYLE_CONFIG];
 type Diff = typeof DIFFICULTY_CONFIG[keyof typeof DIFFICULTY_CONFIG];
 
-function calcTotalSets(timeMinutes: number, style: Style, diff: Diff): number {
-  const rest = (style.restMin + style.restMax) / 2 + diff.restMod;
+function calcTotalSets(timeMinutes: number, rest: number, style: Style, diff: Diff): number {
   const raw = Math.ceil((timeMinutes * 60) / (style.setDuration + rest));
   return Math.min(raw, diff.maxSets);
 }
@@ -60,9 +59,9 @@ async function buildDay(
   style: Style,
   diff: Diff,
   constraints: WeeklyPlanConstraints,
+  rest: number,
 ): Promise<DailyWorkout> {
-  const totalSets = calcTotalSets(constraints.timePerSession, style, diff);
-  const rest = Math.max(30, Math.round((style.restMin + style.restMax) / 2 + diff.restMod));
+  const totalSets = calcTotalSets(constraints.timePerSession, rest, style, diff);
 
   const exercises: RoutineExercise[] = [];
   const usedIds = new Set<string>();
@@ -122,11 +121,19 @@ export async function generateWeeklyPlan(
   const style = STYLE_CONFIG[constraints.trainingStyle];
   const diff = DIFFICULTY_CONFIG[constraints.difficulty ?? 'intermediate'];
 
+  const prefs = await db.userPreferences.get('default');
+  const rest = Math.max(30, (prefs?.defaultRestTimer ?? style.defaultRest) + diff.restMod);
+  
+  console.log('[Engine] prefs from DB:', prefs);
+  console.log('[Engine] rest used:', rest);
+
+  
     const workouts = await Promise.all(
     split.days.map((day, i) =>
-      buildDay(day, i + 1, style, diff, constraints)
+      buildDay(day, i + 1, style, diff, constraints, rest)
     )
   );
+
 
   const totalWeeklyVolume = workouts.reduce(
     (s, w) => s + w.exercises.reduce((es, e) => es + e.sets, 0), 0

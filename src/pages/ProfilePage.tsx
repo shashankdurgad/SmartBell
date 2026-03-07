@@ -1,118 +1,136 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
+import { Input } from '../components/shared/Input';
 import { Button } from '../components/shared/Button';
-import { useUserStore } from '../stores/useUserStore';
-import type { WeightUnit, TrainingStyle } from '../types';
+import { TrainingStylePicker } from '../components/generator/TrainingStylePicker';
+import { DifficultyPicker } from '../components/generator/DifficultyPicker';
+import { EquipmentPicker } from '../components/generator/EquipmentPicker';
+import { DaySelector } from '../components/generator/DaySelector';
+import { DurationSlider } from '../components/generator/DurationSlider';
+import { ExerciseExcluder } from '../components/generator/ExerciseExcluder';
+import { db } from '../database/db';
+import type { UserPreferences } from '../database/db';
+
+const REST_PRESETS = [
+  { label: '30s', value: 30 },
+  { label: '60s', value: 60 },
+  { label: '90s', value: 90 },
+  { label: '120s', value: 120 },
+  { label: '180s', value: 180 },
+];
 
 export function ProfilePage() {
-  const {
-    weightUnit,
-    defaultRestSeconds,
-    defaultTrainingStyle,
-    isLoaded,
-    loadSettings,
-    setWeightUnit,
-    setDefaultRestSeconds,
-    setDefaultTrainingStyle,
-  } = useUserStore();
+  const [trainingStyle, setTrainingStyle] = useState<'strength' | 'hypertrophy' | 'endurance'>('hypertrophy');
+  const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'expert'>('intermediate');
+  const [equipment, setEquipment] = useState<string[]>([]);
+  const [daysPerWeek, setDaysPerWeek] = useState(3);
+  const [timePerSession, setTimePerSession] = useState(45);
+  const [restTimer, setRestTimer] = useState(120);
+  const [excludedExercises, setExcludedExercises] = useState<string[]>([]);
+  const [saved, setSaved] = useState(false);
 
+  // Load saved preferences
   useEffect(() => {
-    if (!isLoaded) loadSettings();
-  }, [isLoaded, loadSettings]);
+    db.userPreferences.get('default').then((prefs) => {
+      if (!prefs) return;
+      setTrainingStyle(prefs.trainingStyle);
+      setDifficulty(prefs.difficulty);
+      setEquipment(prefs.availableEquipment);
+      setDaysPerWeek(prefs.daysPerWeek);
+      setTimePerSession(prefs.timePerSession);
+      setRestTimer(prefs.defaultRestTimer ?? 120);
+      setExcludedExercises(prefs.excludedExercises ?? []);
+    });
+  }, []);
+
+  const handleSave = async () => {
+    const prefs: UserPreferences = {
+      id: 'default',
+      trainingStyle,
+      difficulty,
+      availableEquipment: equipment,
+      daysPerWeek,
+      timePerSession,
+      defaultRestTimer: restTimer,
+      excludedExercises,
+    };
+
+    await db.userPreferences.put(prefs);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
 
   return (
     <div className="min-h-screen pb-24">
-      <PageHeader title="Profile & Settings" />
+      <PageHeader title="Profile" />
 
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
-        {/* Weight Unit */}
-        <Card variant="outlined" className="space-y-3">
-          <h3 className="font-semibold text-white">Weight Unit</h3>
-          <div className="flex gap-2">
-            {(['lbs', 'kg'] as WeightUnit[]).map((unit) => (
-              <button
-                key={unit}
-                onClick={() => setWeightUnit(unit)}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                  weightUnit === unit
-                    ? 'bg-blue-primary text-white'
-                    : 'bg-dark-700 text-gray-text hover:bg-dark-600'
-                }`}
-              >
-                {unit.toUpperCase()}
-              </button>
-            ))}
-          </div>
+        <Card>
+          <TrainingStylePicker value={trainingStyle} onChange={setTrainingStyle} />
         </Card>
 
-        {/* Default Rest Timer */}
-        <Card variant="outlined" className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-white">Default Rest Timer</h3>
-            <span className="text-blue-primary font-semibold">{defaultRestSeconds}s</span>
-          </div>
-          <input
-            type="range"
-            min={15}
-            max={300}
-            step={15}
-            value={defaultRestSeconds}
-            onChange={(e) => setDefaultRestSeconds(Number(e.target.value))}
-            className="w-full h-1 bg-dark-600 rounded-lg appearance-none cursor-pointer accent-blue-primary"
-          />
-          <div className="flex justify-between text-xs text-gray-text">
-            <span>15s</span>
-            <span>5m</span>
-          </div>
+        <Card>
+          <DifficultyPicker value={difficulty} onChange={setDifficulty} />
         </Card>
 
-        {/* Default Training Style */}
-        <Card variant="outlined" className="space-y-3">
-          <h3 className="font-semibold text-white">Default Training Style</h3>
-          <div className="flex gap-2">
-            {(['strength', 'hypertrophy', 'endurance'] as TrainingStyle[]).map((style) => (
-              <button
-                key={style}
-                onClick={() => setDefaultTrainingStyle(style)}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-medium capitalize transition-colors ${
-                  defaultTrainingStyle === style
-                    ? 'bg-blue-primary text-white'
-                    : 'bg-dark-700 text-gray-text hover:bg-dark-600'
-                }`}
-              >
-                {style}
-              </button>
-            ))}
-          </div>
+        <Card>
+          <DaySelector value={daysPerWeek} onChange={setDaysPerWeek} />
         </Card>
 
-        {/* Data Management */}
-        <Card variant="outlined" className="space-y-3">
-          <h3 className="font-semibold text-white">Data Management</h3>
-          <div className="space-y-2">
-            <Button variant="secondary" fullWidth disabled>
-              Export Data (JSON)
-            </Button>
-            <Button variant="secondary" fullWidth disabled>
-              Import Data
-            </Button>
-            <Button variant="danger" fullWidth disabled>
-              Clear All Data
-            </Button>
-          </div>
-          <p className="text-xs text-gray-text text-center">
-            Data export/import coming in Sprint 4.
+        <Card>
+          <DurationSlider value={timePerSession} onChange={setTimePerSession} />
+        </Card>
+
+        <Card>
+          <EquipmentPicker value={equipment} onChange={setEquipment} />
+        </Card>
+
+        {/* Rest Timer */}
+        <Card>
+          <h3 className="text-sm font-medium text-zinc-400 mb-3">Default Rest Timer</h3>
+          <p className="text-xs text-zinc-500 mb-3">
+            Time between sets during workouts
           </p>
-        </Card>
-
-        {/* App Info */}
-        <Card variant="outlined" padding="sm">
-          <div className="text-center">
-            <p className="text-sm font-medium text-white">SmartBell v0.1.0</p>
-            <p className="text-xs text-gray-text mt-1">All data stored locally on your device</p>
+          <div className="flex gap-2">
+            {REST_PRESETS.map((preset) => (
+              <button
+                key={preset.value}
+                type="button"
+                onClick={() => setRestTimer(preset.value)}
+                className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                  restTimer === preset.value
+                    ? 'border-indigo-500 bg-indigo-500/10 text-white'
+                    : 'border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:border-zinc-500'
+                }`}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+          <div className="mt-3">
+            <Input
+              label="Custom (seconds)"
+              type="number"
+              min={15}
+              max={300}
+              value={restTimer}
+              onChange={(e) => setRestTimer(Number(e.target.value))}
+            />
           </div>
         </Card>
+
+        {/* Excluded Exercises */}
+        <Card>
+          <ExerciseExcluder
+            value={excludedExercises}
+            onChange={setExcludedExercises}
+          />
+        </Card>
+
+        <Button fullWidth size="lg" onClick={handleSave}>
+          {saved ? '✓ Saved' : 'Save Preferences'}
+        </Button>
       </div>
     </div>
   );

@@ -11,13 +11,14 @@ export interface AppSettings {
 }
 
 export interface UserPreferences {
-  id: string; // 'default'
-  daysPerWeek: number;
-  availableEquipment: string[];
-  timePerSession: number;
+  id: string;
   trainingStyle: 'strength' | 'hypertrophy' | 'endurance';
   difficulty: 'beginner' | 'intermediate' | 'expert';
-  excludedExercises: string[];
+  availableEquipment: string[];
+  daysPerWeek: number;
+  timePerSession: number;
+  defaultRestTimer: number;
+  excludedExercises?: string[];
 }
 
 export class SmartBellDB extends Dexie {
@@ -32,7 +33,7 @@ export class SmartBellDB extends Dexie {
   constructor() {
     super('SmartBellDB');
 
-    this.version(2).stores({
+    this.version(3).stores({
       // ...existing code...
       exercises: 'id, name, *primaryMuscles, equipment, level, category, mechanic',
       weeklyPlans: 'id, createdAt, daysPerWeek, trainingStyle',

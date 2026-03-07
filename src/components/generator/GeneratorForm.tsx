@@ -57,12 +57,29 @@ export function GeneratorForm({ onSubmit, loading }: GeneratorFormProps) {
       return;
     }
 
-    setErrors({});
+        setErrors({});
 
-    db.userPreferences.put({
-      id: 'default',
-      ...data,
+    // Use update() to preserve defaultRestTimer set in Profile
+    db.userPreferences.update('default', {
+      trainingStyle,
+      difficulty,
+      availableEquipment: [...new Set([...equipment, 'body only'])],
+      daysPerWeek,
+      timePerSession,
       excludedExercises: excludeExercises,
+    }).then((updated) => {
+      if (!updated) {
+        db.userPreferences.put({
+          id: 'default',
+          trainingStyle,
+          difficulty,
+          availableEquipment: [...new Set([...equipment, 'body only'])],
+          daysPerWeek,
+          timePerSession,
+          defaultRestTimer: 120,
+          excludedExercises: excludeExercises,
+        });
+      }
     });
 
     onSubmit(result.data);
