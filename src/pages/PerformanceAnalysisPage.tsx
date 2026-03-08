@@ -439,40 +439,8 @@ export function PerformanceAnalysisPage() {
                   points={volumeSeries}
                   width={480}
                   height={240}
-                  stroke="#10B981"
-                  fill="rgba(16, 185, 129, 0.15)"
-                  xTickDays={7}
-                  xDomain={[tenWeeksAgoTimestamp, currentWeekTimestamp]}
-                />
-              </div>
-            </div>
-          </Card>
-        </section>
-
-        {/* Weekly Total Volume Trend */}
-        <section>
-          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
-            Volume Analysis
-          </h2>
-          <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
-            Weekly Total Volume
-          </h1>
-          <Card className="mt-2">
-            <div className="space-y-3">
-              <div className="flex items-start justify-between">
-                <div className="space-y-2 flex-1">
-                  <p className="text-sm text-gray-text">
-                    Last 10 weeks
-                  </p>
-                </div>
-              </div>
-              <div>
-                <ExerciseProgressChart
-                  points={volumeSeries}
-                  width={480}
-                  height={240}
-                  stroke="#10B981"
-                  fill="rgba(16, 185, 129, 0.15)"
+                  stroke= '#3d80e3'
+                  fill = 'rgba(66, 133, 232, 0.15)'
                   xTickDays={7}
                   xDomain={[tenWeeksAgoTimestamp, currentWeekTimestamp]}
                 />
