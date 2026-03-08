@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Input } from '../shared/Input';
 
 interface EquipmentPickerProps {
   value: string[];
@@ -7,210 +6,177 @@ interface EquipmentPickerProps {
   error?: string;
 }
 
-const EQUIPMENT_OPTIONS = [
-  { id: 'barbell',      label: 'Barbell',    icon: BarIcon },
-  { id: 'dumbbell',     label: 'Dumbbell',   icon: DumbbellIcon },
-  { id: 'cable',        label: 'Cable',      icon: CableIcon },
-  { id: 'machine',      label: 'Machine',    icon: MachineIcon },
-  { id: 'bands',        label: 'Bands',      icon: BandIcon },
-  { id: 'kettlebells',  label: 'Kettlebell', icon: KettlebellIcon },
-  { id: 'e-z curl bar', label: 'EZ Bar',     icon: EzBarIcon },
-];
-
-// ─── SVG Icons ───
-
-
-function BarIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Long bar */}
-      <line x1="1" y1="12" x2="23" y2="12" />
-      {/* Outer plates */}
-      <rect x="2" y="8" width="2.5" height="8" rx="0.5" fill="currentColor" />
-      <rect x="19.5" y="8" width="2.5" height="8" rx="0.5" fill="currentColor" />
-      {/* Inner plates */}
-      <rect x="5" y="9.5" width="2" height="5" rx="0.5" fill="currentColor" />
-      <rect x="17" y="9.5" width="2" height="5" rx="0.5" fill="currentColor" />
-    </svg>
-  );
-}
-
-function DumbbellIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Handle */}
-      <line x1="8" y1="12" x2="16" y2="12" />
-      {/* Left weight */}
-      <rect x="2" y="8.5" width="3" height="7" rx="1" fill="currentColor" opacity="0.2" />
-      <rect x="5" y="9.5" width="3" height="5" rx="0.5" fill="currentColor" opacity="0.2" />
-      {/* Right weight */}
-      <rect x="16" y="9.5" width="3" height="5" rx="0.5" fill="currentColor" opacity="0.2" />
-      <rect x="19" y="8.5" width="3" height="7" rx="1" fill="currentColor" opacity="0.2" />
-      {/* Outlines */}
-      <rect x="2" y="8.5" width="3" height="7" rx="1" />
-      <rect x="5" y="9.5" width="3" height="5" rx="0.5" />
-      <rect x="16" y="9.5" width="3" height="5" rx="0.5" />
-      <rect x="19" y="8.5" width="3" height="7" rx="1" />
-    </svg>
-  );
-}
-
-function CableIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Tower */}
-      <rect x="8" y="2" width="8" height="3" rx="1" fill="currentColor" opacity="0.2" />
-      <rect x="8" y="2" width="8" height="3" rx="1" />
-      {/* Cable */}
-      <line x1="12" y1="5" x2="12" y2="15" strokeDasharray="2 1.5" />
-      {/* Handle */}
-      <rect x="9" y="15" width="6" height="2.5" rx="1" fill="currentColor" opacity="0.2" />
-      <rect x="9" y="15" width="6" height="2.5" rx="1" />
-      {/* Grip */}
-      <line x1="10.5" y1="17.5" x2="10.5" y2="21" />
-      <line x1="13.5" y1="17.5" x2="13.5" y2="21" />
-      <line x1="9.5" y1="21" x2="14.5" y2="21" />
-    </svg>
-  );
-}
-
-function MachineIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Frame */}
-      <rect x="3" y="2" width="18" height="20" rx="2" fill="currentColor" opacity="0.1" />
-      <rect x="3" y="2" width="18" height="20" rx="2" />
-      {/* Weight stack */}
-      <line x1="7" y1="6" x2="17" y2="6" />
-      <line x1="7" y1="9" x2="17" y2="9" />
-      <line x1="7" y1="12" x2="17" y2="12" />
-      {/* Pin */}
-      <circle cx="9" cy="9" r="1" fill="currentColor" />
-      {/* Seat */}
-      <line x1="7" y1="17" x2="17" y2="17" />
-    </svg>
-  );
-}
-
-function BandIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Band stretched */}
-      <path d="M4 8 C4 8, 12 3, 20 8" />
-      <path d="M4 8 C4 8, 12 13, 20 8" fill="currentColor" opacity="0.1" />
-      {/* Handles */}
-      <circle cx="4" cy="8" r="2" fill="currentColor" opacity="0.2" />
-      <circle cx="4" cy="8" r="2" />
-      <circle cx="20" cy="8" r="2" fill="currentColor" opacity="0.2" />
-      <circle cx="20" cy="8" r="2" />
-      {/* Tension lines */}
-      <path d="M6 14 C8 12, 10 16, 12 14 C14 12, 16 16, 18 14" opacity="0.4" />
-    </svg>
-  );
-}
-
-function KettlebellIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Handle */}
-      <path d="M9 3.5 C9 2, 15 2, 15 3.5" />
-      <line x1="9" y1="3.5" x2="9" y2="7" />
-      <line x1="15" y1="3.5" x2="15" y2="7" />
-      {/* Body */}
-      <circle cx="12" cy="14" r="7" fill="currentColor" opacity="0.15" />
-      <circle cx="12" cy="14" r="7" />
-      {/* Center mark */}
-      <circle cx="12" cy="14" r="2" fill="currentColor" opacity="0.3" />
-    </svg>
-  );
-}
-
-function EzBarIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* Plates left */}
-      <rect x="1" y="9" width="2.5" height="6" rx="0.5" fill="currentColor" opacity="0.2" />
-      <rect x="1" y="9" width="2.5" height="6" rx="0.5" />
-      {/* EZ shape */}
-      <path d="M3.5 12 L6 12 L8 10 L11 14 L13 10 L16 14 L18 12 L20.5 12" />
-      {/* Plates right */}
-      <rect x="20.5" y="9" width="2.5" height="6" rx="0.5" fill="currentColor" opacity="0.2" />
-      <rect x="20.5" y="9" width="2.5" height="6" rx="0.5" />
-    </svg>
-  );
-}
+const EQUIPMENT_CATEGORIES = {
+  'Free Weights': [
+    { id: 'barbell', label: 'Barbell' },
+    { id: 'dumbbell', label: 'Dumbbell' },
+    { id: 'kettlebells', label: 'Kettlebells' },
+    { id: 'e-z curl bar', label: 'EZ Curl Bar' },
+    { id: 'bands', label: 'Bands' },
+    { id: 'medicine ball', label: 'Medicine Ball' },
+    { id: 'exercise ball', label: 'Exercise Ball' },
+    { id: 'foam roll', label: 'Foam Roll' },
+  ],
+  'Cable Machines': [
+    { id: 'cable station', label: 'Cable Station' },
+    { id: 'cable crossover machine', label: 'Cable Crossover' },
+    { id: 'lat pulldown machine', label: 'Lat Pulldown' },
+    { id: 'seated cable row machine', label: 'Seated Cable Row' },
+  ],
+  'Chest & Shoulders': [
+    { id: 'chest press machine', label: 'Chest Press' },
+    { id: 'incline chest press machine', label: 'Incline Chest Press Machine' },
+    { id: 'decline chest press machine', label: 'Decline Chest Press Machine' },
+    { id: 'pec deck machine', label: 'Pec Deck' },
+    { id: 'shoulder press machine', label: 'Shoulder Press' },
+    { id: 'rear delt fly machine', label: 'Rear Delt Fly Machine' },
+    { id: 'assisted dip machine', label: 'Assisted Dip' },
+  ],
+  'Legs': [
+    { id: 'leg press machine', label: 'Leg Press' },
+    { id: 'leg extension machine', label: 'Leg Extension' },
+    { id: 'hack squat machine', label: 'Hack Squat' },
+    { id: 'lying leg curl machine', label: 'Lying Leg Curl' },
+    { id: 'seated leg curl machine', label: 'Seated Leg Curl' },
+    { id: 'standing leg curl machine', label: 'Standing Leg Curl' },
+    { id: 'lying squat machine', label: 'Lying Squat' },
+    { id: 'hip abduction machine', label: 'Hip Abduction Machine' },
+    { id: 'hip adduction machine', label: 'Hip Adduction Machine' },
+    { id: 'standing calf raise machine', label: 'Standing Calf Raise  Machine' },
+    { id: 'seated calf raise machine', label: 'Seated Calf Raise  Machine' },
+    { id: 'glute ham raise machine', label: 'Glute Ham Raise' },
+  ],
+  'Back & Arms': [
+    { id: 'high row machine', label: 'High Row' },
+    { id: 'iso row machine', label: 'Iso Row' },
+    { id: 't-bar row machine', label: 'T-Bar Row' },
+    { id: 'bicep curl machine', label: 'Bicep Curl Machine' },
+    { id: 'preacher curl machine', label: 'Preacher Curl Machine' },
+    { id: 'tricep extension machine', label: 'Tricep Extension Machine' },
+  ],
+  'Other Machines': [
+    { id: 'smith machine', label: 'Smith Machine' },
+    { id: 'ab crunch machine', label: 'Ab Crunch' },
+    { id: 'reverse hyperextension machine', label: 'Reverse Hyperextension' },
+    { id: 'leverage shrug machine', label: 'Leverage Shrug' },
+    { id: 'leverage deadlift machine', label: 'Leverage Deadlift' },
+  ],
+  'Cardio': [
+    { id: 'treadmill', label: 'Treadmill' },
+    { id: 'stationary bike', label: 'Stationary Bike' },
+    { id: 'recumbent bike', label: 'Recumbent Bike' },
+    { id: 'elliptical', label: 'Elliptical' },
+    { id: 'rowing machine', label: 'Rowing Machine' },
+    { id: 'stairmaster', label: 'Stairmaster' },
+  ],
+};
 
 export function EquipmentPicker({ value, onChange, error }: EquipmentPickerProps) {
-  const [search, setSearch] = useState('');
-
-  const filteredOptions = EQUIPMENT_OPTIONS.filter((eq) =>
-    eq.label.toLowerCase().includes(search.toLowerCase())
-  );
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   const toggle = (id: string) => {
-    if (value.includes(id)) {
-      onChange(value.filter((e) => e !== id));
+    onChange(
+      value.includes(id) ? value.filter((e) => e !== id) : [...value, id]
+    );
+  };
+
+  const toggleCategory = (category: string) => {
+    const items = EQUIPMENT_CATEGORIES[category as keyof typeof EQUIPMENT_CATEGORIES];
+    const allSelected = items.every((item) => value.includes(item.id));
+
+    if (allSelected) {
+      onChange(value.filter((e) => !items.some((item) => item.id === e)));
     } else {
-      onChange([...value, id]);
+      onChange([...new Set([...value, ...items.map((item) => item.id)])]);
     }
   };
 
-  const selectAll = () => {
-    if (value.length === EQUIPMENT_OPTIONS.length) {
-      onChange([]);
-    } else {
-      onChange(EQUIPMENT_OPTIONS.map((e) => e.id));
-    }
-  };
+  const selectedCount = value.length;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium text-zinc-400">Available Equipment</h3>
-        <button
-          type="button"
-          onClick={selectAll}
-          className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
-        >
-          {value.length === EQUIPMENT_OPTIONS.length ? 'Deselect All' : 'Select All'}
-        </button>
+        <span className="text-xs text-zinc-500">{selectedCount} selected</span>
       </div>
 
-      <p className="text-xs text-zinc-500 mb-3">
-        Bodyweight exercises are always included
-      </p>
+      {error && <p className="text-red-400 text-xs mb-2">{error}</p>}
 
-      <Input
-        placeholder="Search equipment..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        helperText={filteredOptions.length === 0 ? `No equipment matches "${search}"` : undefined}
-      />
+      <div className="space-y-2 max-h-72 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-zinc-700">
+        {Object.entries(EQUIPMENT_CATEGORIES).map(([category, items]) => {
+          const isExpanded = expandedCategory === category;
+          const selectedInCategory = items.filter((item) => value.includes(item.id)).length;
+          const allSelected = selectedInCategory === items.length;
 
-      <div className="grid grid-cols-3 gap-2 mt-3">
-        {filteredOptions.map((eq) => {
-          const Icon = eq.icon;
           return (
-            <button
-              key={eq.id}
-              type="button"
-              onClick={() => toggle(eq.id)}
-              className={`flex flex-col items-center gap-1 p-3 rounded-xl border transition-all ${
-                value.includes(eq.id)
-                  ? 'border-indigo-500 bg-indigo-500/10 text-white'
-                  : 'border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:border-zinc-500'
-              }`}
-            >
-              <Icon className="w-6 h-6" />
-              <span className="text-xs font-medium">{eq.label}</span>
-            </button>
+            <div key={category} className="rounded-xl border border-zinc-700 overflow-hidden">
+              {/* Category Header */}
+              <button
+                type="button"
+                onClick={() => setExpandedCategory(isExpanded ? null : category)}
+                className="w-full flex items-center justify-between px-3 py-2.5 bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-zinc-300">{category}</span>
+                  {selectedInCategory > 0 && (
+                    <span className="text-[10px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full">
+                      {selectedInCategory}/{items.length}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {/* Select All for category */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleCategory(category);
+                    }}
+                    className={`text-[10px] px-2 py-0.5 rounded-full border transition-all ${
+                      allSelected
+                        ? 'border-indigo-500 bg-indigo-500/20 text-indigo-400'
+                        : 'border-zinc-600 text-zinc-500 hover:border-zinc-400'
+                    }`}
+                  >
+                    {allSelected ? 'Deselect All' : 'Select All'}
+                  </button>
+                  <svg
+                    className={`w-4 h-4 text-zinc-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Items */}
+              {isExpanded && (
+                <div className="px-3 py-2 grid grid-cols-2 gap-1.5 bg-zinc-900/50">
+                  {items.map((item) => {
+                    const selected = value.includes(item.id);
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => toggle(item.id)}
+                        className={`px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all text-left ${
+                          selected
+                            ? 'border-indigo-500 bg-indigo-500/10 text-white'
+                            : 'border-zinc-700/50 bg-zinc-800/30 text-zinc-500 hover:border-zinc-500'
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
-
-      {error && (
-        <p className="mt-2 text-xs text-red-accent">{error}</p>
-      )}
     </div>
   );
 }

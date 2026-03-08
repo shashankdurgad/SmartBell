@@ -13,7 +13,7 @@
       "Lie down on the floor and secure your feet. Your legs should be bent at the knees.",
       "Place your hands behind or to the side of your head. You will begin with your back on the ground. This will be your starting position.",
       "Flex your hips and spine to raise your torso toward your knees.",
-      "At the top of the contraction your torso should be perpendicular to the ground. Reverse the motion, going only ¾ of the way down.",
+      "At the top of the contraction your torso should be perpendicular to the ground. Reverse the motion, going only 3/4 of the way down.",
       "Repeat for the recommended amount of repetitions."
     ],
     "category": "strength",
@@ -63,7 +63,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "ab crunch machine",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -393,7 +393,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -2528,7 +2528,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -2755,7 +2755,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "stationary bike",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -3003,7 +3003,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -3382,7 +3382,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "pec deck machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -3411,7 +3411,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "chest"
     ],
@@ -3442,7 +3442,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -3473,7 +3473,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -3503,7 +3503,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -3536,7 +3536,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -3566,7 +3566,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -3597,7 +3597,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -3626,7 +3626,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -3655,14 +3655,14 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
     "secondaryMuscles": [],
     "instructions": [
       "Sit next to a low pulley sideways (with legs stretched in front of you or crossed) and grasp the single hand cable attachment with the arm nearest to the cable. Tip: If you can adjust the pulley's height, you can use a flat bench to sit on instead.",
-      "Position the elbow against your side with the elbow bent at 90° and the arm pointing towards the pulley. This will be your starting position.",
+      "Position the elbow against your side with the elbow bent at 90\u00b0 and the arm pointing towards the pulley. This will be your starting position.",
       "Pull the single hand cable attachment toward your body by internally rotating your shoulder until your forearm is across your abs. You will be creating an imaginary semi-circle. Tip: The forearm should be perpendicular to your torso at all times.",
       "Slowly go back to the initial position.",
       "Repeat for the recommended amount of repetitions and then repeat the movement with the next arm."
@@ -3684,7 +3684,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -3713,7 +3713,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -3742,7 +3742,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -3771,7 +3771,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -3801,7 +3801,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -3834,7 +3834,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -3862,7 +3862,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -3892,7 +3892,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -3921,7 +3921,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -3954,7 +3954,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -3985,7 +3985,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -4014,7 +4014,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -4048,7 +4048,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -4078,7 +4078,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "traps"
     ],
@@ -4107,7 +4107,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "forearms"
     ],
@@ -4137,7 +4137,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "standing calf raise machine",
     "primaryMuscles": [
       "traps"
     ],
@@ -4165,7 +4165,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "leg press machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -4193,7 +4193,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "leg press machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -4635,7 +4635,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "body only",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -5446,7 +5446,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -6347,7 +6347,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -6447,7 +6447,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "assisted dip machine",
     "primaryMuscles": [
       "triceps"
     ],
@@ -8016,7 +8016,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -8050,7 +8050,7 @@
     "force": null,
     "level": "intermediate",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "elliptical",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -8226,7 +8226,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -8254,7 +8254,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -8376,7 +8376,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -8906,7 +8906,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -9204,7 +9204,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -9267,7 +9267,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "glute ham raise machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -9506,7 +9506,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "hack squat machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -9988,7 +9988,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "biceps"
     ],
@@ -10440,7 +10440,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "chest"
     ],
@@ -10470,7 +10470,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -11418,7 +11418,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "treadmill",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -12139,7 +12139,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -12172,7 +12172,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -12229,7 +12229,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -12319,7 +12319,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -12665,7 +12665,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "leg extension machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -12724,7 +12724,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "leg press machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -12785,7 +12785,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "chest press machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -12816,7 +12816,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "leverage deadlift machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -12845,7 +12845,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "decline chest press machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -12875,7 +12875,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "high row machine",
     "primaryMuscles": [
       "middle back"
     ],
@@ -12905,7 +12905,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "incline chest press machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -12935,7 +12935,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "iso row machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -12965,7 +12965,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "shoulder press machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -12994,7 +12994,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "leverage shrug machine",
     "primaryMuscles": [
       "traps"
     ],
@@ -13215,7 +13215,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -13245,7 +13245,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -13275,7 +13275,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "seated cable row machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -13393,7 +13393,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "treadmill",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -13452,7 +13452,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -13514,7 +13514,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -13805,7 +13805,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "lying leg curl machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -13833,7 +13833,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "lying squat machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -13982,7 +13982,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "t-bar row machine",
     "primaryMuscles": [
       "middle back"
     ],
@@ -14044,7 +14044,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "chest press machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -14078,7 +14078,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "bicep curl machine",
     "primaryMuscles": [
       "biceps"
     ],
@@ -14106,7 +14106,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "preacher curl machine",
     "primaryMuscles": [
       "biceps"
     ],
@@ -14135,7 +14135,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "shoulder press machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -14166,7 +14166,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "tricep extension machine",
     "primaryMuscles": [
       "triceps"
     ],
@@ -14533,7 +14533,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "hack squat machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -14568,7 +14568,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "leg press machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -14936,7 +14936,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -15561,7 +15561,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "glutes"
     ],
@@ -15751,7 +15751,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -16032,7 +16032,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "biceps"
     ],
@@ -16217,7 +16217,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -16227,7 +16227,7 @@
       "triceps"
     ],
     "instructions": [
-      "Connect a standard handle to a tower, and—if possible—position the cable to shoulder height. If not, a low pulley will suffice.",
+      "Connect a standard handle to a tower, and\u2014if possible\u2014position the cable to shoulder height. If not, a low pulley will suffice.",
       "With your side to the cable, grab the handle with both hands and step away from the tower. You should be approximately arm's length away from the pulley, with the tension of the weight on the cable.",
       "With your feet positioned hip-width apart and knees slightly bent, hold the cable to the middle of your chest. This will be your starting position.",
       "Press the cable away from your chest, fully extending both arms. You core should be tight and engaged.",
@@ -16251,7 +16251,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -17266,7 +17266,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "glutes"
     ],
@@ -17838,7 +17838,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "recumbent bike",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -18140,7 +18140,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -18293,7 +18293,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -18322,7 +18322,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "reverse hyperextension machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -18354,7 +18354,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "rear delt fly machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -18766,7 +18766,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -18824,7 +18824,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -18882,7 +18882,7 @@
     "force": null,
     "level": "intermediate",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "rowing machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -18945,7 +18945,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "treadmill",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -19345,7 +19345,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "seated cable row machine",
     "primaryMuscles": [
       "middle back"
     ],
@@ -19378,7 +19378,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -19408,7 +19408,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "seated calf raise machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -19882,7 +19882,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "seated leg curl machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -19999,7 +19999,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "seated cable row machine",
     "primaryMuscles": [
       "middle back"
     ],
@@ -20175,7 +20175,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "forearms"
     ],
@@ -20240,7 +20240,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -20756,7 +20756,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable crossover machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -20974,7 +20974,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "leg extension machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -21228,7 +21228,7 @@
     ],
     "instructions": [
       "Roller skating is a fun activity which can be effective in improving cardiorespiratory fitness and muscular endurance. It requires relatively good balance and coordination. It is necessary to learn the basics of skating including turning and stopping and to wear protective gear to avoid possible injury.",
-      "You can skate at a comfortable pace for 30 minutes straight. If you want a cardio challenge, do interval skating — speed skate two minutes of every five minutes, using the remaining three minutes to recover. A 150 lb person will typically burn about 175 calories in 30 minutes skating at a comfortable pace, similar to brisk walking."
+      "You can skate at a comfortable pace for 30 minutes straight. If you want a cardio challenge, do interval skating \u2014 speed skate two minutes of every five minutes, using the remaining three minutes to recover. A 150 lb person will typically burn about 175 calories in 30 minutes skating at a comfortable pace, similar to brisk walking."
     ],
     "category": "cardio",
     "images": [
@@ -21493,7 +21493,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "traps"
     ],
@@ -21524,7 +21524,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -21556,7 +21556,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "middle back"
     ],
@@ -21590,7 +21590,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -21619,7 +21619,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "triceps"
     ],
@@ -21651,7 +21651,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -21683,7 +21683,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -21719,7 +21719,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -21747,7 +21747,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "chest"
     ],
@@ -21779,7 +21779,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -21810,7 +21810,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -21842,7 +21842,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -21873,7 +21873,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -21906,7 +21906,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -21936,7 +21936,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -21971,7 +21971,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -22003,7 +22003,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "traps"
     ],
@@ -22036,7 +22036,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "machine",
+    "equipment": "smith machine",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -22879,7 +22879,7 @@
     "force": null,
     "level": "intermediate",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "stairmaster",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -23062,7 +23062,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -23151,7 +23151,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "chest"
     ],
@@ -23182,7 +23182,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -23216,7 +23216,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -23250,7 +23250,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "standing calf raise machine",
     "primaryMuscles": [
       "calves"
     ],
@@ -23712,7 +23712,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "standing leg curl machine",
     "primaryMuscles": [
       "hamstrings"
     ],
@@ -23773,7 +23773,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "shoulders"
     ],
@@ -23805,7 +23805,7 @@
     "force": "push",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -23899,7 +23899,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "biceps"
     ],
@@ -24145,7 +24145,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "abdominals"
     ],
@@ -24347,7 +24347,7 @@
     "force": null,
     "level": "intermediate",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "stairmaster",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -24537,7 +24537,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "lats"
     ],
@@ -25176,7 +25176,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "hip abduction machine",
     "primaryMuscles": [
       "abductors"
     ],
@@ -25206,7 +25206,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "machine",
+    "equipment": "hip adduction machine",
     "primaryMuscles": [
       "adductors"
     ],
@@ -25446,7 +25446,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -25474,7 +25474,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -25503,7 +25503,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -25532,7 +25532,7 @@
     "force": "push",
     "level": "beginner",
     "mechanic": "isolation",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "triceps"
     ],
@@ -25765,7 +25765,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -25885,7 +25885,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "cable station",
     "primaryMuscles": [
       "traps"
     ],
@@ -25974,7 +25974,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -26073,7 +26073,7 @@
     "force": null,
     "level": "beginner",
     "mechanic": null,
-    "equipment": "machine",
+    "equipment": "treadmill",
     "primaryMuscles": [
       "quadriceps"
     ],
@@ -26479,7 +26479,7 @@
     "force": "pull",
     "level": "beginner",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
@@ -26513,7 +26513,7 @@
     "force": "pull",
     "level": "intermediate",
     "mechanic": "compound",
-    "equipment": "cable",
+    "equipment": "lat pulldown machine",
     "primaryMuscles": [
       "lats"
     ],
