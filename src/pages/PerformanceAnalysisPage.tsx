@@ -5,6 +5,7 @@ import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { useExercises } from '../hooks/useExercises';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
+import { MonthlyPRsChart, type MonthData } from '../components/charts/MonthlyPRsChart';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import { convertVolume } from '../utils/formatters';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
@@ -103,21 +104,23 @@ export function PerformanceAnalysisPage() {
     .sort((a, b) => a.x - b.x)
     .map((p) => ({ x: p.x, y: p.y }));
 
-  // Calculate estimated 1RM using Epley and Brzycki formulas
+  // Calculate estimated 1RM from the most recent workout for this exercise
   function calculateEstimated1RM(): number | null {
     if (!selectedExercise) return null;
 
-    // Find the highest estimated 1RM across all sessions for this exercise
-    let maxEstimated1RM = 0;
+    // Find the most recent session containing this exercise
+    const sortedSessions = [...history].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
-    for (const session of history) {
+    for (const session of sortedSessions) {
       const est1RM = getEstimated1RMFromSession(session, selectedExercise);
-      if (est1RM && est1RM > maxEstimated1RM) {
-        maxEstimated1RM = est1RM;
+      if (est1RM !== null) {
+        return est1RM;
       }
     }
 
-    return maxEstimated1RM > 0 ? maxEstimated1RM : null;
+    return null;
   }
 
   const estimated1RM = calculateEstimated1RM();
@@ -155,6 +158,115 @@ export function PerformanceAnalysisPage() {
     }
     
     return arr;
+  })();
+
+  // Calculate monthly PRs for the last 6 months
+  const monthlyPRs = (() => {
+    const today = new Date();
+    const sixMonthsAgo = new Date(today);
+    sixMonthsAgo.setMonth(today.getMonth() - 5);
+    sixMonthsAgo.setDate(1);
+
+    // Sort sessions chronologically
+    const sortedSessions = [...history].sort((a, b) => 
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    // Track best estimated 1RM for each exercise up to each point in time
+    const exerciseBests = new Map<string, number>();
+    const prsByMonth = new Map<string, number>();
+
+    for (const session of sortedSessions) {
+      const sessionDate = new Date(session.date);
+      if (sessionDate < sixMonthsAgo) {
+        // Build up historical bests but don't count PRs before 6 months ago
+        for (const exercise of session.exercises) {
+          const est1RM = getEstimated1RMFromSession(session, exercise.exerciseId);
+          if (est1RM !== null) {
+            const currentBest = exerciseBests.get(exercise.exerciseId) || 0;
+            if (est1RM > currentBest) {
+              exerciseBests.set(exercise.exerciseId, est1RM);
+            }
+          }
+        }
+        continue;
+      }
+
+      const monthKey = `${sessionDate.getFullYear()}-${String(sessionDate.getMonth() + 1).padStart(2, '0')}`;
+      
+      for (const exercise of session.exercises) {
+        const est1RM = getEstimated1RMFromSession(session, exercise.exerciseId);
+        if (est1RM !== null) {
+          const currentBest = exerciseBests.get(exercise.exerciseId) || 0;
+          if (est1RM > currentBest) {
+            // This is a PR!
+            exerciseBests.set(exercise.exerciseId, est1RM);
+            prsByMonth.set(monthKey, (prsByMonth.get(monthKey) || 0) + 1);
+          }
+        }
+      }
+    }
+
+    // Build array of last 6 months
+    const months: MonthData[] = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today);
+      d.setMonth(today.getMonth() - i);
+      const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      const monthLabel = d.toLocaleString('default', { month: 'short' });
+      months.push({ month: monthLabel, count: prsByMonth.get(monthKey) || 0 });
+    }
+
+    return months;
+  })();
+
+  // Calculate current estimated 1RM for all exercises with data
+  const allExercise1RMs = (() => {
+    const exerciseMap = new Map<string, { name: string; est1RM: number; bestPR: number }>();
+
+    // Sort sessions by date (most recent first)
+    const sortedSessions = [...history].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    // Track which exercises we've already found the most recent workout for
+    const processedExercises = new Set<string>();
+
+    // First pass: get current (most recent) 1RM for each exercise
+    for (const session of sortedSessions) {
+      for (const exercise of session.exercises) {
+        if (processedExercises.has(exercise.exerciseId)) continue;
+
+        const est1RM = getEstimated1RMFromSession(session, exercise.exerciseId);
+        if (est1RM !== null) {
+          const exerciseData = exercises.find(ex => ex.id === exercise.exerciseId);
+          if (exerciseData) {
+            exerciseMap.set(exercise.exerciseId, {
+              name: exerciseData.name.replace(/_/g, ' '),
+              est1RM: est1RM,
+              bestPR: est1RM // Initialize with current value
+            });
+            processedExercises.add(exercise.exerciseId);
+          }
+        }
+      }
+    }
+
+    // Second pass: find best PR (highest 1RM) across all sessions
+    for (const session of history) {
+      for (const exercise of session.exercises) {
+        const est1RM = getEstimated1RMFromSession(session, exercise.exerciseId);
+        if (est1RM !== null) {
+          const existing = exerciseMap.get(exercise.exerciseId);
+          if (existing && est1RM > existing.bestPR) {
+            existing.bestPR = est1RM;
+          }
+        }
+      }
+    }
+
+    // Convert to array and sort by name
+    return Array.from(exerciseMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   })();
 
   return (
@@ -207,6 +319,44 @@ export function PerformanceAnalysisPage() {
                   xTickDays={10}
                   xDomain={[sixtyDaysAgoTimestamp, nowTimestamp]}
                 />
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Monthly PRs */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-1">
+            Progress
+          </h2>
+          <h1 className="text-lg font-semibold text-white-text tracking-wider mb-3">
+            Personal Records by Month
+          </h1>
+          <Card>
+            <div className="space-y-4">
+              <MonthlyPRsChart data={monthlyPRs} width={480} height={200} />
+              
+              {/* Exercise 1RM List */}
+              <div className="border-t border-dark-600 pt-4">
+                <h3 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
+                  Current Estimated 1RM | Best PR (by Exercise)
+                </h3>
+                {allExercise1RMs.length > 0 ? (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {allExercise1RMs.map((ex, idx) => (
+                      <div key={idx} className="flex items-center justify-between py-1 px-2 rounded hover:bg-dark-700/50 transition-colors">
+                        <span className="text-sm text-white">{ex.name}</span>
+                        <span className="text-sm font-semibold text-blue-primary">
+                          {Math.round(ex.est1RM)} {weightUnit} | {Math.round(ex.bestPR)} {weightUnit}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-text text-center py-4">
+                    No exercise data available yet.
+                  </p>
+                )}
               </div>
             </div>
           </Card>

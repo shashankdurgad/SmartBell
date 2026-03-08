@@ -112,21 +112,23 @@ export function DashboardPage() {
     .sort((a, b) => a.x - b.x)
     .map((p) => ({ x: p.x, y: p.y }));
 
-    // Calculate estimated 1RM using Epley and Brzycki formulas
+    // Calculate estimated 1RM from the most recent workout for this exercise
     function calculateEstimated1RM(): number | null {
       if (!selectedExercise) return null;
 
-      // Find the highest estimated 1RM across all sessions for this exercise
-      let maxEstimated1RM = 0;
+      // Find the most recent session containing this exercise
+      const sortedSessions = [...history].sort((a, b) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
-      for (const session of history) {
+      for (const session of sortedSessions) {
         const est1RM = getEstimated1RMFromSession(session, selectedExercise);
-        if (est1RM && est1RM > maxEstimated1RM) {
-          maxEstimated1RM = est1RM;
+        if (est1RM !== null) {
+          return est1RM;
         }
       }
 
-      return maxEstimated1RM > 0 ? maxEstimated1RM : null;
+      return null;
     }
 
     const estimated1RM = calculateEstimated1RM();
