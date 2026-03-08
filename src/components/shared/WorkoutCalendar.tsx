@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface DayCell {
   date: Date;
   volume: number;
@@ -7,9 +5,10 @@ interface DayCell {
 
 interface Props {
   days: DayCell[];
+  unit?: 'kg' | 'lbs';
 }
 
-export default function WorkoutCalendar({ days }: Props) {
+export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
   if (!days || days.length === 0) return null;
 
   // Determine max volume for scaling
@@ -73,7 +72,7 @@ export default function WorkoutCalendar({ days }: Props) {
               }
 
               const bg = has ? `hsl(215 90% ${lightness}%)` : 'rgba(52, 52, 71, 0.31)';
-              const title = has ? `${key} — ${day.volume} vol` : key;
+              const title = has ? `${key} - ${Math.round(day.volume)} ${unit}` : key;
 
               return (
                 <div
@@ -89,6 +88,18 @@ export default function WorkoutCalendar({ days }: Props) {
             })}
           </div>
         ))}
+      </div>
+
+      <div className="mt-3 flex items-center gap-2 text-xs text-gray-text">
+        <span className="whitespace-nowrap">Low volume</span>
+        <div
+          className="h-2 flex-1 rounded-sm"
+          style={{
+            background: 'linear-gradient(to right, hsl(215 90% 15%), hsl(215 90% 60%))',
+          }}
+          aria-hidden="true"
+        />
+        <span className="whitespace-nowrap">High volume</span>
       </div>
     </div>
   );

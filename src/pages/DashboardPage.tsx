@@ -31,9 +31,8 @@ export function DashboardPage() {
   const totalVolume = history.reduce((sum, s) => sum + s.totalVolume, 0);
   const totalWorkouts = history.length;
 
-  // Exercises for dropdown
+  // Auto-select most recently performed strength-based exercise
   const { exercises } = useExercises();
-  const [selectedExercise, setSelectedExercise] = useState<string>('');
 
   // Progress chart displays last 60 days only.
   const nowTimestamp = Date.now();
@@ -41,36 +40,31 @@ export function DashboardPage() {
   sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
   const sixtyDaysAgoTimestamp = sixtyDaysAgo.getTime();
 
-  function hasProgressDataForExercise(session: WorkoutSession, exerciseId: string): boolean {
-    const exercise = session.exercises.find((e) => e.exerciseId === exerciseId);
-    if (!exercise) return false;
-
-    return exercise.sets.some(
-      (set) => !set.isWarmup && (set.weight ?? 0) > 0 && (set.completedReps ?? 0) > 0
+  // Find the most recently performed strength-based exercise
+  const selectedExercise = (() => {
+    // Sort sessions by date (most recent first)
+    const sortedSessions = [...history].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
     );
-  }
 
-  // Only include exercises that can produce at least one valid progress point.
-  const exercisesWithData = exercises.filter((ex) =>
-    history.some(
-      (session) =>
-        new Date(session.date).getTime() >= sixtyDaysAgoTimestamp &&
-        hasProgressDataForExercise(session, ex.id)
-    )
-  );
-
-  // Keep selection valid when data changes.
-  useEffect(() => {
-    if (exercisesWithData.length === 0) {
-      if (selectedExercise) setSelectedExercise('');
-      return;
+    // Find first exercise with valid strength data
+    for (const session of sortedSessions) {
+      for (const exercise of session.exercises) {
+        const hasValidData = exercise.sets.some(
+          (set) => !set.isWarmup && (set.weight ?? 0) > 0 && (set.completedReps ?? 0) > 0
+        );
+        if (hasValidData) {
+          return exercise.exerciseId;
+        }
+      }
     }
+    return '';
+  })();
 
-    const selectedStillValid = exercisesWithData.some((ex) => ex.id === selectedExercise);
-    if (!selectedStillValid) {
-      setSelectedExercise(exercisesWithData[0].id);
-    }
-  }, [exercisesWithData, selectedExercise]);
+  // Get exercise name for display
+  const selectedExerciseName = selectedExercise
+    ? exercises.find((ex) => ex.id === selectedExercise)?.name.replace(/_/g, ' ') || ''
+    : '';
 
   // Helper to get estimated 1RM for a given exercise from a session
   function getEstimated1RMFromSession(session: WorkoutSession, exerciseId: string): number | null {
@@ -219,32 +213,26 @@ export function DashboardPage() {
           onClick={() => navigate('/performance')}
         >
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-4xl font-bold text-white-primary">
-                    {displayedEstimated1RM ? Math.round(displayedEstimated1RM) : '—'}
-                  </h3>
-                  <span className="text-sm text-gray-text">{displayedEstimated1RM ? weightUnit : ''}</span>
+            <div className="flex items-start justify-between">
+              <div className="space-y-2 flex-1">
+                <div>
+                  <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-4xl font-bold text-white-primary">
+                      {displayedEstimated1RM ? Math.round(displayedEstimated1RM) : '—'}
+                    </h3>
+                    <span className="text-sm text-gray-text">{displayedEstimated1RM ? weightUnit : ''}</span>
+                  </div>
                 </div>
+                {selectedExerciseName && (
+                  <p className="text-sm text-gray-text">
+                    Exercise: <span className="text-white">{selectedExerciseName}</span>
+                  </p>
+                )}
               </div>
-              <div className="flex items-center gap-3">
-                <select
-                  id="exercise-select"
-                  value={selectedExercise}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    setSelectedExercise(e.target.value);
-                  }}
-                  className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
-                >
-                  <option value="">Select exercise…</option>
-                  {exercisesWithData.map((ex) => (
-                    <option key={ex.id || ex.name} value={ex.id}>{ex.name.replace(/_/g, ' ')}</option>
-                  ))}
-                </select>
-              </div>
+              <svg className="w-5 h-5 text-gray-text flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
             </div>
             <div>
               <ExerciseProgressChart

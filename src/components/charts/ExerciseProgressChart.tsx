@@ -3,6 +3,36 @@
 
 export type SeriesPoint = { x: number; y: number; label?: string };
 
+type ScreenPoint = { x: number; y: number };
+
+function buildSmoothPath(points: ScreenPoint[]): string {
+  if (points.length === 0) return '';
+  if (points.length < 3) {
+    return points
+      .map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`)
+      .join(' ');
+  }
+
+  const tension = 0.18;
+  let d = `M${points[0].x},${points[0].y}`;
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+
+    const cp1x = p1.x + (p2.x - p0.x) * tension;
+    const cp1y = p1.y + (p2.y - p0.y) * tension;
+    const cp2x = p2.x - (p3.x - p1.x) * tension;
+    const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+    d += ` C${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+  }
+
+  return d;
+}
+
 export function ExerciseProgressChart({
   points,
   width = 480,
@@ -47,13 +77,15 @@ export function ExerciseProgressChart({
     padding.top + innerH - (innerH * (y - yMin)) / (yMax - yMin || 1);
 
   const sorted = [...points].sort((a, b) => a.x - b.x);
-  const pathD = sorted
-    .map((p, i) => `${i === 0 ? 'M' : 'L'}${xScale(p.x)},${yScale(p.y)}`)
-    .join(' ');
+  const screenPoints: ScreenPoint[] = sorted.map((p) => ({
+    x: xScale(p.x),
+    y: yScale(p.y),
+  }));
+  const pathD = buildSmoothPath(screenPoints);
 
-  const areaD = `${pathD} L${xScale(sorted[sorted.length - 1].x)},${yScale(
+  const areaD = `${pathD} L${screenPoints[screenPoints.length - 1].x},${yScale(
     0
-  )} L${xScale(sorted[0].x)},${yScale(0)} Z`;
+  )} L${screenPoints[0].x},${yScale(0)} Z`;
 
   const ticks = 5;
   const yTicks = Array.from({ length: ticks + 1 }, (_, i) => (yMax * i) / ticks);
