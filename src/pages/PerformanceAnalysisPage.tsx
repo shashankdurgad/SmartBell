@@ -126,6 +126,58 @@ export function PerformanceAnalysisPage() {
   const estimated1RM = calculateEstimated1RM();
   const displayedEstimated1RM = estimated1RM;
 
+  // Helper to get the start of the week (Sunday) for a given date
+  const getWeekStart = (date: Date): Date => {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day;
+    return new Date(d.setDate(diff));
+  };
+
+  // Weekly volume data for last 10 weeks (excluding current week)
+  const currentWeekStart = getWeekStart(new Date());
+  currentWeekStart.setHours(0, 0, 0, 0);
+  
+  // Go back 10 weeks from the start of current week
+  const tenWeeksAgo = new Date(currentWeekStart);
+  tenWeeksAgo.setDate(currentWeekStart.getDate() - (10 * 7));
+  const tenWeeksAgoTimestamp = tenWeeksAgo.getTime();
+  const currentWeekTimestamp = currentWeekStart.getTime();
+
+  // Group workouts by week and sum volumes
+  const weeklyVolumeMap = new Map<number, number>();
+  
+  history.forEach((session) => {
+    const sessionDate = new Date(session.date);
+    const sessionTimestamp = sessionDate.getTime();
+    
+    // Only include sessions from the last 10 weeks, excluding current week
+    if (sessionTimestamp >= tenWeeksAgoTimestamp && sessionTimestamp < currentWeekTimestamp) {
+      const weekStart = getWeekStart(sessionDate);
+      weekStart.setHours(0, 0, 0, 0);
+      const weekTimestamp = weekStart.getTime();
+      
+      const sessionVolume = session.totalVolume || 0;
+      const currentVolume = weeklyVolumeMap.get(weekTimestamp) || 0;
+      weeklyVolumeMap.set(weekTimestamp, currentVolume + sessionVolume);
+    }
+  });
+
+  // Convert to series points
+  const volumeSeries: SeriesPoint[] = Array.from(weeklyVolumeMap.entries())
+    .map(([weekTimestamp, volume]) => ({
+      x: weekTimestamp,
+      y: weightUnit === 'lbs' ? kgToLbs(volume) : volume,
+    }))
+    .sort((a, b) => a.x - b.x);
+
+  // Calculate most recent completed week's volume (last week)
+  const lastWeekStart = new Date(currentWeekStart);
+  lastWeekStart.setDate(currentWeekStart.getDate() - 7);
+  const lastWeekTimestamp = lastWeekStart.getTime();
+  const lastWeekVolume = weeklyVolumeMap.get(lastWeekTimestamp) || 0;
+  const displayedLastWeekVolume = weightUnit === 'lbs' ? kgToLbs(lastWeekVolume) : lastWeekVolume;
+
   // Build volume totals per calendar day (YYYY-MM-DD)
   const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s) => {
     const d = new Date(s.date);
@@ -373,6 +425,58 @@ export function PerformanceAnalysisPage() {
           <Card>
             <div>
               <WorkoutCalendar days={last9Weeks} unit={weightUnit} />
+            </div>
+            <div className="mt-6">
+              <div className="flex items-start justify-between">
+                <div className="space-y-2 flex-1">
+                  <p className="text-sm text-gray-text">
+                    Volume Trend (Last 10 Weeks)
+                  </p>
+                </div>
+              </div>
+              <div>
+                <ExerciseProgressChart
+                  points={volumeSeries}
+                  width={480}
+                  height={240}
+                  stroke="#10B981"
+                  fill="rgba(16, 185, 129, 0.15)"
+                  xTickDays={7}
+                  xDomain={[tenWeeksAgoTimestamp, currentWeekTimestamp]}
+                />
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Weekly Total Volume Trend */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
+            Volume Analysis
+          </h2>
+          <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
+            Weekly Total Volume
+          </h1>
+          <Card className="mt-2">
+            <div className="space-y-3">
+              <div className="flex items-start justify-between">
+                <div className="space-y-2 flex-1">
+                  <p className="text-sm text-gray-text">
+                    Last 10 weeks
+                  </p>
+                </div>
+              </div>
+              <div>
+                <ExerciseProgressChart
+                  points={volumeSeries}
+                  width={480}
+                  height={240}
+                  stroke="#10B981"
+                  fill="rgba(16, 185, 129, 0.15)"
+                  xTickDays={7}
+                  xDomain={[tenWeeksAgoTimestamp, currentWeekTimestamp]}
+                />
+              </div>
             </div>
           </Card>
         </section>
