@@ -66,6 +66,7 @@ export interface Exercise {
   category: ExerciseCategory;
   images: string[];
   applicability: Applicability;
+  commonality: number;
 }
 
 export const ALL_MUSCLE_GROUPS: MuscleGroup[] = [

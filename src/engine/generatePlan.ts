@@ -47,8 +47,8 @@ async function queryExercises(
     .filter((ex) => ex.equipment && equipment.includes(ex.equipment))
     .filter((ex) => !excluded.includes(ex.id))
     .sort((a, b) =>
-      (b.applicability?.[trainingStyle] ?? 0) -
-      (a.applicability?.[trainingStyle] ?? 0)
+      ((b.applicability?.[trainingStyle] ?? 0) * (b.commonality ?? 1)) -
+      ((a.applicability?.[trainingStyle] ?? 0) * (a.commonality ?? 1))
     )
     .slice(0, limit);
 }
@@ -124,6 +124,8 @@ async function buildDay(
     for (let i = 0; i < exCount; i++) {
       const matched = candidates[i];
 
+      console.log(matched.commonality);
+
       exercises.push({
         exerciseId: matched?.id ?? `fallback_${muscle}_${i}`,
         exerciseName: matched?.name ?? `${muscle} exercise ${i + 1}`,
@@ -161,10 +163,6 @@ export async function generateWeeklyPlan(
   const prefs = await db.userPreferences.get('default');
   const rest = Math.max(30, (prefs?.defaultRestTimer ?? style.defaultRest) + diff.restMod);
   
-  console.log('[Engine] prefs from DB:', prefs);
-  console.log('[Engine] rest used:', rest);
-
-
     const workouts = await Promise.all(
     split.days.map((day, i) =>
       buildDay(day, i + 1, style, diff, constraints, rest)

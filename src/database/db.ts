@@ -33,8 +33,7 @@ export class SmartBellDB extends Dexie {
   constructor() {
     super('SmartBellDB');
 
-    this.version(3).stores({
-      // ...existing code...
+    this.version(6).stores({
       exercises: 'id, name, *primaryMuscles, equipment, level, category, mechanic',
       weeklyPlans: 'id, createdAt, daysPerWeek, trainingStyle',
       dailyWorkouts: 'id, dayNumber, name',

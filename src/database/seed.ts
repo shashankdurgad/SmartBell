@@ -31,6 +31,7 @@ export async function seedDatabase(): Promise<void> {
       category: ex.category as string,
       images: (ex.images ?? []) as string[],
       applicability: ex.applicability as { strength: number; hypertrophy: number; endurance: number },
+      commonality: (ex.commonality ?? 5) as number,
     }));
 
     await db.exercises.bulkAdd(exercises as never[]);

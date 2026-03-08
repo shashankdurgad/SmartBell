@@ -26,7 +26,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "90/90 Hamstring",
@@ -56,7 +57,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Ab Crunch Machine",
@@ -84,7 +86,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Ab Roller",
@@ -114,7 +117,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Adductor",
@@ -141,7 +145,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Adductor/Groin",
@@ -169,7 +174,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Advanced Kettlebell Windmill",
@@ -201,7 +207,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Air Bike",
@@ -231,7 +238,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "All Fours Quad Stretch",
@@ -260,7 +268,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Alternate Hammer Curl",
@@ -292,7 +301,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Alternate Heel Touchers",
@@ -321,7 +331,8 @@
       "strength": 2,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Alternate Incline Dumbbell Curl",
@@ -352,7 +363,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Alternate Leg Diagonal Bound",
@@ -386,7 +398,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Alternating Cable Shoulder Press",
@@ -416,7 +429,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Alternating Deltoid Raise",
@@ -445,7 +459,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Alternating Floor Press",
@@ -477,7 +492,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Alternating Hang Clean",
@@ -511,7 +527,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Alternating Kettlebell Press",
@@ -540,7 +557,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Alternating Kettlebell Row",
@@ -570,7 +588,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Alternating Renegade Row",
@@ -603,7 +622,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Ankle Circles",
@@ -630,7 +650,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Ankle On The Knee",
@@ -657,7 +678,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Anterior Tibialis-SMR",
@@ -683,7 +705,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Anti-Gravity Press",
@@ -715,7 +738,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Arm Circles",
@@ -744,7 +768,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Arnold Dumbbell Press",
@@ -775,7 +800,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Around The Worlds",
@@ -804,7 +830,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Atlas Stone Trainer",
@@ -838,7 +865,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Atlas Stones",
@@ -877,7 +905,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Axle Deadlift",
@@ -912,7 +941,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Back Flyes - With Bands",
@@ -945,7 +975,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Backward Drag",
@@ -977,7 +1008,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Backward Medicine Ball Throw",
@@ -1005,7 +1037,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Balance Board",
@@ -1035,7 +1068,8 @@
       "strength": 3,
       "hypertrophy": 3,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Ball Leg Curl",
@@ -1067,7 +1101,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Band Assisted Pull-Up",
@@ -1099,7 +1134,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Band Good Morning",
@@ -1129,7 +1165,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Band Good Morning (Pull Through)",
@@ -1159,7 +1196,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Band Hip Adductions",
@@ -1189,7 +1227,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Band Pull Apart",
@@ -1220,7 +1259,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Band Skull Crusher",
@@ -1247,7 +1287,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Ab Rollout",
@@ -1278,7 +1319,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Barbell Ab Rollout - On Knees",
@@ -1309,7 +1351,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Barbell Bench Press - Medium Grip",
@@ -1341,7 +1384,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 10
   },
   {
     "name": "Barbell Curl",
@@ -1372,7 +1416,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Barbell Curls Lying Against An Incline",
@@ -1400,7 +1445,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Deadlift",
@@ -1438,7 +1484,8 @@
       "strength": 10,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 10
   },
   {
     "name": "Barbell Full Squat",
@@ -1473,7 +1520,8 @@
       "strength": 10,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Barbell Glute Bridge",
@@ -1503,7 +1551,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Barbell Guillotine Bench Press",
@@ -1535,7 +1584,8 @@
       "strength": 8,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Hack Squat",
@@ -1567,7 +1617,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Barbell Hip Thrust",
@@ -1597,7 +1648,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Barbell Incline Bench Press - Medium Grip",
@@ -1629,7 +1681,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Barbell Incline Shoulder Raise",
@@ -1659,7 +1712,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Lunge",
@@ -1692,7 +1746,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Barbell Rear Delt Row",
@@ -1725,7 +1780,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Barbell Rollout from Bench",
@@ -1757,7 +1813,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Seated Calf Raise",
@@ -1787,7 +1844,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Barbell Shoulder Press",
@@ -1819,7 +1877,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Barbell Shrug",
@@ -1847,7 +1906,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Barbell Shrug Behind The Back",
@@ -1878,7 +1938,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Barbell Side Bend",
@@ -1908,7 +1969,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Barbell Side Split Squat",
@@ -1940,7 +2002,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Barbell Squat",
@@ -1975,7 +2038,8 @@
       "strength": 10,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 10
   },
   {
     "name": "Barbell Squat To A Bench",
@@ -2012,7 +2076,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Barbell Step Ups",
@@ -2045,7 +2110,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Barbell Walking Lunge",
@@ -2077,7 +2143,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Battling Ropes",
@@ -2108,7 +2175,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 9
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Bear Crawl Sled Drags",
@@ -2138,7 +2206,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Behind Head Chest Stretch",
@@ -2168,7 +2237,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bench Dips",
@@ -2199,7 +2269,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Bench Jump",
@@ -2232,7 +2303,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bench Press - Powerlifting",
@@ -2265,7 +2337,8 @@
       "strength": 10,
       "hypertrophy": 7,
       "endurance": 1
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Bench Press - With Bands",
@@ -2299,7 +2372,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bench Press with Chains",
@@ -2331,7 +2405,8 @@
       "strength": 10,
       "hypertrophy": 7,
       "endurance": 1
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Bench Sprint",
@@ -2363,7 +2438,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Bent-Arm Barbell Pullover",
@@ -2397,7 +2473,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bent-Arm Dumbbell Pullover",
@@ -2431,7 +2508,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Bent-Knee Hip Raise",
@@ -2460,7 +2538,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bent Over Barbell Row",
@@ -2492,7 +2571,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
@@ -2521,7 +2601,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Bent Over Low-Pulley Side Lateral",
@@ -2554,7 +2635,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bent Over One-Arm Long Bar Row",
@@ -2589,7 +2671,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bent Over Two-Arm Long Bar Row",
@@ -2622,7 +2705,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bent Over Two-Dumbbell Row",
@@ -2654,7 +2738,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Bent Over Two-Dumbbell Row With Palms In",
@@ -2685,7 +2770,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Bent Press",
@@ -2719,7 +2805,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Bicycling",
@@ -2748,7 +2835,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Bicycling, Stationary",
@@ -2778,7 +2866,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Board Press",
@@ -2811,7 +2900,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Body-Up",
@@ -2842,7 +2932,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Body Tricep Press",
@@ -2871,7 +2962,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Bodyweight Flyes",
@@ -2904,7 +2996,8 @@
       "strength": 3,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Bodyweight Mid Row",
@@ -2934,7 +3027,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Bodyweight Squat",
@@ -2964,7 +3058,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Bodyweight Walking Lunge",
@@ -2996,7 +3091,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Bosu Ball Cable Crunch With Side Bends",
@@ -3030,7 +3126,8 @@
       "strength": 3,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Bottoms-Up Clean From The Hang Position",
@@ -3059,7 +3156,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Bottoms Up",
@@ -3086,7 +3184,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Box Jump (Multiple Response)",
@@ -3119,7 +3218,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Box Skip",
@@ -3154,7 +3254,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Box Squat",
@@ -3188,7 +3289,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Box Squat with Bands",
@@ -3223,7 +3325,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Box Squat with Chains",
@@ -3259,7 +3362,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Brachialis-SMR",
@@ -3285,7 +3389,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Bradford/Rocky Presses",
@@ -3317,7 +3422,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Butt-Ups",
@@ -3346,7 +3452,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Butt Lift (Bridge)",
@@ -3375,7 +3482,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Butterfly",
@@ -3404,7 +3512,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Cable Chest Press",
@@ -3435,7 +3544,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Cable Crossover",
@@ -3466,7 +3576,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Cable Crunch",
@@ -3496,7 +3607,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Cable Deadlifts",
@@ -3529,7 +3641,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Cable Hammer Curls - Rope Attachment",
@@ -3559,7 +3672,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Cable Hip Adduction",
@@ -3590,7 +3704,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Incline Pushdown",
@@ -3619,7 +3734,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Cable Incline Triceps Extension",
@@ -3648,7 +3764,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Cable Internal Rotation",
@@ -3677,7 +3794,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Cable Iron Cross",
@@ -3706,7 +3824,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Cable Judo Flip",
@@ -3735,7 +3854,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Cable Lying Triceps Extension",
@@ -3764,7 +3884,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Cable One Arm Tricep Extension",
@@ -3794,7 +3915,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Cable Preacher Curl",
@@ -3827,7 +3949,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Rear Delt Fly",
@@ -3855,7 +3978,8 @@
       "strength": 3,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Cable Reverse Crunch",
@@ -3885,7 +4009,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Cable Rope Overhead Triceps Extension",
@@ -3914,7 +4039,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Cable Rope Rear-Delt Rows",
@@ -3947,7 +4073,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Cable Russian Twists",
@@ -3978,7 +4105,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Seated Crunch",
@@ -4007,7 +4135,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Cable Seated Lateral Raise",
@@ -4041,7 +4170,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Shoulder Press",
@@ -4071,7 +4201,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Shrugs",
@@ -4100,7 +4231,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cable Wrist Curl",
@@ -4130,7 +4262,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Calf-Machine Shoulder Shrug",
@@ -4158,7 +4291,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Calf Press",
@@ -4186,7 +4320,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Calf Press On The Leg Press Machine",
@@ -4215,7 +4350,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Calf Raise On A Dumbbell",
@@ -4244,7 +4380,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Calf Raises - With Bands",
@@ -4273,7 +4410,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Calf Stretch Elbows Against Wall",
@@ -4300,7 +4438,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Calf Stretch Hands Against Wall",
@@ -4327,7 +4466,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Calves-SMR",
@@ -4353,7 +4493,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Car Deadlift",
@@ -4387,7 +4528,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Car Drivers",
@@ -4417,7 +4559,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Carioca Quick Step",
@@ -4451,7 +4594,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Cat Stretch",
@@ -4481,7 +4625,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Catch and Overhead Throw",
@@ -4512,7 +4657,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Chain Handle Extension",
@@ -4539,7 +4685,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Chain Press",
@@ -4569,7 +4716,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Chair Leg Extended Stretch",
@@ -4599,7 +4747,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Chair Lower Back Stretch",
@@ -4628,7 +4777,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Chair Squat",
@@ -4662,7 +4812,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Chair Upper Body Stretch",
@@ -4691,7 +4842,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Chest And Front Of Shoulder Stretch",
@@ -4720,7 +4872,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Chest Push from 3 point stance",
@@ -4751,7 +4904,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Chest Push (multiple response)",
@@ -4783,7 +4937,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Chest Push (single response)",
@@ -4814,7 +4969,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Chest Push with Run Release",
@@ -4845,7 +5001,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Chest Stretch on Stability Ball",
@@ -4872,7 +5029,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Child's Pose",
@@ -4902,7 +5060,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Chin-Up",
@@ -4935,7 +5094,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Chin To Chest Stretch",
@@ -4963,7 +5123,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Circus Bell",
@@ -4998,7 +5159,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Clean",
@@ -5036,7 +5198,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Clean Deadlift",
@@ -5070,7 +5233,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Clean Pull",
@@ -5103,7 +5267,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Clean Shrug",
@@ -5132,7 +5297,8 @@
       "strength": 8,
       "hypertrophy": 5,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Clean and Jerk",
@@ -5172,7 +5338,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Clean and Press",
@@ -5214,7 +5381,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Clean from Blocks",
@@ -5248,7 +5416,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Clock Push-Up",
@@ -5281,7 +5450,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Close-Grip Barbell Bench Press",
@@ -5313,7 +5483,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Close-Grip Dumbbell Press",
@@ -5345,7 +5516,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Close-Grip EZ-Bar Curl with Band",
@@ -5376,7 +5548,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Close-Grip EZ-Bar Press",
@@ -5408,7 +5581,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Close-Grip EZ Bar Curl",
@@ -5439,7 +5613,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Close-Grip Front Lat Pulldown",
@@ -5473,7 +5648,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Close-Grip Push-Up off of a Dumbbell",
@@ -5505,7 +5681,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Close-Grip Standing Barbell Curl",
@@ -5536,7 +5713,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Cocoons",
@@ -5563,7 +5741,8 @@
       "strength": 2,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Conan's Wheel",
@@ -5597,7 +5776,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Concentration Curls",
@@ -5628,7 +5808,8 @@
       "strength": 4,
       "hypertrophy": 10,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Cross-Body Crunch",
@@ -5657,7 +5838,8 @@
       "strength": 2,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cross Body Hammer Curl",
@@ -5687,7 +5869,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Cross Over - With Bands",
@@ -5720,7 +5903,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Crossover Reverse Lunge",
@@ -5753,7 +5937,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Crucifix",
@@ -5781,7 +5966,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Crunch - Hands Overhead",
@@ -5810,7 +5996,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Crunch - Legs On Exercise Ball",
@@ -5841,7 +6028,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Crunches",
@@ -5871,7 +6059,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Cuban Press",
@@ -5902,7 +6091,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Dancer's Stretch",
@@ -5933,7 +6123,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dead Bug",
@@ -5964,7 +6155,8 @@
       "strength": 2,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Deadlift with Bands",
@@ -5998,7 +6190,8 @@
       "strength": 10,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Deadlift with Chains",
@@ -6033,7 +6226,8 @@
       "strength": 10,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Decline Barbell Bench Press",
@@ -6066,7 +6260,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Decline Close-Grip Bench To Skull Crusher",
@@ -6100,7 +6295,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Decline Crunch",
@@ -6130,7 +6326,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Decline Dumbbell Bench Press",
@@ -6163,7 +6360,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Decline Dumbbell Flyes",
@@ -6192,7 +6390,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Decline Dumbbell Triceps Extension",
@@ -6221,7 +6420,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Decline EZ Bar Triceps Extension",
@@ -6250,7 +6450,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Decline Oblique Crunch",
@@ -6280,7 +6481,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Decline Push-Up",
@@ -6311,7 +6513,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Decline Reverse Crunch",
@@ -6340,7 +6543,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Decline Smith Press",
@@ -6372,7 +6576,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Deficit Deadlift",
@@ -6406,7 +6611,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Depth Jump Leap",
@@ -6440,7 +6646,8 @@
       "strength": 6,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dip Machine",
@@ -6472,7 +6679,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dips - Chest Version",
@@ -6503,7 +6711,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Dips - Triceps Version",
@@ -6534,7 +6743,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Donkey Calf Raises",
@@ -6563,7 +6773,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Double Kettlebell Alternating Hang Clean",
@@ -6598,7 +6809,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Double Kettlebell Jerk",
@@ -6633,7 +6845,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Double Kettlebell Push Press",
@@ -6664,7 +6877,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Double Kettlebell Snatch",
@@ -6695,7 +6909,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Double Kettlebell Windmill",
@@ -6728,7 +6943,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Double Leg Butt Kick",
@@ -6762,7 +6978,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Downward Facing Balance",
@@ -6791,7 +7008,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Drag Curl",
@@ -6821,7 +7039,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Drop Push",
@@ -6851,7 +7070,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Dumbbell Alternate Bicep Curl",
@@ -6882,7 +7102,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Dumbbell Bench Press",
@@ -6914,7 +7135,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Dumbbell Bench Press with Neutral Grip",
@@ -6945,7 +7167,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Dumbbell Bicep Curl",
@@ -6975,7 +7198,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Dumbbell Clean",
@@ -7012,7 +7236,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dumbbell Floor Press",
@@ -7042,7 +7267,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dumbbell Flyes",
@@ -7071,7 +7297,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Dumbbell Incline Row",
@@ -7104,7 +7331,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dumbbell Incline Shoulder Raise",
@@ -7135,7 +7363,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dumbbell Lunges",
@@ -7167,7 +7396,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Dumbbell Lying One-Arm Rear Lateral Raise",
@@ -7198,7 +7428,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Dumbbell Lying Pronation",
@@ -7228,7 +7459,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Dumbbell Lying Rear Lateral Raise",
@@ -7257,7 +7489,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Dumbbell Lying Supination",
@@ -7287,7 +7520,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Dumbbell One-Arm Shoulder Press",
@@ -7319,7 +7553,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dumbbell One-Arm Triceps Extension",
@@ -7349,7 +7584,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dumbbell One-Arm Upright Row",
@@ -7381,7 +7617,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Dumbbell Prone Incline Curl",
@@ -7411,7 +7648,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dumbbell Raise",
@@ -7441,7 +7679,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Dumbbell Rear Lunge",
@@ -7473,7 +7712,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Dumbbell Scaption",
@@ -7502,7 +7742,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Dumbbell Seated Box Jump",
@@ -7534,7 +7775,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Dumbbell Seated One-Leg Calf Raise",
@@ -7564,7 +7806,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Dumbbell Shoulder Press",
@@ -7596,7 +7839,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Dumbbell Shrug",
@@ -7624,7 +7868,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Dumbbell Side Bend",
@@ -7652,7 +7897,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Dumbbell Squat",
@@ -7686,7 +7932,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Dumbbell Squat To A Bench",
@@ -7720,7 +7967,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Dumbbell Step Ups",
@@ -7752,7 +8000,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Dumbbell Tricep Extension -Pronated Grip",
@@ -7780,7 +8029,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Dynamic Back Stretch",
@@ -7806,7 +8056,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Dynamic Chest Stretch",
@@ -7834,7 +8085,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "EZ-Bar Curl",
@@ -7863,7 +8115,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "EZ-Bar Skullcrusher",
@@ -7893,7 +8146,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Elbow Circles",
@@ -7922,7 +8176,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Elbow to Knee",
@@ -7949,7 +8204,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Elbows Back",
@@ -7978,7 +8234,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Elevated Back Lunge",
@@ -8009,7 +8266,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Elevated Cable Rows",
@@ -8043,7 +8301,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Elliptical Trainer",
@@ -8073,7 +8332,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Exercise Ball Crunch",
@@ -8102,7 +8362,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Exercise Ball Pull-In",
@@ -8131,7 +8392,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Extended Range One-Arm Kettlebell Floor Press",
@@ -8160,7 +8422,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "External Rotation",
@@ -8190,7 +8453,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "External Rotation with Band",
@@ -8219,7 +8483,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "External Rotation with Cable",
@@ -8247,7 +8512,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Face Pull",
@@ -8274,7 +8540,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Farmer's Walk",
@@ -8308,7 +8575,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Fast Skipping",
@@ -8341,7 +8609,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Finger Curls",
@@ -8369,7 +8638,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Flat Bench Cable Flyes",
@@ -8400,7 +8670,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Flat Bench Leg Pull-In",
@@ -8429,7 +8700,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Flat Bench Lying Leg Raise",
@@ -8457,7 +8729,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Flexor Incline Dumbbell Curls",
@@ -8487,7 +8760,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Floor Glute-Ham Raise",
@@ -8518,7 +8792,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Floor Press",
@@ -8548,7 +8823,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Floor Press with Chains",
@@ -8579,7 +8855,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Flutter Kicks",
@@ -8610,7 +8887,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Foot-SMR",
@@ -8636,7 +8914,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Forward Drag with Press",
@@ -8669,7 +8948,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Frankenstein Squat",
@@ -8702,7 +8982,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Freehand Jump Squat",
@@ -8736,7 +9017,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Frog Hops",
@@ -8766,7 +9048,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Frog Sit-Ups",
@@ -8797,7 +9080,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Front Barbell Squat",
@@ -8831,7 +9115,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Front Barbell Squat To A Bench",
@@ -8865,7 +9150,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Front Box Jump",
@@ -8899,7 +9185,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Front Cable Raise",
@@ -8928,7 +9215,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Front Cone Hops (or hurdle hops)",
@@ -8963,7 +9251,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Front Dumbbell Raise",
@@ -8991,7 +9280,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Front Incline Dumbbell Raise",
@@ -9020,7 +9310,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Front Leg Raises",
@@ -9046,7 +9337,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Front Plate Raise",
@@ -9074,7 +9366,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Front Raise And Pullover",
@@ -9107,7 +9400,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Front Squat (Clean Grip)",
@@ -9139,7 +9433,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Front Squats With Two Kettlebells",
@@ -9169,7 +9464,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Front Two-Dumbbell Raise",
@@ -9197,7 +9493,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Full Range-Of-Motion Lat Pulldown",
@@ -9227,7 +9524,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Gironda Sternum Chins",
@@ -9260,7 +9558,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Glute Ham Raise",
@@ -9290,7 +9589,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Glute Kickback",
@@ -9320,7 +9620,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Goblet Squat",
@@ -9352,7 +9653,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Good Morning",
@@ -9383,7 +9685,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Good Morning off Pins",
@@ -9413,7 +9716,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Gorilla Chin/Crunch",
@@ -9445,7 +9749,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Groin and Back Stretch",
@@ -9472,7 +9777,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Groiners",
@@ -9499,7 +9805,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Hack Squat",
@@ -9534,7 +9841,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Hammer Curls",
@@ -9563,7 +9871,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Hammer Grip Incline DB Bench Press",
@@ -9597,7 +9906,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Hamstring-SMR",
@@ -9624,7 +9934,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Hamstring Stretch",
@@ -9651,7 +9962,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Handstand Push-Ups",
@@ -9682,7 +9994,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Hang Clean",
@@ -9717,7 +10030,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Hang Clean - Below the Knees",
@@ -9753,7 +10067,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Hang Snatch",
@@ -9790,7 +10105,8 @@
       "strength": 9,
       "hypertrophy": 5,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Hang Snatch - Below Knees",
@@ -9827,7 +10143,8 @@
       "strength": 9,
       "hypertrophy": 5,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Hanging Bar Good Morning",
@@ -9859,7 +10176,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Hanging Leg Raise",
@@ -9887,7 +10205,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Hanging Pike",
@@ -9916,7 +10235,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Heaving Snatch Balance",
@@ -9950,7 +10270,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Heavy Bag Thrust",
@@ -9981,7 +10302,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "High Cable Curls",
@@ -10009,7 +10331,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Hip Circles (prone)",
@@ -10038,7 +10361,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Hip Extension with Bands",
@@ -10068,7 +10392,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Hip Flexion with Band",
@@ -10096,7 +10421,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Hip Lift with Band",
@@ -10127,7 +10453,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Hug A Ball",
@@ -10157,7 +10484,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Hug Knees To Chest",
@@ -10186,7 +10514,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Hurdle Hops",
@@ -10220,7 +10549,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Hyperextensions (Back Extensions)",
@@ -10253,7 +10583,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Hyperextensions With No Hyperextension Bench",
@@ -10285,7 +10616,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "IT Band and Glute Stretch",
@@ -10311,7 +10643,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Iliotibial Tract-SMR",
@@ -10338,7 +10671,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Inchworm",
@@ -10367,7 +10701,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Incline Barbell Triceps Extension",
@@ -10399,7 +10734,8 @@
       "strength": 7,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Incline Bench Pull",
@@ -10433,7 +10769,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Incline Cable Chest Press",
@@ -10463,7 +10800,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Incline Cable Flye",
@@ -10495,7 +10833,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Incline Dumbbell Bench With Palms Facing In",
@@ -10529,7 +10868,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Incline Dumbbell Curl",
@@ -10557,7 +10897,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Incline Dumbbell Flyes",
@@ -10589,7 +10930,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Incline Dumbbell Flyes - With A Twist",
@@ -10621,7 +10963,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Incline Dumbbell Press",
@@ -10655,7 +10998,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Incline Hammer Curls",
@@ -10682,7 +11026,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Incline Inner Biceps Curl",
@@ -10711,7 +11056,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Incline Push-Up",
@@ -10741,7 +11087,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Incline Push-Up Close-Grip",
@@ -10773,7 +11120,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Incline Push-Up Depth Jump",
@@ -10804,7 +11152,8 @@
       "strength": 6,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Incline Push-Up Medium",
@@ -10837,7 +11186,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Incline Push-Up Reverse Grip",
@@ -10870,7 +11220,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Incline Push-Up Wide",
@@ -10903,7 +11254,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Intermediate Groin Stretch",
@@ -10929,7 +11281,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Intermediate Hip Flexor and Quad Stretch",
@@ -10955,7 +11308,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Internal Rotation with Band",
@@ -10984,7 +11338,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Inverted Row",
@@ -11015,7 +11370,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Inverted Row with Straps",
@@ -11046,7 +11402,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Iron Cross",
@@ -11076,7 +11433,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Iron Crosses (stretch)",
@@ -11103,7 +11461,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Isometric Chest Squeezes",
@@ -11135,7 +11494,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Isometric Neck Exercise - Front And Back",
@@ -11164,7 +11524,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Isometric Neck Exercise - Sides",
@@ -11193,7 +11554,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Isometric Wipers",
@@ -11225,7 +11587,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "JM Press",
@@ -11257,7 +11620,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Jackknife Sit-Up",
@@ -11285,7 +11649,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Janda Sit-Up",
@@ -11313,7 +11678,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Jefferson Squats",
@@ -11350,7 +11716,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Jerk Balance",
@@ -11382,7 +11749,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Jerk Dip Squat",
@@ -11411,7 +11779,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Jogging, Treadmill",
@@ -11440,7 +11809,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Keg Load",
@@ -11479,7 +11849,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Kettlebell Arnold Press",
@@ -11508,7 +11879,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Dead Clean",
@@ -11541,7 +11913,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kettlebell Figure 8",
@@ -11570,7 +11943,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Hang Clean",
@@ -11603,7 +11977,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kettlebell One-Legged Deadlift",
@@ -11633,7 +12008,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Pass Between The Legs",
@@ -11663,7 +12039,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kettlebell Pirate Ships",
@@ -11693,7 +12070,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Kettlebell Pistol Squat",
@@ -11726,7 +12104,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kettlebell Seated Press",
@@ -11755,7 +12134,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Seesaw Press",
@@ -11784,7 +12164,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kettlebell Sumo High Pull",
@@ -11816,7 +12197,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Thruster",
@@ -11847,7 +12229,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 7
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Kettlebell Turkish Get-Up (Lunge style)",
@@ -11879,7 +12262,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Turkish Get-Up (Squat style)",
@@ -11912,7 +12296,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kettlebell Windmill",
@@ -11944,7 +12329,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kipping Muscle Up",
@@ -11981,7 +12367,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Knee Across The Body",
@@ -12010,7 +12397,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Knee Circles",
@@ -12040,7 +12428,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Knee/Hip Raise On Parallel Bars",
@@ -12069,7 +12458,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Knee Tuck Jump",
@@ -12102,7 +12492,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kneeling Arm Drill",
@@ -12132,7 +12523,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Kneeling Cable Crunch With Alternating Oblique Twists",
@@ -12165,7 +12557,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kneeling Cable Triceps Extension",
@@ -12196,7 +12589,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Kneeling Forearm Stretch",
@@ -12222,7 +12616,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kneeling High Pulley Row",
@@ -12252,7 +12647,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kneeling Hip Flexor",
@@ -12280,7 +12676,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Kneeling Jump Squat",
@@ -12312,7 +12709,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kneeling Single-Arm High Pulley Row",
@@ -12343,7 +12741,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Kneeling Squat",
@@ -12374,7 +12773,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Landmine 180's",
@@ -12407,7 +12807,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Landmine Linear Jammer",
@@ -12443,7 +12844,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lateral Bound",
@@ -12478,7 +12880,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lateral Box Jump",
@@ -12513,7 +12916,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lateral Cone Hops",
@@ -12547,7 +12951,8 @@
       "strength": 3,
       "hypertrophy": 2,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lateral Raise - With Bands",
@@ -12575,7 +12980,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Latissimus Dorsi-SMR",
@@ -12601,7 +13007,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Leg-Over Floor Press",
@@ -12631,7 +13038,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Leg-Up Hamstring Stretch",
@@ -12658,7 +13066,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Leg Extensions",
@@ -12686,7 +13095,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Leg Lift",
@@ -12717,7 +13127,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leg Press",
@@ -12750,7 +13161,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Leg Pull-In",
@@ -12778,7 +13190,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leverage Chest Press",
@@ -12809,7 +13222,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Leverage Deadlift",
@@ -12838,7 +13252,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Leverage Decline Chest Press",
@@ -12868,7 +13283,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leverage High Row",
@@ -12898,7 +13314,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leverage Incline Chest Press",
@@ -12928,7 +13345,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leverage Iso Row",
@@ -12958,7 +13376,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Leverage Shoulder Press",
@@ -12987,7 +13406,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Leverage Shrug",
@@ -13018,7 +13438,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Linear 3-Part Start Technique",
@@ -13049,7 +13470,8 @@
       "strength": 3,
       "hypertrophy": 2,
       "endurance": 8
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Linear Acceleration Wall Drill",
@@ -13081,7 +13503,8 @@
       "strength": 3,
       "hypertrophy": 2,
       "endurance": 8
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Linear Depth Jump",
@@ -13113,7 +13536,8 @@
       "strength": 5,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Log Lift",
@@ -13150,7 +13574,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "London Bridges",
@@ -13182,7 +13607,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Looking At Ceiling",
@@ -13208,7 +13634,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Low Cable Crossover",
@@ -13238,7 +13665,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Low Cable Triceps Extension",
@@ -13268,7 +13696,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Low Pulley Row To Neck",
@@ -13301,7 +13730,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lower Back-SMR",
@@ -13327,7 +13757,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Lower Back Curl",
@@ -13353,7 +13784,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lunge Pass Through",
@@ -13386,7 +13818,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lunge Sprint",
@@ -13418,7 +13851,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Bent Leg Groin",
@@ -13445,7 +13879,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Cable Curl",
@@ -13475,7 +13910,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying Cambered Barbell Row",
@@ -13507,7 +13943,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Close-Grip Bar Curl On High Pulley",
@@ -13538,7 +13975,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Close-Grip Barbell Triceps Extension Behind The Head",
@@ -13567,7 +14005,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying Close-Grip Barbell Triceps Press To Chin",
@@ -13596,7 +14035,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Crossover",
@@ -13624,7 +14064,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying Dumbbell Tricep Extension",
@@ -13655,7 +14096,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Lying Face Down Plate Neck Resistance",
@@ -13683,7 +14125,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Lying Face Up Plate Neck Resistance",
@@ -13711,7 +14154,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Lying Glute",
@@ -13741,7 +14185,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying Hamstring",
@@ -13770,7 +14215,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying High Bench Barbell Curl",
@@ -13798,7 +14244,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Leg Curls",
@@ -13826,7 +14273,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Lying Machine Squat",
@@ -13860,7 +14308,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying One-Arm Lateral Raise",
@@ -13889,7 +14338,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Prone Quadriceps",
@@ -13917,7 +14367,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying Rear Delt Raise",
@@ -13946,7 +14397,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Lying Supine Dumbbell Curl",
@@ -13975,7 +14427,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Lying T-Bar Row",
@@ -14008,7 +14461,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Lying Triceps Press",
@@ -14037,7 +14491,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Machine Bench Press",
@@ -14071,7 +14526,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Machine Bicep Curl",
@@ -14099,7 +14555,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Machine Preacher Curls",
@@ -14128,7 +14585,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Machine Shoulder (Military) Press",
@@ -14159,7 +14617,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Machine Triceps Extension",
@@ -14187,7 +14646,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Medicine Ball Chest Pass",
@@ -14219,7 +14679,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Medicine Ball Full Twist",
@@ -14249,7 +14710,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Medicine Ball Scoop Throw",
@@ -14280,7 +14742,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Middle Back Shrug",
@@ -14308,7 +14771,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Middle Back Stretch",
@@ -14338,7 +14802,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Mixed Grip Chin",
@@ -14370,7 +14835,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Monster Walk",
@@ -14397,7 +14863,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Mountain Climbers",
@@ -14427,7 +14894,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Moving Claw Series",
@@ -14457,7 +14925,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Muscle Snatch",
@@ -14490,7 +14959,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Muscle Up",
@@ -14526,7 +14996,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Narrow Stance Hack Squats",
@@ -14561,7 +15032,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Narrow Stance Leg Press",
@@ -14594,7 +15066,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Narrow Stance Squats",
@@ -14629,7 +15102,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Natural Glute Ham Raise",
@@ -14661,7 +15135,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Neck-SMR",
@@ -14687,7 +15162,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Neck Press",
@@ -14719,7 +15195,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Oblique Crunches",
@@ -14750,7 +15227,8 @@
       "strength": 2,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Oblique Crunches - On The Floor",
@@ -14779,7 +15257,8 @@
       "strength": 2,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Olympic Squat",
@@ -14810,7 +15289,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "On-Your-Back Quad Stretch",
@@ -14838,7 +15318,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "On Your Side Quad Stretch",
@@ -14864,7 +15345,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Dumbbell Row",
@@ -14899,7 +15381,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "One-Arm Flat Bench Dumbbell Flye",
@@ -14929,7 +15412,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One-Arm High-Pulley Cable Side Bends",
@@ -14961,7 +15445,8 @@
       "strength": 3,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Incline Lateral Raise",
@@ -14991,7 +15476,8 @@
       "strength": 3,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Kettlebell Clean",
@@ -15023,7 +15509,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Kettlebell Clean and Jerk",
@@ -15053,7 +15540,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Kettlebell Floor Press",
@@ -15082,7 +15570,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Kettlebell Jerk",
@@ -15114,7 +15603,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Kettlebell Military Press To The Side",
@@ -15143,7 +15633,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Kettlebell Para Press",
@@ -15172,7 +15663,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Kettlebell Push Press",
@@ -15203,7 +15695,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Kettlebell Row",
@@ -15231,7 +15724,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "One-Arm Kettlebell Snatch",
@@ -15265,7 +15759,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One-Arm Kettlebell Split Jerk",
@@ -15299,7 +15794,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "One-Arm Kettlebell Split Snatch",
@@ -15330,7 +15826,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "One-Arm Kettlebell Swings",
@@ -15358,7 +15855,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "One-Arm Long Bar Row",
@@ -15390,7 +15888,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One-Arm Medicine Ball Slam",
@@ -15421,7 +15920,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Open Palm Kettlebell Clean",
@@ -15455,7 +15955,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Overhead Kettlebell Squats",
@@ -15487,7 +15988,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One-Arm Side Deadlift",
@@ -15524,7 +16026,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One-Arm Side Laterals",
@@ -15554,7 +16057,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One-Legged Cable Kickback",
@@ -15586,7 +16090,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "One Arm Against Wall",
@@ -15612,7 +16117,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One Arm Chin-Up",
@@ -15647,7 +16153,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "One Arm Dumbbell Bench Press",
@@ -15681,7 +16188,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "One Arm Dumbbell Preacher Curl",
@@ -15710,7 +16218,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "One Arm Floor Press",
@@ -15744,7 +16253,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One Arm Lat Pulldown",
@@ -15775,7 +16285,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "One Arm Pronated Dumbbell Triceps Extension",
@@ -15805,7 +16316,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One Arm Supinated Dumbbell Triceps Extension",
@@ -15836,7 +16348,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One Half Locust",
@@ -15868,7 +16381,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One Handed Hang",
@@ -15895,7 +16409,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "One Knee To Chest",
@@ -15926,7 +16441,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "One Leg Barbell Squat",
@@ -15961,7 +16477,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Open Palm Kettlebell Clean",
@@ -15993,7 +16510,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Otis-Up",
@@ -16025,7 +16543,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Overhead Cable Curl",
@@ -16055,7 +16574,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Overhead Lat",
@@ -16084,7 +16604,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Overhead Slam",
@@ -16112,7 +16633,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Overhead Squat",
@@ -16150,7 +16672,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Overhead Stretch",
@@ -16181,7 +16704,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Overhead Triceps",
@@ -16210,7 +16734,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Pallof Press",
@@ -16244,7 +16769,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Pallof Press With Rotation",
@@ -16281,7 +16807,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Palms-Down Dumbbell Wrist Curl Over A Bench",
@@ -16312,7 +16839,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Palms-Down Wrist Curl Over A Bench",
@@ -16343,7 +16871,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Palms-Up Barbell Wrist Curl Over A Bench",
@@ -16374,7 +16903,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Palms-Up Dumbbell Wrist Curl Over A Bench",
@@ -16405,7 +16935,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Parallel Bar Dip",
@@ -16436,7 +16967,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Pelvic Tilt Into Bridge",
@@ -16463,7 +16995,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Peroneals-SMR",
@@ -16489,7 +17022,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Peroneals Stretch",
@@ -16515,7 +17049,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Physioball Hip Bridge",
@@ -16544,7 +17079,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Pin Presses",
@@ -16580,7 +17116,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Piriformis-SMR",
@@ -16606,7 +17143,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Plank",
@@ -16632,7 +17170,8 @@
       "strength": 2,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Plate Pinch",
@@ -16661,7 +17200,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Plate Twist",
@@ -16690,7 +17230,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Platform Hamstring Slides",
@@ -16720,7 +17261,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Plie Dumbbell Squat",
@@ -16754,7 +17296,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Plyo Kettlebell Pushups",
@@ -16784,7 +17327,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Plyo Push-up",
@@ -16817,7 +17361,8 @@
       "strength": 5,
       "hypertrophy": 5,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Posterior Tibialis Stretch",
@@ -16843,7 +17388,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Power Clean",
@@ -16901,7 +17447,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Power Clean from Blocks",
@@ -16932,7 +17479,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Power Jerk",
@@ -16968,7 +17516,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Power Partials",
@@ -16997,7 +17546,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Power Snatch",
@@ -17034,7 +17584,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Power Snatch from Blocks",
@@ -17072,7 +17623,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Power Stairs",
@@ -17108,7 +17660,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Preacher Curl",
@@ -17137,7 +17690,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Preacher Hammer Dumbbell Curl",
@@ -17167,7 +17721,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Press Sit-Up",
@@ -17199,7 +17754,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Prone Manual Hamstring",
@@ -17226,7 +17782,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Prowler Sprint",
@@ -17259,7 +17816,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 9
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Pull Through",
@@ -17288,7 +17846,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Pullups",
@@ -17320,7 +17879,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 10
   },
   {
     "name": "Push-Up Wide",
@@ -17352,7 +17912,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Push-Ups - Close Triceps Position",
@@ -17383,7 +17944,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Push-Ups With Feet Elevated",
@@ -17415,7 +17977,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 7
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Push-Ups With Feet On An Exercise Ball",
@@ -17447,7 +18010,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Push Press",
@@ -17473,7 +18037,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Push Press - Behind the Neck",
@@ -17504,7 +18069,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Push Up to Side Plank",
@@ -17537,7 +18103,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 8
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Pushups",
@@ -17568,7 +18135,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Pushups (Close and Wide Hand Positions)",
@@ -17599,7 +18167,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Pyramid",
@@ -17627,7 +18196,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Quad Stretch",
@@ -17653,7 +18223,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Quadriceps-SMR",
@@ -17679,7 +18250,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Quick Leap",
@@ -17710,7 +18282,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Rack Delivery",
@@ -17740,7 +18313,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Rack Pull with Bands",
@@ -17773,7 +18347,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Rack Pulls",
@@ -17805,7 +18380,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Rear Leg Raises",
@@ -17831,7 +18407,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Recumbent Bike",
@@ -17862,7 +18439,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Return Push from Stance",
@@ -17894,7 +18472,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 6
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Reverse Band Bench Press",
@@ -17928,7 +18507,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Reverse Band Box Squat",
@@ -17964,7 +18544,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Reverse Band Deadlift",
@@ -18000,7 +18581,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Reverse Band Power Squat",
@@ -18034,7 +18616,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Reverse Band Sumo Deadlift",
@@ -18072,7 +18655,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Reverse Barbell Curl",
@@ -18102,7 +18686,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Reverse Barbell Preacher Curls",
@@ -18133,7 +18718,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Reverse Cable Curl",
@@ -18163,7 +18749,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Reverse Crunch",
@@ -18192,7 +18779,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Reverse Flyes",
@@ -18222,7 +18810,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Reverse Flyes With External Rotation",
@@ -18253,7 +18842,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Reverse Grip Bent-Over Rows",
@@ -18286,7 +18876,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Reverse Grip Triceps Pushdown",
@@ -18315,7 +18906,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Reverse Hyperextension",
@@ -18347,7 +18939,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Reverse Machine Flyes",
@@ -18375,7 +18968,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Reverse Plate Curls",
@@ -18406,7 +19000,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Reverse Triceps Bench Press",
@@ -18438,7 +19033,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Rhomboids-SMR",
@@ -18466,7 +19062,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 1
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Rickshaw Carry",
@@ -18500,7 +19097,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Rickshaw Deadlift",
@@ -18533,7 +19131,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Ring Dips",
@@ -18564,7 +19163,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Rocket Jump",
@@ -18594,7 +19194,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Rocking Standing Calf Raise",
@@ -18626,7 +19227,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Rocky Pull-Ups/Pulldowns",
@@ -18660,7 +19262,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Romanian Deadlift",
@@ -18693,7 +19296,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Romanian Deadlift from Deficit",
@@ -18725,7 +19329,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Rope Climb",
@@ -18759,7 +19364,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Rope Crunch",
@@ -18788,7 +19394,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Rope Jumping",
@@ -18817,7 +19424,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 10
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Rope Straight-Arm Pulldown",
@@ -18845,7 +19453,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Round The World Shoulder Stretch",
@@ -18875,7 +19484,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Rowing, Stationary",
@@ -18909,7 +19519,8 @@
       "strength": 3,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Runner's Stretch",
@@ -18938,7 +19549,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Running, Treadmill",
@@ -18968,7 +19580,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 10
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Russian Twist",
@@ -18999,7 +19612,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Sandbag Load",
@@ -19038,7 +19652,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Scapular Pull-Up",
@@ -19068,7 +19683,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Scissor Kick",
@@ -19097,7 +19713,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Scissors Jump",
@@ -19128,7 +19745,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Band Hamstring Curl",
@@ -19156,7 +19774,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Barbell Military Press",
@@ -19187,7 +19806,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Seated Barbell Twist",
@@ -19217,7 +19837,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Bent-Over One-Arm Dumbbell Triceps Extension",
@@ -19248,7 +19869,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Bent-Over Rear Delt Raise",
@@ -19278,7 +19900,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Seated Bent-Over Two-Arm Dumbbell Triceps Extension",
@@ -19308,7 +19931,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Biceps",
@@ -19338,7 +19962,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Cable Rows",
@@ -19371,7 +19996,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Seated Cable Shoulder Press",
@@ -19401,7 +20027,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Seated Calf Raise",
@@ -19431,7 +20058,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Seated Calf Stretch",
@@ -19462,7 +20090,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Close-Grip Concentration Barbell Curl",
@@ -19491,7 +20120,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Dumbbell Curl",
@@ -19520,7 +20150,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Seated Dumbbell Inner Biceps Curl",
@@ -19550,7 +20181,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Dumbbell Palms-Down Wrist Curl",
@@ -19581,7 +20213,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Dumbbell Palms-Up Wrist Curl",
@@ -19612,7 +20245,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Dumbbell Press",
@@ -19644,7 +20278,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Seated Flat Bench Leg Pull-In",
@@ -19672,7 +20307,8 @@
       "strength": 3,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Floor Hamstring Stretch",
@@ -19700,7 +20336,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Front Deltoid",
@@ -19729,7 +20366,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Glute",
@@ -19758,7 +20396,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Good Mornings",
@@ -19788,7 +20427,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Hamstring",
@@ -19817,7 +20457,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Hamstring and Calf Stretch",
@@ -19845,7 +20486,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Head Harness Neck Resistance",
@@ -19875,7 +20517,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Seated Leg Curl",
@@ -19904,7 +20547,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Seated Leg Tucks",
@@ -19932,7 +20576,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated One-Arm Dumbbell Palms-Down Wrist Curl",
@@ -19962,7 +20607,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Seated One-Arm Dumbbell Palms-Up Wrist Curl",
@@ -19992,7 +20638,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Seated One-arm Cable Pulley Rows",
@@ -20026,7 +20673,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Seated Overhead Stretch",
@@ -20054,7 +20702,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Seated Palm-Up Barbell Wrist Curl",
@@ -20083,7 +20732,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Palms-Down Barbell Wrist Curl",
@@ -20112,7 +20762,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Seated Side Lateral Raise",
@@ -20140,7 +20791,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Seated Triceps Press",
@@ -20168,7 +20820,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Seated Two-Arm Palms-Up Low-Pulley Wrist Curl",
@@ -20201,7 +20854,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "See-Saw Press (Alternating Side Press)",
@@ -20233,7 +20887,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Shotgun Row",
@@ -20264,7 +20919,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Shoulder Circles",
@@ -20292,7 +20948,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Shoulder Press - With Bands",
@@ -20321,7 +20978,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Shoulder Raise",
@@ -20348,7 +21006,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Shoulder Stretch",
@@ -20373,7 +21032,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Side-Lying Floor Stretch",
@@ -20399,7 +21059,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Side Bridge",
@@ -20424,7 +21085,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Side Hop-Sprint",
@@ -20456,7 +21118,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Side Jackknife",
@@ -20479,7 +21142,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Side Lateral Raise",
@@ -20507,7 +21171,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Side Laterals to Front Raise",
@@ -20539,7 +21204,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Side Leg Raises",
@@ -20566,7 +21232,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Side Lying Groin Stretch",
@@ -20595,7 +21262,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Side Neck Stretch",
@@ -20621,7 +21289,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Side Standing Long Jump",
@@ -20652,7 +21321,8 @@
       "strength": 6,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Side To Side Chins",
@@ -20688,7 +21358,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Side Wrist Pull",
@@ -20717,7 +21388,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Side to Side Box Shuffle",
@@ -20749,7 +21421,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Single-Arm Cable Crossover",
@@ -20778,7 +21451,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Single-Arm Linear Jammer",
@@ -20809,7 +21483,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Single-Arm Push-Up",
@@ -20840,7 +21515,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Single-Cone Sprint Drill",
@@ -20871,7 +21547,8 @@
       "strength": 3,
       "hypertrophy": 3,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Single-Leg High Box Squat",
@@ -20901,7 +21578,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Single-Leg Hop Progression",
@@ -20934,7 +21612,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Single-Leg Lateral Hop",
@@ -20967,7 +21646,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Single-Leg Leg Extension",
@@ -20995,7 +21675,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Single-Leg Stride Jump",
@@ -21027,7 +21708,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Single Dumbbell Raise",
@@ -21057,7 +21739,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Single Leg Butt Kick",
@@ -21088,7 +21771,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Single Leg Glute Bridge",
@@ -21118,7 +21802,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Single Leg Push-off",
@@ -21148,7 +21833,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Sit-Up",
@@ -21177,7 +21863,8 @@
       "strength": 2,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Sit Squats",
@@ -21208,7 +21895,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Skating",
@@ -21240,7 +21928,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Sled Drag - Harness",
@@ -21270,7 +21959,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Sled Overhead Backward Walk",
@@ -21301,7 +21991,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Sled Overhead Triceps Extension",
@@ -21329,7 +22020,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Sled Push",
@@ -21361,7 +22053,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Sled Reverse Flye",
@@ -21389,7 +22082,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 1
   },
   {
     "name": "Sled Row",
@@ -21420,7 +22114,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Sledgehammer Swings",
@@ -21454,7 +22149,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Incline Shoulder Raise",
@@ -21486,7 +22182,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine Behind the Back Shrug",
@@ -21517,7 +22214,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Smith Machine Bench Press",
@@ -21549,7 +22247,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Smith Machine Bent Over Row",
@@ -21583,7 +22282,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Smith Machine Calf Raise",
@@ -21612,7 +22312,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Smith Machine Close-Grip Bench Press",
@@ -21644,7 +22345,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Smith Machine Decline Press",
@@ -21676,7 +22378,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Smith Machine Hang Power Clean",
@@ -21712,7 +22415,8 @@
       "strength": 7,
       "hypertrophy": 5,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Smith Machine Hip Raise",
@@ -21740,7 +22444,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine Incline Bench Press",
@@ -21772,7 +22477,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Smith Machine Leg Press",
@@ -21803,7 +22509,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine One-Arm Upright Row",
@@ -21835,7 +22542,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine Overhead Shoulder Press",
@@ -21866,7 +22574,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Smith Machine Pistol Squat",
@@ -21899,7 +22608,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine Reverse Calf Raises",
@@ -21929,7 +22639,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Smith Machine Squat",
@@ -21964,7 +22675,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Smith Machine Stiff-Legged Deadlift",
@@ -21996,7 +22708,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Smith Machine Upright Row",
@@ -22029,7 +22742,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Smith Single-Leg Split Squat",
@@ -22064,7 +22778,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Snatch",
@@ -22103,7 +22818,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Snatch Balance",
@@ -22137,7 +22853,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Snatch Deadlift",
@@ -22171,7 +22888,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Snatch Pull",
@@ -22205,7 +22923,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Snatch Shrug",
@@ -22234,7 +22953,8 @@
       "strength": 7,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Snatch from Blocks",
@@ -22272,7 +22992,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Speed Band Overhead Triceps",
@@ -22300,7 +23021,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Speed Box Squat",
@@ -22333,7 +23055,8 @@
       "strength": 8,
       "hypertrophy": 5,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Speed Squats",
@@ -22368,7 +23091,8 @@
       "strength": 8,
       "hypertrophy": 5,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Spell Caster",
@@ -22399,7 +23123,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Spider Crawl",
@@ -22430,7 +23155,8 @@
       "strength": 4,
       "hypertrophy": 5,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Spider Curl",
@@ -22461,7 +23187,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Spinal Stretch",
@@ -22494,7 +23221,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Split Clean",
@@ -22532,7 +23260,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Split Jerk",
@@ -22565,7 +23294,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Split Jump",
@@ -22598,7 +23328,8 @@
       "strength": 5,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Split Snatch",
@@ -22638,7 +23369,8 @@
       "strength": 9,
       "hypertrophy": 6,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Split Squat with Dumbbells",
@@ -22669,7 +23401,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Split Squats",
@@ -22699,7 +23432,8 @@
       "strength": 2,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Squat Jerk",
@@ -22732,7 +23466,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Squat with Bands",
@@ -22766,7 +23501,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Squat with Chains",
@@ -22800,7 +23536,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Squat with Plate Movers",
@@ -22838,7 +23575,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Squats - With Bands",
@@ -22872,7 +23610,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Stairmaster",
@@ -22903,7 +23642,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Standing Alternating Dumbbell Press",
@@ -22933,7 +23673,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Barbell Calf Raise",
@@ -22963,7 +23704,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Standing Barbell Press Behind Neck",
@@ -22995,7 +23737,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Bent-Over One-Arm Dumbbell Triceps Extension",
@@ -23027,7 +23770,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Bent-Over Two-Arm Dumbbell Triceps Extension",
@@ -23055,7 +23799,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Biceps Cable Curl",
@@ -23083,7 +23828,8 @@
       "strength": 5,
       "hypertrophy": 10,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Standing Biceps Stretch",
@@ -23112,7 +23858,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Bradford Press",
@@ -23144,7 +23891,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Standing Cable Chest Press",
@@ -23175,7 +23923,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Cable Lift",
@@ -23209,7 +23958,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Cable Wood Chop",
@@ -23243,7 +23993,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing Calf Raises",
@@ -23272,7 +24023,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Standing Concentration Curl",
@@ -23302,7 +24054,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Dumbbell Calf Raise",
@@ -23330,7 +24083,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing Dumbbell Press",
@@ -23359,7 +24113,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Standing Dumbbell Reverse Curl",
@@ -23389,7 +24144,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Dumbbell Straight-Arm Front Delt Raise Above Head",
@@ -23418,7 +24174,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Standing Dumbbell Triceps Extension",
@@ -23447,7 +24204,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Standing Dumbbell Upright Row",
@@ -23478,7 +24236,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing Elevated Quad Stretch",
@@ -23505,7 +24264,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Front Barbell Raise Over Head",
@@ -23534,7 +24294,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Gastrocnemius Calf Stretch",
@@ -23563,7 +24324,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Hamstring and Calf Stretch",
@@ -23590,7 +24352,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Hip Circles",
@@ -23620,7 +24383,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Hip Flexors",
@@ -23646,7 +24410,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Inner-Biceps Curl",
@@ -23677,7 +24442,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Standing Lateral Stretch",
@@ -23705,7 +24471,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Leg Curl",
@@ -23734,7 +24501,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing Long Jump",
@@ -23766,7 +24534,8 @@
       "strength": 6,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Low-Pulley Deltoid Raise",
@@ -23798,7 +24567,8 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Low-Pulley One-Arm Triceps Extension",
@@ -23830,7 +24600,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Military Press",
@@ -23862,7 +24633,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Standing Olympic Plate Hand Squeeze",
@@ -23892,7 +24664,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Standing One-Arm Cable Curl",
@@ -23922,7 +24695,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing One-Arm Dumbbell Curl Over Incline Bench",
@@ -23952,7 +24726,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Standing One-Arm Dumbbell Triceps Extension",
@@ -23985,7 +24760,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Overhead Barbell Triceps Extension",
@@ -24016,7 +24792,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Standing Palm-In One-Arm Dumbbell Press",
@@ -24049,7 +24826,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Palms-In Dumbbell Press",
@@ -24079,7 +24857,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Palms-Up Barbell Behind The Back Wrist Curl",
@@ -24109,7 +24888,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Standing Pelvic Tilt",
@@ -24138,7 +24918,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Standing Rope Crunch",
@@ -24166,7 +24947,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Soleus And Achilles Stretch",
@@ -24192,7 +24974,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Standing Toe Touches",
@@ -24220,7 +25003,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Standing Towel Triceps Extension",
@@ -24248,7 +25032,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Standing Two-Arm Overhead Throw",
@@ -24278,7 +25063,8 @@
       "strength": 6,
       "hypertrophy": 5,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Star Jump",
@@ -24310,7 +25096,8 @@
       "strength": 3,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Step-up with Knee Raise",
@@ -24340,7 +25127,8 @@
       "strength": 5,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Step Mill",
@@ -24370,7 +25158,8 @@
       "strength": 2,
       "hypertrophy": 3,
       "endurance": 9
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Stiff-Legged Barbell Deadlift",
@@ -24402,7 +25191,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Stiff-Legged Dumbbell Deadlift",
@@ -24434,7 +25224,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Stiff Leg Barbell Good Morning",
@@ -24467,7 +25258,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Stomach Vacuum",
@@ -24496,7 +25288,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Straight-Arm Dumbbell Pullover",
@@ -24530,7 +25323,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Straight-Arm Pulldown",
@@ -24559,7 +25353,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 5
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Straight Bar Bench Mid Rows",
@@ -24589,7 +25384,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Straight Raises on Incline Bench",
@@ -24619,7 +25415,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Stride Jump Crossover",
@@ -24652,7 +25449,8 @@
       "strength": 4,
       "hypertrophy": 4,
       "endurance": 8
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Sumo Deadlift",
@@ -24688,7 +25486,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Sumo Deadlift with Bands",
@@ -24725,7 +25524,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Sumo Deadlift with Chains",
@@ -24763,7 +25563,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Superman",
@@ -24794,7 +25595,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Supine Chest Throw",
@@ -24825,7 +25627,8 @@
       "strength": 4,
       "hypertrophy": 3,
       "endurance": 6
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Supine One-Arm Overhead Throw",
@@ -24856,7 +25659,8 @@
       "strength": 3,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Supine Two-Arm Overhead Throw",
@@ -24888,7 +25692,8 @@
       "strength": 3,
       "hypertrophy": 3,
       "endurance": 7
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Suspended Fallout",
@@ -24921,7 +25726,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Suspended Push-Up",
@@ -24952,7 +25758,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Suspended Reverse Crunch",
@@ -24980,7 +25787,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Suspended Row",
@@ -25010,7 +25818,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Suspended Split Squat",
@@ -25044,7 +25853,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Svend Press",
@@ -25076,7 +25886,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "T-Bar Row with Handle",
@@ -25108,7 +25919,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Tate Press",
@@ -25140,7 +25952,8 @@
       "strength": 5,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "The Straddle",
@@ -25169,7 +25982,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Thigh Abductor",
@@ -25199,7 +26013,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Thigh Adductor",
@@ -25230,7 +26045,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Tire Flip",
@@ -25267,7 +26083,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Toe Touchers",
@@ -25297,7 +26114,8 @@
       "strength": 1,
       "hypertrophy": 2,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Torso Rotation",
@@ -25323,7 +26141,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Trail Running/Walking",
@@ -25353,7 +26172,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 9
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Trap Bar Deadlift",
@@ -25384,7 +26204,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Tricep Dumbbell Kickback",
@@ -25412,7 +26233,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Tricep Side Stretch",
@@ -25439,7 +26261,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Triceps Overhead Extension with Rope",
@@ -25467,7 +26290,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Triceps Pushdown",
@@ -25496,7 +26320,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Triceps Pushdown - Rope Attachment",
@@ -25525,7 +26350,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Triceps Pushdown - V-Bar Attachment",
@@ -25554,7 +26380,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Triceps Stretch",
@@ -25581,7 +26408,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Tuck Crunch",
@@ -25611,7 +26439,8 @@
       "strength": 3,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Two-Arm Dumbbell Preacher Curl",
@@ -25639,7 +26468,8 @@
       "strength": 6,
       "hypertrophy": 9,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Two-Arm Kettlebell Clean",
@@ -25672,7 +26502,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Two-Arm Kettlebell Jerk",
@@ -25701,7 +26532,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 3
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Two-Arm Kettlebell Military Press",
@@ -25729,7 +26561,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Two-Arm Kettlebell Row",
@@ -25758,7 +26591,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Underhand Cable Pulldowns",
@@ -25792,7 +26626,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Upper Back-Leg Grab",
@@ -25821,7 +26656,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Upper Back Stretch",
@@ -25848,7 +26684,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Upright Barbell Row",
@@ -25878,7 +26715,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Upright Cable Row",
@@ -25908,7 +26746,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Upright Row - With Bands",
@@ -25938,7 +26777,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Upward Stretch",
@@ -25967,7 +26807,8 @@
       "strength": 0,
       "hypertrophy": 0,
       "endurance": 2
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "V-Bar Pulldown",
@@ -26001,7 +26842,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "V-Bar Pullup",
@@ -26034,7 +26876,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Vertical Swing",
@@ -26066,7 +26909,8 @@
       "strength": 6,
       "hypertrophy": 6,
       "endurance": 7
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Walking, Treadmill",
@@ -26096,7 +26940,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 9
-    }
+    },
+    "commonality": 8
   },
   {
     "name": "Weighted Ball Hyperextension",
@@ -26128,7 +26973,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Weighted Ball Side Bend",
@@ -26159,7 +27005,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Weighted Bench Dip",
@@ -26191,7 +27038,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Weighted Crunches",
@@ -26220,7 +27068,8 @@
       "strength": 4,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Weighted Jump Squat",
@@ -26253,7 +27102,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Weighted Pull Ups",
@@ -26284,7 +27134,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Weighted Sissy Squat",
@@ -26316,7 +27167,8 @@
       "strength": 7,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Weighted Sit-Ups - With Bands",
@@ -26344,7 +27196,8 @@
       "strength": 5,
       "hypertrophy": 7,
       "endurance": 5
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Weighted Squat",
@@ -26377,7 +27230,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Wide-Grip Barbell Bench Press",
@@ -26408,7 +27262,8 @@
       "strength": 9,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 7
   },
   {
     "name": "Wide-Grip Decline Barbell Bench Press",
@@ -26439,7 +27294,8 @@
       "strength": 8,
       "hypertrophy": 8,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Wide-Grip Decline Barbell Pullover",
@@ -26472,7 +27328,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Wide-Grip Lat Pulldown",
@@ -26506,7 +27363,8 @@
       "strength": 6,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 9
   },
   {
     "name": "Wide-Grip Pulldown Behind The Neck",
@@ -26540,7 +27398,8 @@
       "strength": 6,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Wide-Grip Rear Pull-Up",
@@ -26573,7 +27432,8 @@
       "strength": 7,
       "hypertrophy": 7,
       "endurance": 4
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Wide-Grip Standing Barbell Curl",
@@ -26602,7 +27462,8 @@
       "strength": 5,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Wide Stance Barbell Squat",
@@ -26637,7 +27498,8 @@
       "strength": 9,
       "hypertrophy": 7,
       "endurance": 2
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Wide Stance Stiff Legs",
@@ -26667,7 +27529,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 2
-    }
+    },
+    "commonality": 5
   },
   {
     "name": "Wind Sprints",
@@ -26695,7 +27558,8 @@
       "strength": 3,
       "hypertrophy": 2,
       "endurance": 9
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Windmills",
@@ -26726,7 +27590,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "World's Greatest Stretch",
@@ -26757,7 +27622,8 @@
       "strength": 1,
       "hypertrophy": 1,
       "endurance": 3
-    }
+    },
+    "commonality": 6
   },
   {
     "name": "Wrist Circles",
@@ -26784,7 +27650,8 @@
       "strength": 0,
       "hypertrophy": 1,
       "endurance": 2
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Wrist Roller",
@@ -26815,7 +27682,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Wrist Rotations with Straight Bar",
@@ -26842,7 +27710,8 @@
       "strength": 4,
       "hypertrophy": 6,
       "endurance": 6
-    }
+    },
+    "commonality": 3
   },
   {
     "name": "Yoke Walk",
@@ -26877,7 +27746,8 @@
       "strength": 8,
       "hypertrophy": 6,
       "endurance": 5
-    }
+    },
+    "commonality": 2
   },
   {
     "name": "Zercher Squats",
@@ -26911,7 +27781,8 @@
       "strength": 8,
       "hypertrophy": 7,
       "endurance": 3
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Zottman Curl",
@@ -26945,7 +27816,8 @@
       "strength": 4,
       "hypertrophy": 8,
       "endurance": 4
-    }
+    },
+    "commonality": 4
   },
   {
     "name": "Zottman Preacher Curl",
@@ -26977,6 +27849,7 @@
       "strength": 4,
       "hypertrophy": 9,
       "endurance": 3
-    }
+    },
+    "commonality": 3
   }
 ]
