@@ -11,6 +11,12 @@ interface Props {
 export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
   if (!days || days.length === 0) return null;
 
+  const formatDayMonth = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}`;
+  };
+
   // Determine max volume for scaling
   const maxVolume = days.reduce((max, d) => (d.volume > max ? d.volume : max), 0);
 
@@ -63,6 +69,7 @@ export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
             {week.map((day, dayIdx) => {
               const key = day.date.toISOString().slice(0, 10);
               const has = day.volume > 0;
+              const formattedDate = formatDayMonth(day.date);
               const maxLight = 60;
               const minLight = 15;
               let lightness = 8;
@@ -72,7 +79,7 @@ export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
               }
 
               const bg = has ? `hsl(215 90% ${lightness}%)` : 'rgba(52, 52, 71, 0.31)';
-              const title = has ? `${key} - ${Math.round(day.volume)} ${unit}` : key;
+              const title = has ? `${formattedDate} - ${Math.round(day.volume)} ${unit}` : formattedDate;
 
               return (
                 <div

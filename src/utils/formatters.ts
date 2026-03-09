@@ -5,11 +5,11 @@ import { kgToLbs } from './calculations';
 const LBS_TO_KG = 2.20462;
 
 export function formatDate(date: Date): string {
-  return format(date, 'MMM d, yyyy');
+  return format(date, 'dd/MM/yyyy');
 }
 
 export function formatDateTime(date: Date): string {
-  return format(date, 'MMM d, yyyy h:mm a');
+  return format(date, 'dd/MM/yyyy h:mm a');
 }
 
 export function formatRelativeTime(date: Date): string {

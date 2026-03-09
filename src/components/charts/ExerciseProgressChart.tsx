@@ -105,7 +105,9 @@ export function ExerciseProgressChart({
 
   const formatTickLabel = (timestamp: number) => {
     const d = new Date(timestamp);
-    return `${d.getMonth() + 1}/${d.getDate()}`;
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}`;
   };
 
   return (

@@ -421,13 +421,16 @@ export function PerformanceAnalysisPage() {
 
         {/* Monthly PRs */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-1">
+          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
             Progress
           </h2>
           <h1 className="text-lg font-semibold text-white-text tracking-wider mb-3">
-            Personal Records by Month
+            PERSONAL RECORDS
           </h1>
           <Card>
+            <h3 className="text-sm font-semibold text-gray-text uppercase tracking-wider group-hover:text-white transition-colors mb-3">
+              Personal Records Achieved Per Month (Last 6 Months)
+            </h3>
             <div className="space-y-4">
               <MonthlyPRsChart data={monthlyPRs} width={480} height={200} />
               
@@ -515,11 +518,11 @@ export function PerformanceAnalysisPage() {
 
         {/* Training Volume */}
         <section>
-          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-1">
+          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
             Consistency
           </h2>
           <h1 className="text-lg font-semibold text-white-text tracking-wider mb-3">
-            Training Volume
+            TRAINING VOLUME
           </h1>
           <Card>
             <div className="mb-4">
