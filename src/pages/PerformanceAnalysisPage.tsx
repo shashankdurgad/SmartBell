@@ -9,13 +9,18 @@ import { MonthlyPRsChart, type MonthData } from '../components/charts/MonthlyPRs
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import { convertVolume } from '../utils/formatters';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
-import type { WorkoutSession } from '../types';
+import type { WorkoutSession, MuscleGroup } from '../types';
+import { ALL_MUSCLE_GROUPS } from '../types/exercise.types';
 
 export function PerformanceAnalysisPage() {
   const { history, loadHistory } = useWorkoutStore();
   const { weightUnit } = useUserStore();
   const { exercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<string>('');
+  const [isExerciseListExpanded, setIsExerciseListExpanded] = useState<boolean>(false);
+  const [isExerciseSearchOpen, setIsExerciseSearchOpen] = useState<boolean>(false);
+  const [exerciseSearchQuery, setExerciseSearchQuery] = useState<string>('');
+  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<MuscleGroup | 'all'>('all');
 
   useEffect(() => {
     loadHistory();
@@ -126,6 +131,40 @@ export function PerformanceAnalysisPage() {
   const estimated1RM = calculateEstimated1RM();
   const displayedEstimated1RM = estimated1RM;
 
+  // Helper to calculate volume for a session, optionally filtered by muscle group
+  const calculateSessionVolume = (session: WorkoutSession, muscleGroupFilter: MuscleGroup | 'all'): number => {
+    let totalVolumeKg = 0;
+    
+    for (const workoutExercise of session.exercises) {
+      // If filtering by muscle group, check if exercise targets that muscle (primary or secondary)
+      if (muscleGroupFilter !== 'all') {
+        const exercise = exercises.find(ex => ex.id === workoutExercise.exerciseId);
+        if (!exercise) {
+          continue; // Skip if exercise not found
+        }
+        
+        const targetsMuscle = 
+          (exercise.primaryMuscles as readonly MuscleGroup[]).includes(muscleGroupFilter as MuscleGroup) ||
+          (exercise.secondaryMuscles as readonly MuscleGroup[]).includes(muscleGroupFilter as MuscleGroup);
+        
+        if (!targetsMuscle) {
+          continue; // Skip this exercise
+        }
+      }
+      
+      // Calculate volume for this exercise (sum of all sets)
+      for (const set of workoutExercise.sets) {
+        if (!set.isWarmup) {
+          const weight = set.weight || 0;
+          const reps = set.completedReps || 0;
+          totalVolumeKg += weight * reps;
+        }
+      }
+    }
+    
+    return convertVolume(totalVolumeKg, 'kg', weightUnit);
+  };
+
   // Helper to get the start of the week (Sunday) for a given date
   const getWeekStart = (date: Date): Date => {
     const d = new Date(date);
@@ -157,34 +196,26 @@ export function PerformanceAnalysisPage() {
       weekStart.setHours(0, 0, 0, 0);
       const weekTimestamp = weekStart.getTime();
       
-      const sessionVolume = session.totalVolume || 0;
+      const sessionVolume = calculateSessionVolume(session, selectedMuscleGroup);
       const currentVolume = weeklyVolumeMap.get(weekTimestamp) || 0;
       weeklyVolumeMap.set(weekTimestamp, currentVolume + sessionVolume);
     }
   });
 
-  // Convert to series points
+  // Convert to series points (volume already in display unit from calculateSessionVolume)
   const volumeSeries: SeriesPoint[] = Array.from(weeklyVolumeMap.entries())
     .map(([weekTimestamp, volume]) => ({
       x: weekTimestamp,
-      y: weightUnit === 'lbs' ? kgToLbs(volume) : volume,
+      y: volume,
     }))
     .sort((a, b) => a.x - b.x);
-
-  // Calculate most recent completed week's volume (last week)
-  const lastWeekStart = new Date(currentWeekStart);
-  lastWeekStart.setDate(currentWeekStart.getDate() - 7);
-  const lastWeekTimestamp = lastWeekStart.getTime();
-  const lastWeekVolume = weeklyVolumeMap.get(lastWeekTimestamp) || 0;
-  const displayedLastWeekVolume = weightUnit === 'lbs' ? kgToLbs(lastWeekVolume) : lastWeekVolume;
 
   // Build volume totals per calendar day (YYYY-MM-DD)
   const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s) => {
     const d = new Date(s.date);
     const key = d.toISOString().slice(0, 10);
-    const sessionVolumeKg = Number(s.totalVolume) || 0;
-    const displayVolume = convertVolume(sessionVolumeKg, 'kg', weightUnit);
-    acc[key] = (acc[key] || 0) + displayVolume;
+    const sessionVolume = calculateSessionVolume(s, selectedMuscleGroup);
+    acc[key] = (acc[key] || 0) + sessionVolume;
     return acc;
   }, {});
 
@@ -211,6 +242,9 @@ export function PerformanceAnalysisPage() {
     
     return arr;
   })();
+
+  // Calculate total volume from calendar period
+  const totalCalendarVolume = last9Weeks.reduce((sum, day) => sum + day.volume, 0);
 
   // Calculate monthly PRs for the last 6 months
   const monthlyPRs = (() => {
@@ -321,6 +355,15 @@ export function PerformanceAnalysisPage() {
     return Array.from(exerciseMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   })();
 
+  const filteredExercise1RMs = allExercise1RMs.filter((ex) =>
+    ex.name.toLowerCase().includes(exerciseSearchQuery.trim().toLowerCase())
+  );
+
+  const visibleExercise1RMs =
+    isExerciseListExpanded || exerciseSearchQuery.trim().length > 0
+      ? filteredExercise1RMs
+      : filteredExercise1RMs.slice(0, 5);
+
   return (
     <div className="min-h-screen pb-24">
       <PageHeader 
@@ -390,12 +433,63 @@ export function PerformanceAnalysisPage() {
               
               {/* Exercise 1RM List */}
               <div className="border-t border-dark-600 pt-4">
-                <h3 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
-                  Current Estimated 1RM | Best PR (by Exercise)
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <button
+                    type="button"
+                    className="text-left group"
+                    onClick={() => setIsExerciseListExpanded(!isExerciseListExpanded)}
+                  >
+                    <h3 className="text-sm font-semibold text-gray-text uppercase tracking-wider group-hover:text-white transition-colors">
+                      Current Estimated 1RM | Best PR (by Exercise)
+                    </h3>
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      aria-label="Search exercises"
+                      className="p-1 rounded text-gray-text hover:text-white hover:bg-dark-700 transition-colors"
+                      onClick={() => {
+                        setIsExerciseSearchOpen(!isExerciseSearchOpen);
+                        if (isExerciseSearchOpen) {
+                          setExerciseSearchQuery('');
+                        }
+                      }}
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-4.35-4.35m1.6-5.15a6.75 6.75 0 1 1-13.5 0 6.75 6.75 0 0 1 13.5 0Z" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={isExerciseListExpanded ? 'Collapse exercise list' : 'Expand exercise list'}
+                      className="p-1 rounded text-gray-text hover:text-white hover:bg-dark-700 transition-colors"
+                      onClick={() => setIsExerciseListExpanded(!isExerciseListExpanded)}
+                    >
+                      <svg
+                        className={`w-5 h-5 transition-all ${isExerciseListExpanded ? 'rotate-90' : ''}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                {isExerciseSearchOpen && (
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      value={exerciseSearchQuery}
+                      onChange={(e) => setExerciseSearchQuery(e.target.value)}
+                      placeholder="Search exercise..."
+                      className="w-full bg-dark-700 border border-dark-600 rounded px-3 py-2 text-sm text-white placeholder:text-gray-text focus:outline-none focus:border-blue-primary"
+                    />
+                  </div>
+                )}
                 {allExercise1RMs.length > 0 ? (
                   <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {allExercise1RMs.map((ex, idx) => (
+                    {visibleExercise1RMs.map((ex, idx) => (
                       <div key={idx} className="flex items-center justify-between py-1 px-2 rounded hover:bg-dark-700/50 transition-colors">
                         <span className="text-sm text-white">{ex.name}</span>
                         <span className="text-sm font-semibold text-blue-primary">
@@ -407,6 +501,11 @@ export function PerformanceAnalysisPage() {
                 ) : (
                   <p className="text-sm text-gray-text text-center py-4">
                     No exercise data available yet.
+                  </p>
+                )}
+                {allExercise1RMs.length > 0 && filteredExercise1RMs.length === 0 && (
+                  <p className="text-sm text-gray-text text-center py-4">
+                    No matching exercises.
                   </p>
                 )}
               </div>
@@ -423,6 +522,33 @@ export function PerformanceAnalysisPage() {
             Training Volume
           </h1>
           <Card>
+            <div className="mb-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="text-xs text-gray-text mb-1">Total Volume (Last 9 Weeks)</p>
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-3xl font-bold text-white-primary">
+                      {Math.round(totalCalendarVolume).toLocaleString()}
+                    </h3>
+                    <span className="text-sm text-gray-text">{weightUnit}</span>
+                  </div>
+                </div>
+                <div className="flex-shrink-0">
+                  <select
+                    value={selectedMuscleGroup}
+                    onChange={(e) => setSelectedMuscleGroup(e.target.value as MuscleGroup | 'all')}
+                    className="bg-dark-700 border border-dark-600 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-primary"
+                  >
+                    <option value="all">All Muscles</option>
+                    {ALL_MUSCLE_GROUPS.map((muscle) => (
+                      <option key={muscle} value={muscle}>
+                        {muscle.charAt(0).toUpperCase() + muscle.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
             <div>
               <WorkoutCalendar days={last9Weeks} unit={weightUnit} />
             </div>
