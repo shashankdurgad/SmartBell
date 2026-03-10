@@ -247,6 +247,89 @@ export function PerformanceAnalysisPage() {
   // Calculate total volume from calendar period
   const totalCalendarVolume = last9Weeks.reduce((sum, day) => sum + day.volume, 0);
 
+  // Calculate volume per muscle group for the physique diagram
+  const muscleGroupVolumes: {
+    chest: number;
+    back: number;
+    shoulders: number;
+    quadriceps: number;
+    hamstringGlutes: number;
+    biceps: number;
+    triceps: number;
+  } = {
+    chest: 0,
+    back: 0,  // aggregates lats + middle back + lower back
+    shoulders: 0,
+    quadriceps: 0,
+    hamstringGlutes: 0,  // aggregates hamstrings + glutes
+    biceps: 0,
+    triceps: 0,
+  };
+
+  const today = new Date();
+  const startOfCurrentWeek = new Date(today);
+  startOfCurrentWeek.setDate(today.getDate() - today.getDay());
+  const startDate = new Date(startOfCurrentWeek);
+  startDate.setDate(startOfCurrentWeek.getDate() - (8 * 7));
+
+  history.forEach((session) => {
+    const sessionDate = new Date(session.date);
+    if (sessionDate >= startDate && sessionDate <= today) {
+      for (const workoutExercise of session.exercises) {
+        const exercise = exercises.find(ex => ex.id === workoutExercise.exerciseId);
+        if (!exercise) continue;
+
+        const exerciseVolume = workoutExercise.sets.reduce((sum, set) => {
+          if (!set.isWarmup) {
+            const weight = set.weight || 0;
+            const reps = set.completedReps || 0;
+            return sum + (weight * reps);
+          }
+          return sum;
+        }, 0);
+
+        // Add volume to primary muscles
+        for (const muscle of exercise.primaryMuscles as readonly MuscleGroup[]) {
+          // Map actual muscle groups to diagram groups
+          if (muscle === 'chest') {
+            muscleGroupVolumes.chest += exerciseVolume;
+          } else if (['lats', 'middle back', 'lower back'].includes(muscle)) {
+            muscleGroupVolumes.back += exerciseVolume;
+          } else if (muscle === 'shoulders') {
+            muscleGroupVolumes.shoulders += exerciseVolume;
+          } else if (muscle === 'quadriceps') {
+            muscleGroupVolumes.quadriceps += exerciseVolume;
+          } else if (['hamstrings', 'glutes'].includes(muscle)) {
+            muscleGroupVolumes.hamstringGlutes += exerciseVolume;
+          } else if (muscle === 'biceps') {
+            muscleGroupVolumes.biceps += exerciseVolume;
+          } else if (muscle === 'triceps') {
+            muscleGroupVolumes.triceps += exerciseVolume;
+          }
+        }
+        // Add half volume to secondary muscles
+        for (const muscle of exercise.secondaryMuscles as readonly MuscleGroup[]) {
+          // Map actual muscle groups to diagram groups
+          if (muscle === 'chest') {
+            muscleGroupVolumes.chest += exerciseVolume * 0.5;
+          } else if (['lats', 'middle back', 'lower back'].includes(muscle)) {
+            muscleGroupVolumes.back += exerciseVolume * 0.5;
+          } else if (muscle === 'shoulders') {
+            muscleGroupVolumes.shoulders += exerciseVolume * 0.5;
+          } else if (muscle === 'quadriceps') {
+            muscleGroupVolumes.quadriceps += exerciseVolume * 0.5;
+          } else if (['hamstrings', 'glutes'].includes(muscle)) {
+            muscleGroupVolumes.hamstringGlutes += exerciseVolume * 0.5;
+          } else if (muscle === 'biceps') {
+            muscleGroupVolumes.biceps += exerciseVolume * 0.5;
+          } else if (muscle === 'triceps') {
+            muscleGroupVolumes.triceps += exerciseVolume * 0.5;
+          }
+        }
+      }
+    }
+  });
+
   // Calculate monthly PRs for the last 6 months
   const monthlyPRs = (() => {
     const today = new Date();
@@ -523,13 +606,13 @@ export function PerformanceAnalysisPage() {
             Muscle Focus
           </h2>
           <h1 className="text-lg font-semibold text-white-text tracking-wider mb-3">
-            PHYSIQUE DIAGRAM
+            PHYSIQUE BALANCE DIAGRAM
           </h1>
           <Card>
             <p className="text-sm text-gray-text mb-4">
-              Minimal front and back muscle map inspired by your reference style.
+              Muscle Group Volume Heatmap (Last 9 Weeks)
             </p>
-            <AbstractPhysiqueDiagram />
+            <AbstractPhysiqueDiagram muscleVolumes={muscleGroupVolumes} />
           </Card>
         </section>
 
