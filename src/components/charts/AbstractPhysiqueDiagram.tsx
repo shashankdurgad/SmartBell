@@ -16,8 +16,8 @@ function FrontSilhouette() {
 			<polygon points="12,50 33,50 30,95 17,92" fill={MUSCLE_COLORS.biceps} />
 			<polygon points="87,50 108,50 103,92 90,95" fill={MUSCLE_COLORS.biceps} />
 
-			<polygon points="40,178 56,184 56,210 54,237 46,235 40,210" fill={MUSCLE_COLORS.base} />
-			<polygon points="80,178 64,184 64,210 66,237 74,235 80,210" fill={MUSCLE_COLORS.base} />
+			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
+			<polygon points="80,178 64,184 64,210 66,235 74,235 80,215" fill={MUSCLE_COLORS.base} />
 
 			<circle cx="23" cy="46" r="11" fill={MUSCLE_COLORS.shoulders} />
 			<circle cx="97" cy="46" r="11" fill={MUSCLE_COLORS.shoulders} />
@@ -28,8 +28,8 @@ function FrontSilhouette() {
 			<polygon points="46,78 74,78 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
 			<polygon points="48,104 72,104 62,119 58,119" fill={MUSCLE_COLORS.quads} />
-			<polygon points="36,119 48,104 58,119 58,176 56,180 40,174" fill={MUSCLE_COLORS.quads} />
-			<polygon points="62,119 72,104 84,119 80,174 64,180 62,176" fill={MUSCLE_COLORS.quads} />
+			<polygon points="36,119 48,104 58,119 58,176 56,180 38,173" fill={MUSCLE_COLORS.quads} />
+			<polygon points="62,119 72,104 84,119 82,173 64,180 62,176" fill={MUSCLE_COLORS.quads} />
 		</svg>
 	);
 }
