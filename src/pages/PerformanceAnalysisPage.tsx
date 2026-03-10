@@ -8,11 +8,30 @@ import { useExercises } from '../hooks/useExercises';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { MonthlyPRsChart, type MonthData } from '../components/charts/MonthlyPRsChart';
 import { AbstractPhysiqueDiagram } from '../components/charts/AbstractPhysiqueDiagram';
+import {
+  calculateAllMuscleGroupPercentiles,
+  calculatePercentile,
+  type ExerciseName,
+} from '../engine/percentileCalculator';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import { convertVolume } from '../utils/formatters';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
 import type { WorkoutSession, MuscleGroup } from '../types';
 import { ALL_MUSCLE_GROUPS } from '../types/exercise.types';
+
+const EXERCISE_STANDARD_NAME_MAP: Record<string, ExerciseName> = {
+  'Barbell Curl': 'Barbell Curl',
+  'Barbell Deadlift': 'Barbell Deadlift',
+  'Barbell Full Squat': 'Barbell Full Squat',
+  'Barbell Shoulder Press': 'Barbell Shoulder Press',
+  'Bench Press - Powerlifting': 'Bench Press - Powerlifting',
+  'Bent Over Barbell Row': 'Bent Over Barbell Row',
+  'Dumbbell Bench Press': 'Dumbell Bench Press',
+  'Front Squat (Clean Grip)': 'Front Squat (Clean Grip)',
+  'Full Range-Of-Motion Lat Pulldown': 'Full Range-Of-Motion Lat Pulldown',
+  'Seated Cable Rows': 'Seated Cable Rows',
+  'Triceps Pushdown': 'Triceps Pushdown',
+};
 
 export function PerformanceAnalysisPage() {
   const { history, loadHistory } = useWorkoutStore();
@@ -29,6 +48,8 @@ export function PerformanceAnalysisPage() {
   useEffect(() => {
     loadHistory();
   }, [loadHistory]);
+
+  const percentileGender = 'male' as const;
 
   // Progress chart displays last 60 days only.
   const nowTimestamp = Date.now();
@@ -69,6 +90,13 @@ export function PerformanceAnalysisPage() {
 
   // Helper to get estimated 1RM for a given exercise from a session
   function getEstimated1RMFromSession(session: WorkoutSession, exerciseId: string): number | null {
+    const est1RMKg = getEstimated1RMKgFromSession(session, exerciseId);
+    if (est1RMKg === null) return null;
+
+    return weightUnit === 'lbs' ? kgToLbs(est1RMKg) : est1RMKg;
+  }
+
+  function getEstimated1RMKgFromSession(session: WorkoutSession, exerciseId: string): number | null {
     if (!exerciseId) return null;
 
     // Find the exercise in the session
@@ -91,11 +119,7 @@ export function PerformanceAnalysisPage() {
 
     if (maxWeight === 0 || repsAtMax === 0) return null;
 
-    // Calculate estimated 1RM (weights are stored in kg)
-    const est1RM = estimatedMax(maxWeight, repsAtMax);
-    
-    // Convert to display unit
-    return weightUnit === 'lbs' ? kgToLbs(est1RM) : est1RM;
+    return estimatedMax(maxWeight, repsAtMax);
   }
 
   // Build series from history for the selected exercise (estimated 1RM trend)
@@ -332,6 +356,107 @@ export function PerformanceAnalysisPage() {
   for (const key of Object.keys(muscleGroupVolumes) as (keyof typeof muscleGroupVolumes)[]) {
     muscleGroupVolumes[key] = convertVolume(muscleGroupVolumes[key], 'kg', weightUnit);
   }
+
+  const currentExercise1RMsKg = (() => {
+    const exerciseMap = new Map<string, { name: string; est1RMKg: number }>();
+    const sortedSessions = [...history].sort((a, b) =>
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    const processedExercises = new Set<string>();
+
+    for (const session of sortedSessions) {
+      for (const exercise of session.exercises) {
+        if (processedExercises.has(exercise.exerciseId)) continue;
+
+        const est1RMKg = getEstimated1RMKgFromSession(session, exercise.exerciseId);
+        if (est1RMKg === null) continue;
+
+        const exerciseData = exercises.find((ex) => ex.id === exercise.exerciseId);
+        if (!exerciseData) continue;
+
+        exerciseMap.set(exercise.exerciseId, {
+          name: exerciseData.name.replace(/_/g, ' '),
+          est1RMKg,
+        });
+        processedExercises.add(exercise.exerciseId);
+      }
+    }
+
+    return Array.from(exerciseMap.values());
+  })();
+
+  const diagramMusclePercentiles = (() => {
+    const exercisePercentiles: Record<string, number | null> = {};
+
+    for (const exercise of currentExercise1RMsKg) {
+      const standardExerciseName = EXERCISE_STANDARD_NAME_MAP[exercise.name];
+      if (!standardExerciseName) continue;
+
+      exercisePercentiles[standardExerciseName] = calculatePercentile(
+        exercise.est1RMKg,
+        percentileGender,
+        standardExerciseName
+      );
+    }
+
+    const muscleGroupPercentiles = calculateAllMuscleGroupPercentiles(exercisePercentiles);
+
+    const averagePercentile = (...values: Array<number | null | undefined>): number | null => {
+      const validValues = values.filter((value): value is number => value !== null && value !== undefined);
+      if (validValues.length === 0) return null;
+
+      return validValues.reduce((sum, value) => sum + value, 0) / validValues.length;
+    };
+
+    const getContributors = (...exerciseNames: ExerciseName[]): Array<{ exercise: string; percentile: number }> => {
+      return exerciseNames.reduce<Array<{ exercise: string; percentile: number }>>((contributors, exerciseName) => {
+        const percentile = exercisePercentiles[exerciseName];
+        if (percentile !== null && percentile !== undefined) {
+          contributors.push({ exercise: exerciseName, percentile });
+        }
+
+        return contributors;
+      }, []);
+    };
+
+    return {
+      chest: {
+        percentile: muscleGroupPercentiles.chest,
+        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbell Bench Press'),
+      },
+      back: {
+        percentile: averagePercentile(
+          muscleGroupPercentiles.lats,
+          muscleGroupPercentiles['middle back'],
+          muscleGroupPercentiles['lower back']
+        ),
+        contributors: getContributors('Full Range-Of-Motion Lat Pulldown', 'Seated Cable Rows', 'Bent Over Barbell Row', 'Barbell Deadlift'),
+      },
+      shoulders: {
+        percentile: muscleGroupPercentiles.shoulders,
+        contributors: getContributors('Barbell Shoulder Press', 'Bench Press - Powerlifting', 'Dumbell Bench Press'),
+      },
+      quadriceps: {
+        percentile: muscleGroupPercentiles.quadriceps,
+        contributors: getContributors('Barbell Full Squat', 'Front Squat (Clean Grip)'),
+      },
+      hamstringGlutes: {
+        percentile: averagePercentile(
+          muscleGroupPercentiles.hamstrings,
+          muscleGroupPercentiles.glutes
+        ),
+        contributors: getContributors('Barbell Deadlift', 'Barbell Full Squat', 'Front Squat (Clean Grip)'),
+      },
+      biceps: {
+        percentile: muscleGroupPercentiles.biceps,
+        contributors: getContributors('Barbell Curl', 'Full Range-Of-Motion Lat Pulldown', 'Seated Cable Rows', 'Bent Over Barbell Row'),
+      },
+      triceps: {
+        percentile: muscleGroupPercentiles.triceps,
+        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbell Bench Press', 'Triceps Pushdown'),
+      },
+    };
+  })();
 
   // Calculate monthly PRs for the last 6 months
   const monthlyPRs = (() => {
@@ -673,9 +798,50 @@ export function PerformanceAnalysisPage() {
           </h1>
           <Card>
             <p className="text-sm text-gray-text mb-4">
-              Muscle Group Volume Heatmap (Last 9 Weeks)
+              Compare recent training volume with estimated strength percentiles.
             </p>
-            <AbstractPhysiqueDiagram muscleVolumes={muscleGroupVolumes} />
+            <AbstractPhysiqueDiagram
+              muscleVolumes={muscleGroupVolumes}
+              musclePercentiles={{
+                chest: diagramMusclePercentiles.chest.percentile,
+                back: diagramMusclePercentiles.back.percentile,
+                shoulders: diagramMusclePercentiles.shoulders.percentile,
+                quadriceps: diagramMusclePercentiles.quadriceps.percentile,
+                hamstringGlutes: diagramMusclePercentiles.hamstringGlutes.percentile,
+                biceps: diagramMusclePercentiles.biceps.percentile,
+                triceps: diagramMusclePercentiles.triceps.percentile,
+              }}
+              musclePercentileDetails={{
+                chest: {
+                  percentile: diagramMusclePercentiles.chest.percentile,
+                  contributors: diagramMusclePercentiles.chest.contributors,
+                },
+                back: {
+                  percentile: diagramMusclePercentiles.back.percentile,
+                  contributors: diagramMusclePercentiles.back.contributors,
+                },
+                shoulders: {
+                  percentile: diagramMusclePercentiles.shoulders.percentile,
+                  contributors: diagramMusclePercentiles.shoulders.contributors,
+                },
+                quadriceps: {
+                  percentile: diagramMusclePercentiles.quadriceps.percentile,
+                  contributors: diagramMusclePercentiles.quadriceps.contributors,
+                },
+                hamstringGlutes: {
+                  percentile: diagramMusclePercentiles.hamstringGlutes.percentile,
+                  contributors: diagramMusclePercentiles.hamstringGlutes.contributors,
+                },
+                biceps: {
+                  percentile: diagramMusclePercentiles.biceps.percentile,
+                  contributors: diagramMusclePercentiles.biceps.contributors,
+                },
+                triceps: {
+                  percentile: diagramMusclePercentiles.triceps.percentile,
+                  contributors: diagramMusclePercentiles.triceps.contributors,
+                },
+              }}
+            />
           </Card>
         </section>
 

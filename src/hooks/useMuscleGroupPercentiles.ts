@@ -8,11 +8,6 @@ import {
 import type { MuscleGroup } from '../types/exercise.types';
 import type { PersonalRecord } from '../types/workout.types';
 
-interface UserStrengthData {
-  gender: Gender;
-  exerciseRecords: Map<string, { exerciseName: string; oneRM: number }>;
-}
-
 export function useMuscleGroupPercentiles(userId?: string) {
   const [muscleGroupPercentiles, setMuscleGroupPercentiles] = useState<
     Record<MuscleGroup, number | null> | null

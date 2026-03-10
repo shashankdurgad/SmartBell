@@ -8,6 +8,7 @@ const MUSCLE_COLORS = {
 	hamstringGlutes: '#236bd8',
 	biceps: '#236bd8',
 	triceps: '#236bd8',
+	noData: '#163056',
 	base: '#353f4d',
 	behind: '#2a323d',
 } as const;
@@ -31,7 +32,20 @@ interface Props {
 		biceps: number | null;
 		triceps: number | null;
 	};
+	musclePercentileDetails?: {
+		chest: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		back: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		shoulders: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		quadriceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		hamstringGlutes: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		biceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		triceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+	};
 }
+
+type DiagramMuscleKey = keyof typeof MUSCLE_COLORS extends infer Key
+	? Extract<Key, 'chest' | 'back' | 'shoulders' | 'quadriceps' | 'hamstringGlutes' | 'biceps' | 'triceps'>
+	: never;
 
 function hexToHsl(hex: string): { h: number; s: number; l: number } {
 	const r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -64,9 +78,32 @@ function getMuscleColor(
 	baseColor: string,
 	value: number | null,
 	maxValue: number,
-	mode: 'volume' | 'percentile' = 'volume'
+	mode: 'volume' | 'percentile' = 'volume',
+	averagePercentile?: number | null
 ): string {
-	if (value === null || maxValue === 0) return baseColor;
+	if (value === null) {
+		return mode === 'percentile' ? MUSCLE_COLORS.noData : baseColor;
+	}
+
+	if (maxValue === 0) return baseColor;
+
+	if (mode === 'percentile' && averagePercentile !== null && averagePercentile !== undefined) {
+		const difference = value - averagePercentile;
+
+		if (difference <= -5) {
+			const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
+			const lightness = Math.round(52 - intensity * 14);
+			return `hsl(4 72% ${lightness}%)`;
+		}
+
+		if (difference >= 5) {
+			const intensity = Math.min((difference - 5) / 20, 1);
+			const lightness = Math.round(46 - intensity * 12);
+			return `hsl(148 58% ${lightness}%)`;
+		}
+
+		return 'hsl(210 65% 52%)';
+	}
 
 	const { h, s } = hexToHsl(baseColor);
 	
@@ -86,11 +123,13 @@ function FrontSilhouette({
 	musclePercentiles,
 	maxVolume,
 	mode,
+	averagePercentile,
 }: {
 	muscleVolumes?: Props['muscleVolumes'];
 	musclePercentiles?: Props['musclePercentiles'];
 	maxVolume: number;
 	mode: 'volume' | 'percentile';
+	averagePercentile?: number | null;
 }) {
 	const getValue = (muscleKey: 'chest' | 'back' | 'shoulders' | 'quadriceps' | 'hamstringGlutes' | 'biceps' | 'triceps') => {
 		if (mode === 'percentile' && musclePercentiles) {
@@ -108,11 +147,11 @@ function FrontSilhouette({
 
 			<polygon
 				points="12,46 33,46 30,95 17,92"
-				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="87,46 108,46 103,92 90,95"
-				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode, averagePercentile)}
 			/>
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
@@ -122,43 +161,43 @@ function FrontSilhouette({
 				cx="23"
 				cy="46"
 				r="11"
-				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode, averagePercentile)}
 			/>
 			<circle
 				cx="97"
 				cy="46"
 				r="11"
-				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode, averagePercentile)}
 			/>
 
 			<polygon
 				points="52,31 68,31 86,38 34,38"
-				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon points="34,54 86,54 81,75 39,75" fill={MUSCLE_COLORS.behind} />
 			<polygon points="39,75 81,75 74,89 46,89" fill={MUSCLE_COLORS.behind} />
 			<polygon
 				points="34,38 86,38 86,54 34,54"
-				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="34,54 86,54 80,65 40,65"
-				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon points="40,65 80,65 74,78 46,78" fill={MUSCLE_COLORS.base} />
 			<polygon points="46,78 74,78 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
 			<polygon
 				points="48,104 72,104 62,119 58,119"
-				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="36,119 48,104 58,119 58,176 56,180 38,173"
-				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="62,119 72,104 84,119 82,173 64,180 62,176"
-				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode, averagePercentile)}
 			/>
 		</svg>
 	);
@@ -169,11 +208,13 @@ function BackSilhouette({
 	musclePercentiles,
 	maxVolume,
 	mode,
+	averagePercentile,
 }: {
 	muscleVolumes?: Props['muscleVolumes'];
 	musclePercentiles?: Props['musclePercentiles'];
 	maxVolume: number;
 	mode: 'volume' | 'percentile';
+	averagePercentile?: number | null;
 }) {
 	const getValue = (muscleKey: 'chest' | 'back' | 'shoulders' | 'quadriceps' | 'hamstringGlutes' | 'biceps' | 'triceps') => {
 		if (mode === 'percentile' && musclePercentiles) {
@@ -191,11 +232,11 @@ function BackSilhouette({
 
 			<polygon
 				points="12,46 33,46 30,95 17,92"
-				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="87,46 108,46 103,92 90,95"
-				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode, averagePercentile)}
 			/>
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
@@ -206,50 +247,75 @@ function BackSilhouette({
 
 			<polygon
 				points="52,31 68,31 86,38 34,38"
-				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="34,38 86,38 86,54 34,54"
-				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="34,54 86,54 81,75 39,75"
-				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="39,75 81,75 74,89 46,89"
-				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon points="46,89 74,89 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
 			<polygon
 				points="48,104 72,104 62,119 58,119"
-				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="36,119 48,104 58,119 58,176 56,180 38,173"
-				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode, averagePercentile)}
 			/>
 			<polygon
 				points="62,119 72,104 84,119 82,173 64,180 62,176"
-				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode, averagePercentile)}
 			/>
 		</svg>
 	);
 }
 
-const legendItems = [
-	{ label: 'Chest', color: MUSCLE_COLORS.chest },
-	{ label: 'Back', color: MUSCLE_COLORS.back },
-	{ label: 'Shoulders', color: MUSCLE_COLORS.shoulders },
-	{ label: 'Biceps', color: MUSCLE_COLORS.biceps },
-	{ label: 'Triceps', color: MUSCLE_COLORS.triceps },
-	{ label: 'Quadriceps', color: MUSCLE_COLORS.quadriceps },
-	{ label: 'Hamstrings & Glutes', color: MUSCLE_COLORS.hamstringGlutes },
+const legendItems: Array<{ key: DiagramMuscleKey; label: string; color: string }> = [
+	{ key: 'chest', label: 'Chest', color: MUSCLE_COLORS.chest },
+	{ key: 'back', label: 'Back', color: MUSCLE_COLORS.back },
+	{ key: 'shoulders', label: 'Shoulders', color: MUSCLE_COLORS.shoulders },
+	{ key: 'biceps', label: 'Biceps', color: MUSCLE_COLORS.biceps },
+	{ key: 'triceps', label: 'Triceps', color: MUSCLE_COLORS.triceps },
+	{ key: 'quadriceps', label: 'Quadriceps', color: MUSCLE_COLORS.quadriceps },
+	{ key: 'hamstringGlutes', label: 'Hamstrings & Glutes', color: MUSCLE_COLORS.hamstringGlutes },
 ];
 
-export function AbstractPhysiqueDiagram({ muscleVolumes, musclePercentiles }: Props) {
+function formatPercentile(value: number | null): string {
+	if (value === null) return '—';
+	return `${Math.round(value)}th`;
+}
+
+function formatPercentileDelta(value: number | null, averagePercentile: number | null): string {
+	if (value === null || averagePercentile === null) return '';
+
+	const difference = Math.round(value - averagePercentile);
+	return ` (${difference >= 0 ? '+' : ''}${difference} vs avg)`;
+}
+
+export function AbstractPhysiqueDiagram({
+	muscleVolumes,
+	musclePercentiles,
+	musclePercentileDetails,
+}: Props) {
 	const [heatmapMode, setHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+
+	const averagePercentile = (() => {
+		if (!musclePercentiles) return null;
+
+		const values = Object.values(musclePercentiles).filter((value): value is number => value !== null);
+		if (values.length === 0) return null;
+
+		return values.reduce((sum, value) => sum + value, 0) / values.length;
+	})();
 
 	// Determine max value based on mode
 	const maxValue = (() => {
@@ -286,7 +352,12 @@ export function AbstractPhysiqueDiagram({ muscleVolumes, musclePercentiles }: Pr
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
+				<div>
+					<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
+					{heatmapMode === 'percentile' && averagePercentile !== null && (
+						<p className="text-[11px] text-gray-text">Average percentile: {formatPercentile(averagePercentile)}</p>
+					)}
+				</div>
 				{musclePercentiles && (
 					<div className="flex gap-1 bg-dark-600 p-1 rounded">
 						<button
@@ -322,6 +393,7 @@ export function AbstractPhysiqueDiagram({ muscleVolumes, musclePercentiles }: Pr
 							musclePercentiles={displayPercentiles}
 							maxVolume={maxValue}
 							mode={heatmapMode}
+								averagePercentile={averagePercentile}
 						/>
 					</div>
 				</div>
@@ -333,16 +405,56 @@ export function AbstractPhysiqueDiagram({ muscleVolumes, musclePercentiles }: Pr
 							musclePercentiles={displayPercentiles}
 							maxVolume={maxValue}
 							mode={heatmapMode}
+								averagePercentile={averagePercentile}
 						/>
 					</div>
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+			<div className="grid grid-cols-1 gap-2">
 				{legendItems.map((item) => (
-					<div key={item.label} className="flex items-center gap-2 text-xs text-gray-light">
-						<span className="inline-block h-2.5 w-2.5 rotate-45" style={{ backgroundColor: item.color }} />
-						<span>{item.label}</span>
+					<div key={item.label} className="flex items-start gap-2 text-xs text-gray-light">
+						<span
+							className="mt-1 inline-block h-2.5 w-2.5 rotate-45"
+							style={{
+								backgroundColor:
+									heatmapMode === 'percentile' && musclePercentileDetails
+										? getMuscleColor(
+												item.color,
+												musclePercentileDetails[item.key].percentile,
+												100,
+												'percentile',
+												averagePercentile
+										  )
+										: item.color,
+							}}
+						/>
+						<div className="min-w-0">
+							<div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+								<span className="font-medium text-white-text">{item.label}</span>
+								{heatmapMode === 'percentile' && musclePercentileDetails && (
+									musclePercentileDetails[item.key].percentile === null ? (
+										<span className="text-blue-400">No data</span>
+									) : (
+										<span className="text-blue-300">
+											{formatPercentile(musclePercentileDetails[item.key].percentile)} percentile
+											{formatPercentileDelta(musclePercentileDetails[item.key].percentile, averagePercentile)}
+										</span>
+									)
+								)}
+							</div>
+							{heatmapMode === 'percentile' && musclePercentileDetails && (
+								<p className="mt-0.5 text-[11px] leading-relaxed text-gray-text">
+									[
+									{musclePercentileDetails[item.key].contributors.length > 0
+										? musclePercentileDetails[item.key].contributors
+												.map((contributor) => `${contributor.exercise} ${Math.round(contributor.percentile)}th`)
+												.join(', ')
+										: 'No recorded data'}
+									]
+								</p>
+							)}
+						</div>
 					</div>
 				))}
 			</div>
