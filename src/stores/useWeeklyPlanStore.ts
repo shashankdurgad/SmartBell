@@ -14,6 +14,7 @@ interface WeeklyPlanState {
   setActivePlan: (plan: WeeklyPlan | null) => void;
   setActiveDayIndex: (index: number) => void;
   savePlan: (plan: WeeklyPlan) => Promise<void>;
+  updatePlan: (plan: WeeklyPlan) => Promise<void>;
   deletePlan: (id: string) => Promise<void>;
   getActiveDay: () => DailyWorkout | null;
 }
@@ -59,6 +60,16 @@ export const useWeeklyPlanStore = create<WeeklyPlanState>()(
           plans, 
           activePlan: plan,
           activePlanId: plan.id
+        });
+      },
+
+      updatePlan: async (plan: WeeklyPlan) => {
+        await weeklyPlanRepo.save(plan);
+        const plans = await weeklyPlanRepo.getAll();
+        const updatedActivePlan = plan.id === get().activePlanId ? plan : get().activePlan;
+        set({ 
+          plans,
+          activePlan: updatedActivePlan
         });
       },
 

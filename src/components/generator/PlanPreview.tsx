@@ -9,10 +9,11 @@ interface PlanPreviewProps {
   regenerateLabel?: string;
   showRegenerateButton?: boolean;
   onSetActive?: () => void;
+  onEdit?: () => void;
   onDelete?: () => void;
 }
 
-export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate', showRegenerateButton = true, onSetActive, onDelete }: PlanPreviewProps) {
+export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate', showRegenerateButton = true, onSetActive, onEdit, onDelete }: PlanPreviewProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -50,6 +51,11 @@ export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate'
         {onSetActive && (
           <Button variant="primary" onClick={onSetActive} className="flex-1">
             Set Active
+          </Button>
+        )}
+        {onEdit && (
+          <Button variant="secondary" onClick={onEdit} className="flex-1">
+            Edit
           </Button>
         )}
         {onDelete && (

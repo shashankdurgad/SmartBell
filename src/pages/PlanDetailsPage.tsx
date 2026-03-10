@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
 import { PlanPreview } from '../components/generator/PlanPreview';
+import { PlanEditor } from '../components/generator/PlanEditor';
 import { FullPageSpinner } from '../components/shared/Spinner';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import type { WeeklyPlan } from '../types';
@@ -11,10 +12,11 @@ import { Button } from '../components/shared/Button';
 export function PlanDetailsPage() {
   const { planId } = useParams<{ planId: string }>();
   const navigate = useNavigate();
-  const { plans, loadPlans, setActivePlan, deletePlan } = useWeeklyPlanStore();
+  const { plans, loadPlans, setActivePlan, deletePlan, updatePlan } = useWeeklyPlanStore();
   const [plan, setPlan] = useState<WeeklyPlan | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     async function fetch() {
@@ -51,19 +53,36 @@ export function PlanDetailsPage() {
     navigate('/');
   };
 
+  const handleSaveEdits = async (updatedPlan: WeeklyPlan) => {
+    await updatePlan(updatedPlan);
+    setPlan(updatedPlan);
+    setIsEditing(false);
+  };
+
   return (
     <div className="min-h-screen pb-24">
       <PageHeader title={plan.name} showBack />
 
       <div className="max-w-lg mx-auto px-4 py-6">
-        <PlanPreview 
-          plan={plan} 
-          onRegenerate={() => navigate('/')}
-          regenerateLabel="Dashboard"
-          showRegenerateButton={false}
-          onSetActive={handleSetActive}
-          onDelete={() => setShowDeleteConfirm(true)}
-        />
+        {isEditing ? (
+          <PlanEditor
+            plan={plan}
+            onSave={handleSaveEdits}
+            onCancel={() => setIsEditing(false)}
+          />
+        ) : (
+          <>
+            <PlanPreview 
+              plan={plan} 
+              onRegenerate={() => navigate('/')}
+              regenerateLabel="Dashboard"
+              showRegenerateButton={false}
+              onSetActive={handleSetActive}
+              onDelete={() => setShowDeleteConfirm(true)}
+              onEdit={() => setIsEditing(true)}
+            />
+          </>
+        )}
       </div>
 
       <Modal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)}>
