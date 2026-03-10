@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useUserStore } from '@/stores/useUserStore';
 
 const MUSCLE_COLORS = {
 	chest: '#236bd8',
@@ -91,18 +92,20 @@ function getMuscleColor(
 		const difference = value - averagePercentile;
 
 		if (difference <= -5) {
-			const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
-			const lightness = Math.round(52 - intensity * 14);
-			return `hsl(4 72% ${lightness}%)`;
+			// const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
+			// const lightness = Math.round(52 - intensity * 14);
+			const lightness = Math.round(Math.max(45+(difference+5)*3,35))
+			return `hsl(4 60% ${lightness}%)`;
 		}
 
 		if (difference >= 5) {
-			const intensity = Math.min((difference - 5) / 20, 1);
-			const lightness = Math.round(46 - intensity * 12);
-			return `hsl(148 58% ${lightness}%)`;
+			// const intensity = Math.min((difference - 5) / 20, 1);
+			// const lightness = Math.round(46 - intensity * 12);
+			const lightness = Math.round(Math.max(45-(difference-5)*3,20))
+			return `hsl(148 75% ${lightness}%)`;
 		}
 
-		return 'hsl(210 65% 52%)';
+		return 'hsl(210 85% 45%)';
 	}
 
 	const { h, s } = hexToHsl(baseColor);
@@ -115,7 +118,7 @@ function getMuscleColor(
 	const maxLight = 65;
 	const lightness = Math.round(minLight + ratio * (maxLight - minLight));
 
-	return `hsl(${h} ${s}% ${lightness}%)`;
+	return `hsl(${h} 85% ${lightness}%)`;
 }
 
 function FrontSilhouette({
@@ -307,6 +310,7 @@ export function AbstractPhysiqueDiagram({
 	musclePercentileDetails,
 }: Props) {
 	const [heatmapMode, setHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+	const weightUnit = useUserStore((state) => state.weightUnit);
 
 	const averagePercentile = (() => {
 		if (!musclePercentiles) return null;
@@ -349,14 +353,33 @@ export function AbstractPhysiqueDiagram({
 	const displayVolumes = heatmapMode === 'volume' ? muscleVolumes : undefined;
 	const displayPercentiles = heatmapMode === 'percentile' ? musclePercentiles : undefined;
 
+	// Sort legend items by volume or percentile (highest to lowest)
+	const sortedLegendItems = (() => {
+		if (heatmapMode === 'volume' && muscleVolumes) {
+			return [...legendItems].sort((a, b) => {
+				const volumeA = muscleVolumes[a.key] || 0;
+				const volumeB = muscleVolumes[b.key] || 0;
+				return volumeB - volumeA;
+			});
+		}
+		if (heatmapMode === 'percentile' && musclePercentiles) {
+			return [...legendItems].sort((a, b) => {
+				const percentileA = musclePercentiles[a.key] ?? -Infinity;
+				const percentileB = musclePercentiles[b.key] ?? -Infinity;
+				return percentileB - percentileA;
+			});
+		}
+		return legendItems;
+	})();
+
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
 				<div>
 					<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
-					{heatmapMode === 'percentile' && averagePercentile !== null && (
+					{/* {heatmapMode === 'percentile' && averagePercentile !== null && (
 						<p className="text-[11px] text-gray-text">Average percentile: {formatPercentile(averagePercentile)}</p>
-					)}
+					)} */}
 				</div>
 				{musclePercentiles && (
 					<div className="flex gap-1 bg-dark-600 p-1 rounded">
@@ -412,51 +435,61 @@ export function AbstractPhysiqueDiagram({
 			</div>
 
 			<div className="grid grid-cols-1 gap-2">
-				{legendItems.map((item) => (
-					<div key={item.label} className="flex items-start gap-2 text-xs text-gray-light">
-						<span
-							className="mt-1 inline-block h-2.5 w-2.5 rotate-45"
-							style={{
-								backgroundColor:
-									heatmapMode === 'percentile' && musclePercentileDetails
-										? getMuscleColor(
-												item.color,
-												musclePercentileDetails[item.key].percentile,
-												100,
-												'percentile',
-												averagePercentile
-										  )
-										: item.color,
-							}}
-						/>
-						<div className="min-w-0">
-							<div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-								<span className="font-medium text-white-text">{item.label}</span>
-								{heatmapMode === 'percentile' && musclePercentileDetails && (
-									musclePercentileDetails[item.key].percentile === null ? (
-										<span className="text-blue-400">No data</span>
-									) : (
-										<span className="text-blue-300">
-											{formatPercentile(musclePercentileDetails[item.key].percentile)} percentile
-											{formatPercentileDelta(musclePercentileDetails[item.key].percentile, averagePercentile)}
+				{sortedLegendItems.map((item) => {
+					const muscleColor =
+						heatmapMode === 'percentile' && musclePercentileDetails
+							? getMuscleColor(
+									item.color,
+									musclePercentileDetails[item.key].percentile,
+									100,
+									'percentile',
+									averagePercentile
+							  )
+							: heatmapMode === 'volume' && muscleVolumes
+							? getMuscleColor(item.color, muscleVolumes[item.key], maxValue, 'volume')
+							: item.color;
+
+					return (
+						<div key={item.label} className="flex items-start gap-2 text-xs text-gray-light">
+							<span
+								className="mt-1 inline-block h-2.5 w-2.5 rotate-45"
+								style={{
+									backgroundColor: muscleColor,
+								}}
+							/>
+							<div className="min-w-0 flex-1">
+								<div className="flex items-center gap-x-2 gap-y-1">
+									<span className="font-medium text-white-text">{item.label}</span>
+									{heatmapMode === 'percentile' && musclePercentileDetails && (
+										musclePercentileDetails[item.key].percentile === null ? (
+											<span className="text-blue-400">No data</span>
+										) : (
+											<span className="text-blue-300">
+												{formatPercentileDelta(musclePercentileDetails[item.key].percentile, averagePercentile)}
+											</span>
+										)
+									)}
+									{heatmapMode === 'volume' && muscleVolumes && (
+										<span className="ml-auto text-blue-400 font-medium">
+											{Math.round(muscleVolumes[item.key])} {weightUnit}
 										</span>
-									)
+									)}
+								</div>
+								{heatmapMode === 'percentile' && musclePercentileDetails && (
+									<p className="mt-0.5 text-[11px] leading-relaxed text-gray-text">
+										[
+										{musclePercentileDetails[item.key].contributors.length > 0
+											? musclePercentileDetails[item.key].contributors
+													.map((contributor) => `${contributor.exercise}`)
+													.join(', ')
+											: 'No recorded data'}
+										]
+									</p>
 								)}
 							</div>
-							{heatmapMode === 'percentile' && musclePercentileDetails && (
-								<p className="mt-0.5 text-[11px] leading-relaxed text-gray-text">
-									[
-									{musclePercentileDetails[item.key].contributors.length > 0
-										? musclePercentileDetails[item.key].contributors
-												.map((contributor) => `${contributor.exercise} ${Math.round(contributor.percentile)}th`)
-												.join(', ')
-										: 'No recorded data'}
-									]
-								</p>
-							)}
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 		</div>
 	);
