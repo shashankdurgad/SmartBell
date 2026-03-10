@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const MUSCLE_COLORS = {
 	chest: '#236bd8',
 	back: '#236bd8',
@@ -19,6 +21,15 @@ interface Props {
 		hamstringGlutes: number;
 		biceps: number;
 		triceps: number;
+	};
+	musclePercentiles?: {
+		chest: number | null;
+		back: number | null;
+		shoulders: number | null;
+		quadriceps: number | null;
+		hamstringGlutes: number | null;
+		biceps: number | null;
+		triceps: number | null;
 	};
 }
 
@@ -49,11 +60,20 @@ function hexToHsl(hex: string): { h: number; s: number; l: number } {
 	return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
-function getMuscleColor(baseColor: string, volume: number, maxVolume: number): string {
-	if (maxVolume === 0) return baseColor;
+function getMuscleColor(
+	baseColor: string,
+	value: number | null,
+	maxValue: number,
+	mode: 'volume' | 'percentile' = 'volume'
+): string {
+	if (value === null || maxValue === 0) return baseColor;
 
 	const { h, s } = hexToHsl(baseColor);
-	const ratio = Math.min(volume / maxVolume * 1.2, 1);
+	
+	// For percentile mode, normalize to 0-100
+	const normalizedValue = mode === 'percentile' ? (value / 100) * 1.2 : value / maxValue * 1.2;
+	const ratio = Math.min(normalizedValue, 1);
+	
 	const minLight = 20;
 	const maxLight = 65;
 	const lightness = Math.round(minLight + ratio * (maxLight - minLight));
@@ -61,42 +81,122 @@ function getMuscleColor(baseColor: string, volume: number, maxVolume: number): s
 	return `hsl(${h} ${s}% ${lightness}%)`;
 }
 
-function FrontSilhouette({ muscleVolumes, maxVolume }: { muscleVolumes?: Props['muscleVolumes']; maxVolume: number }) {
+function FrontSilhouette({
+	muscleVolumes,
+	musclePercentiles,
+	maxVolume,
+	mode,
+}: {
+	muscleVolumes?: Props['muscleVolumes'];
+	musclePercentiles?: Props['musclePercentiles'];
+	maxVolume: number;
+	mode: 'volume' | 'percentile';
+}) {
+	const getValue = (muscleKey: 'chest' | 'back' | 'shoulders' | 'quadriceps' | 'hamstringGlutes' | 'biceps' | 'triceps') => {
+		if (mode === 'percentile' && musclePercentiles) {
+			return musclePercentiles[muscleKey];
+		}
+		if (muscleVolumes) {
+			return muscleVolumes[muscleKey];
+		}
+		return 0;
+	};
+
 	return (
 		<svg viewBox="0 0 120 260" className="w-full max-w-[140px]" aria-label="Front silhouette">
 			<circle cx="60" cy="17" r="13" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="12,46 33,46 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
-			<polygon points="87,46 108,46 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
+			<polygon
+				points="12,46 33,46 30,95 17,92"
+				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode)}
+			/>
+			<polygon
+				points="87,46 108,46 103,92 90,95"
+				fill={getMuscleColor(MUSCLE_COLORS.biceps, getValue('biceps'), maxVolume, mode)}
+			/>
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
 			<polygon points="80,178 64,184 64,210 66,235 74,235 80,215" fill={MUSCLE_COLORS.base} />
 
-			<circle cx="23" cy="46" r="11" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
-			<circle cx="97" cy="46" r="11" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
+			<circle
+				cx="23"
+				cy="46"
+				r="11"
+				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode)}
+			/>
+			<circle
+				cx="97"
+				cy="46"
+				r="11"
+				fill={getMuscleColor(MUSCLE_COLORS.shoulders, getValue('shoulders'), maxVolume, mode)}
+			/>
 
-            <polygon points="52,31 68,31 86,38 34,38" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
+			<polygon
+				points="52,31 68,31 86,38 34,38"
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+			/>
 			<polygon points="34,54 86,54 81,75 39,75" fill={MUSCLE_COLORS.behind} />
 			<polygon points="39,75 81,75 74,89 46,89" fill={MUSCLE_COLORS.behind} />
-            <polygon points="34,38 86,38 86,54 34,54" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
-			<polygon points="34,54 86,54 80,65 40,65" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
+			<polygon
+				points="34,38 86,38 86,54 34,54"
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+			/>
+			<polygon
+				points="34,54 86,54 80,65 40,65"
+				fill={getMuscleColor(MUSCLE_COLORS.chest, getValue('chest'), maxVolume, mode)}
+			/>
 			<polygon points="40,65 80,65 74,78 46,78" fill={MUSCLE_COLORS.base} />
 			<polygon points="46,78 74,78 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="48,104 72,104 62,119 58,119" fill={getMuscleColor(MUSCLE_COLORS.quadriceps, muscleVolumes?.quadriceps || 0, maxVolume)} />
-			<polygon points="36,119 48,104 58,119 58,176 56,180 38,173" fill={getMuscleColor(MUSCLE_COLORS.quadriceps, muscleVolumes?.quadriceps || 0, maxVolume)} />
-			<polygon points="62,119 72,104 84,119 82,173 64,180 62,176" fill={getMuscleColor(MUSCLE_COLORS.quadriceps, muscleVolumes?.quadriceps || 0, maxVolume)} />
+			<polygon
+				points="48,104 72,104 62,119 58,119"
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+			/>
+			<polygon
+				points="36,119 48,104 58,119 58,176 56,180 38,173"
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+			/>
+			<polygon
+				points="62,119 72,104 84,119 82,173 64,180 62,176"
+				fill={getMuscleColor(MUSCLE_COLORS.quadriceps, getValue('quadriceps'), maxVolume, mode)}
+			/>
 		</svg>
 	);
 }
 
-function BackSilhouette({ muscleVolumes, maxVolume }: { muscleVolumes?: Props['muscleVolumes']; maxVolume: number }) {
+function BackSilhouette({
+	muscleVolumes,
+	musclePercentiles,
+	maxVolume,
+	mode,
+}: {
+	muscleVolumes?: Props['muscleVolumes'];
+	musclePercentiles?: Props['musclePercentiles'];
+	maxVolume: number;
+	mode: 'volume' | 'percentile';
+}) {
+	const getValue = (muscleKey: 'chest' | 'back' | 'shoulders' | 'quadriceps' | 'hamstringGlutes' | 'biceps' | 'triceps') => {
+		if (mode === 'percentile' && musclePercentiles) {
+			return musclePercentiles[muscleKey];
+		}
+		if (muscleVolumes) {
+			return muscleVolumes[muscleKey];
+		}
+		return 0;
+	};
+
 	return (
 		<svg viewBox="0 0 120 260" className="w-full max-w-[140px]" aria-label="Back silhouette">
 			<circle cx="60" cy="17" r="13" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="12,46 33,46 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.triceps, muscleVolumes?.triceps || 0, maxVolume)} />
-			<polygon points="87,46 108,46 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.triceps, muscleVolumes?.triceps || 0, maxVolume)} />
+			<polygon
+				points="12,46 33,46 30,95 17,92"
+				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode)}
+			/>
+			<polygon
+				points="87,46 108,46 103,92 90,95"
+				fill={getMuscleColor(MUSCLE_COLORS.triceps, getValue('triceps'), maxVolume, mode)}
+			/>
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
 			<polygon points="80,178 64,184 64,210 66,235 74,235 80,215" fill={MUSCLE_COLORS.base} />
@@ -104,15 +204,36 @@ function BackSilhouette({ muscleVolumes, maxVolume }: { muscleVolumes?: Props['m
 			<circle cx="23" cy="46" r="11" fill={MUSCLE_COLORS.base} />
 			<circle cx="97" cy="46" r="11" fill={MUSCLE_COLORS.base} />
 
-            <polygon points="52,31 68,31 86,38 34,38" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
-            <polygon points="34,38 86,38 86,54 34,54" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
-			<polygon points="34,54 86,54 81,75 39,75" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
-			<polygon points="39,75 81,75 74,89 46,89" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
+			<polygon
+				points="52,31 68,31 86,38 34,38"
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+			/>
+			<polygon
+				points="34,38 86,38 86,54 34,54"
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+			/>
+			<polygon
+				points="34,54 86,54 81,75 39,75"
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+			/>
+			<polygon
+				points="39,75 81,75 74,89 46,89"
+				fill={getMuscleColor(MUSCLE_COLORS.back, getValue('back'), maxVolume, mode)}
+			/>
 			<polygon points="46,89 74,89 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="48,104 72,104 62,119 58,119" fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, muscleVolumes?.hamstringGlutes || 0, maxVolume)} />
-			<polygon points="36,119 48,104 58,119 58,176 56,180 38,173" fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, muscleVolumes?.hamstringGlutes || 0, maxVolume)} />
-			<polygon points="62,119 72,104 84,119 82,173 64,180 62,176" fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, muscleVolumes?.hamstringGlutes || 0, maxVolume)} />
+			<polygon
+				points="48,104 72,104 62,119 58,119"
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+			/>
+			<polygon
+				points="36,119 48,104 58,119 58,176 56,180 38,173"
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+			/>
+			<polygon
+				points="62,119 72,104 84,119 82,173 64,180 62,176"
+				fill={getMuscleColor(MUSCLE_COLORS.hamstringGlutes, getValue('hamstringGlutes'), maxVolume, mode)}
+			/>
 		</svg>
 	);
 }
@@ -127,9 +248,26 @@ const legendItems = [
 	{ label: 'Hamstrings & Glutes', color: MUSCLE_COLORS.hamstringGlutes },
 ];
 
-export function AbstractPhysiqueDiagram({ muscleVolumes }: Props) {
-	const maxVolume = muscleVolumes
-		? Math.max(
+export function AbstractPhysiqueDiagram({ muscleVolumes, musclePercentiles }: Props) {
+	const [heatmapMode, setHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+
+	// Determine max value based on mode
+	const maxValue = (() => {
+		if (heatmapMode === 'percentile' && musclePercentiles) {
+			const values = [
+				musclePercentiles.chest,
+				musclePercentiles.back,
+				musclePercentiles.shoulders,
+				musclePercentiles.biceps,
+				musclePercentiles.triceps,
+				musclePercentiles.quadriceps,
+				musclePercentiles.hamstringGlutes,
+			].filter((v) => v !== null) as number[];
+			return Math.max(...values, 1);
+		}
+
+		if (muscleVolumes) {
+			return Math.max(
 				muscleVolumes.chest,
 				muscleVolumes.back,
 				muscleVolumes.shoulders,
@@ -137,22 +275,65 @@ export function AbstractPhysiqueDiagram({ muscleVolumes }: Props) {
 				muscleVolumes.triceps,
 				muscleVolumes.quadriceps,
 				muscleVolumes.hamstringGlutes
-			)
-		: 0;
+			);
+		}
+		return 0;
+	})();
+
+	const displayVolumes = heatmapMode === 'volume' ? muscleVolumes : undefined;
+	const displayPercentiles = heatmapMode === 'percentile' ? musclePercentiles : undefined;
 
 	return (
 		<div className="space-y-4">
+			<div className="flex items-center justify-between">
+				<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
+				{musclePercentiles && (
+					<div className="flex gap-1 bg-dark-600 p-1 rounded">
+						<button
+							onClick={() => setHeatmapMode('volume')}
+							className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+								heatmapMode === 'volume'
+									? 'bg-blue-500 text-white'
+									: 'text-gray-text hover:text-gray-light'
+							}`}
+						>
+							Volume
+						</button>
+						<button
+							onClick={() => setHeatmapMode('percentile')}
+							className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+								heatmapMode === 'percentile'
+									? 'bg-blue-500 text-white'
+									: 'text-gray-text hover:text-gray-light'
+							}`}
+						>
+							Percentile
+						</button>
+					</div>
+				)}
+			</div>
+
 			<div className="grid grid-cols-2 gap-3">
 				<div className="rounded-sm border border-dark-500 bg-gradient-to-b from-[#1b2a44] to-[#111827] p-3">
 					<p className="text-[10px] tracking-wider uppercase text-gray-text mb-2">Front</p>
 					<div className="flex justify-center">
-						<FrontSilhouette muscleVolumes={muscleVolumes} maxVolume={maxVolume} />
+						<FrontSilhouette
+							muscleVolumes={displayVolumes}
+							musclePercentiles={displayPercentiles}
+							maxVolume={maxValue}
+							mode={heatmapMode}
+						/>
 					</div>
 				</div>
 				<div className="rounded-sm border border-dark-500 bg-gradient-to-b from-[#1b2a44] to-[#111827] p-3">
 					<p className="text-[10px] tracking-wider uppercase text-gray-text mb-2">Back</p>
 					<div className="flex justify-center">
-						<BackSilhouette muscleVolumes={muscleVolumes} maxVolume={maxVolume} />
+						<BackSilhouette
+							muscleVolumes={displayVolumes}
+							musclePercentiles={displayPercentiles}
+							maxVolume={maxValue}
+							mode={heatmapMode}
+						/>
 					</div>
 				</div>
 			</div>
