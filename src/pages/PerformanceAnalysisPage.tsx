@@ -6,6 +6,7 @@ import { useUserStore } from '../stores/useUserStore';
 import { useExercises } from '../hooks/useExercises';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { MonthlyPRsChart, type MonthData } from '../components/charts/MonthlyPRsChart';
+import { AbstractPhysiqueDiagram } from '../components/charts/AbstractPhysiqueDiagram';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import { convertVolume } from '../utils/formatters';
 import WorkoutCalendar from '../components/shared/WorkoutCalendar';
@@ -513,6 +514,22 @@ export function PerformanceAnalysisPage() {
                 )}
               </div>
             </div>
+          </Card>
+        </section>
+
+        {/* Physique Diagram */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
+            Muscle Focus
+          </h2>
+          <h1 className="text-lg font-semibold text-white-text tracking-wider mb-3">
+            PHYSIQUE DIAGRAM
+          </h1>
+          <Card>
+            <p className="text-sm text-gray-text mb-4">
+              Minimal front and back muscle map inspired by your reference style.
+            </p>
+            <AbstractPhysiqueDiagram />
           </Card>
         </section>
 
