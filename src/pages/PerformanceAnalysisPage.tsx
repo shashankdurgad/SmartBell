@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
+import { Modal } from '../components/shared/Modal';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { useExercises } from '../hooks/useExercises';
@@ -18,6 +19,8 @@ export function PerformanceAnalysisPage() {
   const { weightUnit } = useUserStore();
   const { exercises } = useExercises();
   const [selectedExercise, setSelectedExercise] = useState<string>('');
+  const [isTrendExerciseSearchOpen, setIsTrendExerciseSearchOpen] = useState<boolean>(false);
+  const [trendExerciseSearchQuery, setTrendExerciseSearchQuery] = useState<string>('');
   const [isExerciseListExpanded, setIsExerciseListExpanded] = useState<boolean>(false);
   const [isExerciseSearchOpen, setIsExerciseSearchOpen] = useState<boolean>(false);
   const [exerciseSearchQuery, setExerciseSearchQuery] = useState<string>('');
@@ -132,6 +135,37 @@ export function PerformanceAnalysisPage() {
   const estimated1RM = calculateEstimated1RM();
   const displayedEstimated1RM = estimated1RM;
 
+  const getExerciseSetVolumeKg = (sessionExercise: WorkoutSession['exercises'][number]): number => {
+    return sessionExercise.sets.reduce((sum, set) => {
+      if (set.isWarmup) return sum;
+      return sum + ((set.weight || 0) * (set.completedReps || 0));
+    }, 0);
+  };
+
+  const getMuscleContributionMultiplier = (
+    primaryMuscles: readonly MuscleGroup[],
+    secondaryMuscles: readonly MuscleGroup[],
+    targetMuscle: MuscleGroup
+  ): number => {
+    if (primaryMuscles.includes(targetMuscle)) return 1;
+    if (secondaryMuscles.includes(targetMuscle)) return 0.5;
+    return 0;
+  };
+
+  const getDiagramGroupContributionMultiplier = (
+    primaryMuscles: readonly MuscleGroup[],
+    secondaryMuscles: readonly MuscleGroup[],
+    diagramGroupMuscles: MuscleGroup[]
+  ): number => {
+    const hasPrimaryTarget = diagramGroupMuscles.some((m) => primaryMuscles.includes(m));
+    if (hasPrimaryTarget) return 1;
+
+    const hasSecondaryTarget = diagramGroupMuscles.some((m) => secondaryMuscles.includes(m));
+    if (hasSecondaryTarget) return 0.5;
+
+    return 0;
+  };
+
   // Helper to calculate volume for a session, optionally filtered by muscle group
   const calculateSessionVolume = (session: WorkoutSession, muscleGroupFilter: MuscleGroup | 'all'): number => {
     let totalVolumeKg = 0;
@@ -143,24 +177,22 @@ export function PerformanceAnalysisPage() {
         if (!exercise) {
           continue; // Skip if exercise not found
         }
-        
-        const targetsMuscle = 
-          (exercise.primaryMuscles as readonly MuscleGroup[]).includes(muscleGroupFilter as MuscleGroup) ||
-          (exercise.secondaryMuscles as readonly MuscleGroup[]).includes(muscleGroupFilter as MuscleGroup);
-        
-        if (!targetsMuscle) {
+
+        const contributionMultiplier = getMuscleContributionMultiplier(
+          exercise.primaryMuscles as readonly MuscleGroup[],
+          exercise.secondaryMuscles as readonly MuscleGroup[],
+          muscleGroupFilter as MuscleGroup
+        );
+
+        if (contributionMultiplier === 0) {
           continue; // Skip this exercise
         }
+
+        totalVolumeKg += getExerciseSetVolumeKg(workoutExercise) * contributionMultiplier;
+        continue;
       }
-      
-      // Calculate volume for this exercise (sum of all sets)
-      for (const set of workoutExercise.sets) {
-        if (!set.isWarmup) {
-          const weight = set.weight || 0;
-          const reps = set.completedReps || 0;
-          totalVolumeKg += weight * reps;
-        }
-      }
+
+      totalVolumeKg += getExerciseSetVolumeKg(workoutExercise);
     }
     
     return convertVolume(totalVolumeKg, 'kg', weightUnit);
@@ -247,88 +279,59 @@ export function PerformanceAnalysisPage() {
   // Calculate total volume from calendar period
   const totalCalendarVolume = last9Weeks.reduce((sum, day) => sum + day.volume, 0);
 
-  // Calculate volume per muscle group for the physique diagram
-  const muscleGroupVolumes: {
-    chest: number;
-    back: number;
-    shoulders: number;
-    quadriceps: number;
-    hamstringGlutes: number;
-    biceps: number;
-    triceps: number;
-  } = {
+  // Calculate volume per muscle group for the physique diagram using same logic as calendar
+  // Sum volumes from last 9 weeks for each muscle group
+  const muscleGroupVolumes = {
     chest: 0,
-    back: 0,  // aggregates lats + middle back + lower back
+    back: 0,
     shoulders: 0,
     quadriceps: 0,
-    hamstringGlutes: 0,  // aggregates hamstrings + glutes
+    hamstringGlutes: 0,
     biceps: 0,
     triceps: 0,
   };
 
-  const today = new Date();
-  const startOfCurrentWeek = new Date(today);
-  startOfCurrentWeek.setDate(today.getDate() - today.getDay());
-  const startDate = new Date(startOfCurrentWeek);
-  startDate.setDate(startOfCurrentWeek.getDate() - (8 * 7));
+  // Get date range for last 9 weeks (same as calendar)
+  const last9WeeksDates = last9Weeks.map(d => d.date.toISOString().slice(0, 10));
 
-  history.forEach((session) => {
-    const sessionDate = new Date(session.date);
-    if (sessionDate >= startDate && sessionDate <= today) {
+  // For each diagram muscle group, calculate total volume from history
+  const diagramMuscles: { key: keyof typeof muscleGroupVolumes; muscles: MuscleGroup[] }[] = [
+    { key: 'chest', muscles: ['chest'] },
+    { key: 'back', muscles: ['lats', 'middle back', 'lower back'] },
+    { key: 'shoulders', muscles: ['shoulders'] },
+    { key: 'quadriceps', muscles: ['quadriceps'] },
+    { key: 'hamstringGlutes', muscles: ['hamstrings', 'glutes'] },
+    { key: 'biceps', muscles: ['biceps'] },
+    { key: 'triceps', muscles: ['triceps'] },
+  ];
+
+  for (const session of history) {
+    const sessionDate = new Date(session.date).toISOString().slice(0, 10);
+    if (!last9WeeksDates.includes(sessionDate)) continue;
+
+    for (const diagramMuscleGroup of diagramMuscles) {
       for (const workoutExercise of session.exercises) {
         const exercise = exercises.find(ex => ex.id === workoutExercise.exerciseId);
         if (!exercise) continue;
 
-        const exerciseVolume = workoutExercise.sets.reduce((sum, set) => {
-          if (!set.isWarmup) {
-            const weight = set.weight || 0;
-            const reps = set.completedReps || 0;
-            return sum + (weight * reps);
-          }
-          return sum;
-        }, 0);
+        const contributionMultiplier = getDiagramGroupContributionMultiplier(
+          exercise.primaryMuscles as readonly MuscleGroup[],
+          exercise.secondaryMuscles as readonly MuscleGroup[],
+          diagramMuscleGroup.muscles
+        );
 
-        // Add volume to primary muscles
-        for (const muscle of exercise.primaryMuscles as readonly MuscleGroup[]) {
-          // Map actual muscle groups to diagram groups
-          if (muscle === 'chest') {
-            muscleGroupVolumes.chest += exerciseVolume;
-          } else if (['lats', 'middle back', 'lower back'].includes(muscle)) {
-            muscleGroupVolumes.back += exerciseVolume;
-          } else if (muscle === 'shoulders') {
-            muscleGroupVolumes.shoulders += exerciseVolume;
-          } else if (muscle === 'quadriceps') {
-            muscleGroupVolumes.quadriceps += exerciseVolume;
-          } else if (['hamstrings', 'glutes'].includes(muscle)) {
-            muscleGroupVolumes.hamstringGlutes += exerciseVolume;
-          } else if (muscle === 'biceps') {
-            muscleGroupVolumes.biceps += exerciseVolume;
-          } else if (muscle === 'triceps') {
-            muscleGroupVolumes.triceps += exerciseVolume;
-          }
-        }
-        // Add half volume to secondary muscles
-        for (const muscle of exercise.secondaryMuscles as readonly MuscleGroup[]) {
-          // Map actual muscle groups to diagram groups
-          if (muscle === 'chest') {
-            muscleGroupVolumes.chest += exerciseVolume * 0.5;
-          } else if (['lats', 'middle back', 'lower back'].includes(muscle)) {
-            muscleGroupVolumes.back += exerciseVolume * 0.5;
-          } else if (muscle === 'shoulders') {
-            muscleGroupVolumes.shoulders += exerciseVolume * 0.5;
-          } else if (muscle === 'quadriceps') {
-            muscleGroupVolumes.quadriceps += exerciseVolume * 0.5;
-          } else if (['hamstrings', 'glutes'].includes(muscle)) {
-            muscleGroupVolumes.hamstringGlutes += exerciseVolume * 0.5;
-          } else if (muscle === 'biceps') {
-            muscleGroupVolumes.biceps += exerciseVolume * 0.5;
-          } else if (muscle === 'triceps') {
-            muscleGroupVolumes.triceps += exerciseVolume * 0.5;
-          }
+        if (contributionMultiplier > 0) {
+          const exerciseVolume = getExerciseSetVolumeKg(workoutExercise);
+          muscleGroupVolumes[diagramMuscleGroup.key] += exerciseVolume * contributionMultiplier;
         }
       }
     }
-  });
+  }
+
+  // Convert all volumes to display unit
+  for (const key of Object.keys(muscleGroupVolumes) as (keyof typeof muscleGroupVolumes)[]) {
+    muscleGroupVolumes[key] = convertVolume(muscleGroupVolumes[key], 'kg', weightUnit);
+  }
 
   // Calculate monthly PRs for the last 6 months
   const monthlyPRs = (() => {
@@ -443,6 +446,10 @@ export function PerformanceAnalysisPage() {
     ex.name.toLowerCase().includes(exerciseSearchQuery.trim().toLowerCase())
   );
 
+  const filteredTrendExercises = exercisesWithData.filter((ex) =>
+    ex.name.replace(/_/g, ' ').toLowerCase().includes(trendExerciseSearchQuery.trim().toLowerCase())
+  );
+
   const visibleExercise1RMs =
     isExerciseListExpanded || exerciseSearchQuery.trim().length > 0
       ? filteredExercise1RMs
@@ -488,6 +495,16 @@ export function PerformanceAnalysisPage() {
                       <option key={ex.id || ex.name} value={ex.id}>{ex.name.replace(/_/g, ' ')}</option>
                     ))}
                   </select>
+                  <button
+                    type="button"
+                    aria-label="Search exercises"
+                    className="inline-flex items-center justify-center rounded border border-dark-600 bg-dark-700 p-1.5 text-gray-text hover:text-white hover:border-blue-primary transition-colors"
+                    onClick={() => setIsTrendExerciseSearchOpen(true)}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-4.35-4.35m1.6-5.15a6.75 6.75 0 1 1-13.5 0 6.75 6.75 0 0 1 13.5 0Z" />
+                    </svg>
+                  </button>
                 </div>
               </div>
               <div>
@@ -502,6 +519,52 @@ export function PerformanceAnalysisPage() {
             </div>
           </Card>
         </section>
+
+        <Modal
+          isOpen={isTrendExerciseSearchOpen}
+          onClose={() => {
+            setIsTrendExerciseSearchOpen(false);
+            setTrendExerciseSearchQuery('');
+          }}
+          title="Find Exercise"
+          size="md"
+        >
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={trendExerciseSearchQuery}
+              onChange={(e) => setTrendExerciseSearchQuery(e.target.value)}
+              placeholder="Search exercise..."
+              className="w-full bg-dark-700 border border-dark-600 rounded px-3 py-2 text-sm text-white placeholder:text-gray-text focus:outline-none focus:border-blue-primary"
+              autoFocus
+            />
+
+            <div className="max-h-72 overflow-y-auto space-y-1">
+              {filteredTrendExercises.map((ex) => (
+                <button
+                  key={ex.id}
+                  type="button"
+                  className={`w-full text-left rounded px-3 py-2 text-sm transition-colors ${
+                    selectedExercise === ex.id
+                      ? 'bg-blue-primary/20 text-white'
+                      : 'text-gray-text hover:bg-dark-700 hover:text-white'
+                  }`}
+                  onClick={() => {
+                    setSelectedExercise(ex.id);
+                    setIsTrendExerciseSearchOpen(false);
+                    setTrendExerciseSearchQuery('');
+                  }}
+                >
+                  {ex.name.replace(/_/g, ' ')}
+                </button>
+              ))}
+
+              {filteredTrendExercises.length === 0 && (
+                <p className="text-sm text-gray-text py-2 px-1">No matching exercises.</p>
+              )}
+            </div>
+          </div>
+        </Modal>
 
         {/* Monthly PRs */}
         <section>

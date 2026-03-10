@@ -1,12 +1,13 @@
 const MUSCLE_COLORS = {
 	chest: '#236bd8',
-	back: '#2671e1',
-	shoulders: '#2255a1',
-	quadriceps: '#2671e1',
-	hamstringGlutes: '#2671e1',
-	biceps: '#205ebc',
-	triceps: '#1d4ed8',
+	back: '#236bd8',
+	shoulders: '#236bd8',
+	quadriceps: '#236bd8',
+	hamstringGlutes: '#236bd8',
+	biceps: '#236bd8',
+	triceps: '#236bd8',
 	base: '#353f4d',
+	behind: '#2a323d',
 } as const;
 
 interface Props {
@@ -65,18 +66,21 @@ function FrontSilhouette({ muscleVolumes, maxVolume }: { muscleVolumes?: Props['
 		<svg viewBox="0 0 120 260" className="w-full max-w-[140px]" aria-label="Front silhouette">
 			<circle cx="60" cy="17" r="13" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="12,50 33,50 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
-			<polygon points="87,50 108,50 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
+			<polygon points="12,46 33,46 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
+			<polygon points="87,46 108,46 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
 			<polygon points="80,178 64,184 64,210 66,235 74,235 80,215" fill={MUSCLE_COLORS.base} />
 
-			<circle cx="22" cy="46" r="12" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
-			<circle cx="98" cy="46" r="12" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
+			<circle cx="23" cy="46" r="11" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
+			<circle cx="97" cy="46" r="11" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
 
             <polygon points="52,31 68,31 86,38 34,38" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
+			<polygon points="34,54 86,54 81,75 39,75" fill={MUSCLE_COLORS.behind} />
+			<polygon points="39,75 81,75 74,89 46,89" fill={MUSCLE_COLORS.behind} />
             <polygon points="34,38 86,38 86,54 34,54" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
-			<polygon points="34,54 86,54 74,78 46,78" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
+			<polygon points="34,54 86,54 80,65 40,65" fill={getMuscleColor(MUSCLE_COLORS.chest, muscleVolumes?.chest || 0, maxVolume)} />
+			<polygon points="40,65 80,65 74,78 46,78" fill={MUSCLE_COLORS.base} />
 			<polygon points="46,78 74,78 72,104 48,104" fill={MUSCLE_COLORS.base} />
 
 			<polygon points="48,104 72,104 62,119 58,119" fill={getMuscleColor(MUSCLE_COLORS.quadriceps, muscleVolumes?.quadriceps || 0, maxVolume)} />
@@ -91,14 +95,14 @@ function BackSilhouette({ muscleVolumes, maxVolume }: { muscleVolumes?: Props['m
 		<svg viewBox="0 0 120 260" className="w-full max-w-[140px]" aria-label="Back silhouette">
 			<circle cx="60" cy="17" r="13" fill={MUSCLE_COLORS.base} />
 
-			<polygon points="12,50 33,50 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
-			<polygon points="87,50 108,50 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.biceps, muscleVolumes?.biceps || 0, maxVolume)} />
+			<polygon points="12,46 33,46 30,95 17,92" fill={getMuscleColor(MUSCLE_COLORS.triceps, muscleVolumes?.triceps || 0, maxVolume)} />
+			<polygon points="87,46 108,46 103,92 90,95" fill={getMuscleColor(MUSCLE_COLORS.triceps, muscleVolumes?.triceps || 0, maxVolume)} />
 
 			<polygon points="40,178 56,184 56,210 54,235 46,235 40,215" fill={MUSCLE_COLORS.base} />
 			<polygon points="80,178 64,184 64,210 66,235 74,235 80,215" fill={MUSCLE_COLORS.base} />
 
-			<circle cx="22" cy="46" r="12" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
-			<circle cx="98" cy="46" r="12" fill={getMuscleColor(MUSCLE_COLORS.shoulders, muscleVolumes?.shoulders || 0, maxVolume)} />
+			<circle cx="23" cy="46" r="11" fill={MUSCLE_COLORS.base} />
+			<circle cx="97" cy="46" r="11" fill={MUSCLE_COLORS.base} />
 
             <polygon points="52,31 68,31 86,38 34,38" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
             <polygon points="34,38 86,38 86,54 34,54" fill={getMuscleColor(MUSCLE_COLORS.back, muscleVolumes?.back || 0, maxVolume)} />
