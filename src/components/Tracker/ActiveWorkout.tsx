@@ -8,7 +8,7 @@ import { useWorkoutStore } from '../../stores/useWorkoutStore';
 import { useUserStore } from '../../stores/useUserStore';
 import { getWeightRecommendation } from '../../engine/weightRecommender';
 import { personalRecordRepo } from '../../database/repositories/personalRecordRepo';
-import { estimatedMax, calculateSetVolume, generateId } from '../../utils/calculations';
+import { estimatedMax, calculateSetVolume, generateId, lbsToKg, kgToLbs } from '../../utils/calculations';
 import { formatTimer, formatWeight } from '../../utils/formatters';
 import type { WorkoutSet, WeightRecommendation, PersonalRecord } from '../../types';
 
@@ -24,38 +24,51 @@ function RestTimer({ seconds, onSkip }: { seconds: number; onSkip: () => void })
 
 interface SetLoggerProps {
   setNumber: number;
+  targetSets: number;
   targetReps: number;
   recommendation: WeightRecommendation | null;
   weightUnit: 'lbs' | 'kg';
+  loggedSets: WorkoutSet[];
   onLog: (set: WorkoutSet) => void;
 }
 
-function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }: SetLoggerProps) {
-  const [weight, setWeight] = useState<number>(recommendation?.recommendedWeight ?? 0);
-  const [reps, setReps] = useState<number>(targetReps);
+function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUnit, loggedSets, onLog }: SetLoggerProps) {
+  // Use recommendation weight if available, otherwise use last logged set weight, otherwise empty
+  const getPlaceholderWeight = () => {
+    if (recommendation?.recommendedWeight != null) {
+      return recommendation.recommendedWeight;
+    }
+    if (loggedSets.length > 0) {
+      const lastSet = loggedSets[loggedSets.length - 1];
+      // loggedSets store weight in kg, convert to display unit
+      return weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight;
+    }
+    return 0;
+  };
+  const [weight, setWeight] = useState<string>('');
+  const [reps, setReps] = useState<string>('');
   const [rpe, setRpe] = useState<number>(7);
   const [isWarmup, setIsWarmup] = useState(false);
   const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
+  const placeholderWeight = getPlaceholderWeight();
+  const placeholderReps = loggedSets.length > 0 ? loggedSets[loggedSets.length - 1].completedReps : targetReps;
 
   useEffect(() => {
-    if (recommendation?.recommendedWeight) {
-      setWeight(recommendation.recommendedWeight);
-    }
-  }, [recommendation]);
+    // Reset inputs when moving to next set
+    setWeight('');
+    setReps('');
+  }, [setNumber]);
 
   const handleLog = () => {
-    onLog({ setNumber, weight, targetReps, completedReps: reps, rpe, isWarmup });
+    const finalWeight = weight === '' ? placeholderWeight : Number(weight);
+    const finalReps = reps === '' ? placeholderReps : Number(reps);
+    onLog({ setNumber, weight: finalWeight, targetReps, completedReps: finalReps, rpe, isWarmup });
   };
 
   return (
     <div className="space-y-4">
-      {recommendation && (
-        <div className="bg-blue-primary/10 border border-blue-primary/30 rounded-xl p-3">
-          <p className="text-xs text-blue-light">{recommendation.message}</p>
-        </div>
-      )}
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-text">Set {setNumber} {isWarmup ? '(Warmup)' : ''}</span>
+        <span className="text-sm text-gray-text">Set {setNumber} of {targetSets} {isWarmup ? '(Warmup)' : ''}</span>
         <button
           onClick={() => setIsWarmup(!isWarmup)}
           className={`text-xs px-3 py-1 rounded-full border transition-colors ${
@@ -65,20 +78,37 @@ function SetLogger({ setNumber, targetReps, recommendation, weightUnit, onLog }:
           }`}
         >Warmup</button>
       </div>
+      {recommendation && (
+        <div className="bg-blue-primary/10 border border-blue-primary/30 rounded-xl p-3">
+          <p className="text-xs text-blue-light">{recommendation.message}</p>
+        </div>
+      )}
       <div>
         <p className="text-xs text-gray-text mb-2">Weight ({weightUnit})</p>
         <div className="flex items-center gap-3">
-          <button onClick={() => setWeight((w) => Math.max(0, w - increment))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={weight} onChange={(e) => setWeight(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
-          <button onClick={() => setWeight((w) => w + increment)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+          <button onClick={() => setWeight((w) => {
+            const current = w === '' ? placeholderWeight : Number(w);
+            return String(Math.max(0, current - increment));
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder={String(placeholderWeight)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <button onClick={() => setWeight((w) => {
+            const current = w === '' ? placeholderWeight : Number(w);
+            return String(current + increment);
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
         </div>
       </div>
       <div>
         <p className="text-xs text-gray-text mb-2">Reps</p>
         <div className="flex items-center gap-3">
-          <button onClick={() => setReps((r) => Math.max(0, r - 1))} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={reps} onChange={(e) => setReps(Number(e.target.value))} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary" />
-          <button onClick={() => setReps((r) => r + 1)} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
+          <button onClick={() => setReps((r) => {
+            const current = r === '' ? placeholderReps : Number(r);
+            return String(Math.max(0, current - 1));
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
+          <input type="number" value={reps} onChange={(e) => setReps(e.target.value)} placeholder={String(placeholderReps)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <button onClick={() => setReps((r) => {
+            const current = r === '' ? placeholderReps : Number(r);
+            return String(current + 1);
+          })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">+</button>
         </div>
       </div>
       <div>
@@ -113,9 +143,9 @@ export function ActiveWorkout() {
     cancelSession,
   } = useWorkoutStore();
 
-  const { weightUnit } = useUserStore();
+  const { weightUnit, defaultRestSeconds } = useUserStore();
   const [recommendations, setRecommendations] = useState<Record<string, WeightRecommendation>>({});
-  const [newPRs, setNewPRs] = useState<string[]>([]);
+  const [latestPRExerciseName, setLatestPRExerciseName] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
 
   useEffect(() => {
@@ -144,14 +174,22 @@ export function ActiveWorkout() {
   const loggedSets = currentExercise?.sets ?? [];
 
   const handleLogSet = async (set: WorkoutSet) => {
-    logSet(currentExerciseIndex, set);
+    // Don't save sets with 0 reps
+    if (set.completedReps <= 0) {
+      return;
+    }
+
+    // Convert weight to kg before storing
+    const weightInKg = weightUnit === 'lbs' ? lbsToKg(set.weight) : set.weight;
+    const normalizedSet = { ...set, weight: weightInKg };
+    logSet(currentExerciseIndex, normalizedSet);
     if (!set.isWarmup && set.weight > 0 && set.completedReps > 0) {
       const exerciseId = currentExercise.exerciseId;
       const checks: Array<{ type: 'weight' | 'reps' | 'volume' | 'estimated_1rm'; value: number }> = [
-        { type: 'weight', value: set.weight },
+        { type: 'weight', value: weightInKg },
         { type: 'reps', value: set.completedReps },
-        { type: 'volume', value: calculateSetVolume(set.weight, set.completedReps) },
-        { type: 'estimated_1rm', value: estimatedMax(set.weight, set.completedReps) },
+        { type: 'volume', value: calculateSetVolume(weightInKg, set.completedReps) },
+        { type: 'estimated_1rm', value: estimatedMax(weightInKg, set.completedReps) },
       ];
       for (const check of checks) {
         const existing = await personalRecordRepo.getBestForExercise(exerciseId, check.type);
@@ -166,12 +204,12 @@ export function ActiveWorkout() {
             improvement: existing ? check.value - existing.value : undefined,
           };
           await personalRecordRepo.save(pr);
-          setNewPRs((prev) => [...prev, check.type]);
-          setTimeout(() => setNewPRs((prev) => prev.filter((t) => t !== check.type)), 3000);
+          setLatestPRExerciseName(exerciseId.replace(/_/g, ' '));
+          setTimeout(() => setLatestPRExerciseName(null), 3000);
         }
       }
     }
-    startRest(90);
+    startRest(defaultRestSeconds);
   };
 
   const handleFinish = async () => {
@@ -187,9 +225,9 @@ export function ActiveWorkout() {
   return (
     <div className="min-h-screen pb-24 bg-dark-900">
       {isResting && <RestTimer seconds={restTimeRemaining} onSkip={skipRest} />}
-      {newPRs.length > 0 && (
+      {latestPRExerciseName && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 bg-yellow-accent text-dark-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
-          PR: {newPRs[newPRs.length - 1].replace('_', ' ')}!
+          New PR Achieved: {latestPRExerciseName}
         </div>
       )}
       <div className="sticky top-0 z-30 bg-dark-900/90 backdrop-blur-lg border-b border-dark-700 px-4 py-3">
@@ -208,9 +246,8 @@ export function ActiveWorkout() {
       </div>
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-white">{currentExercise?.exerciseId}</h2>
+          <h2 className="text-2xl font-bold text-white">{currentExercise?.exerciseId.replace(/_/g, ' ')}</h2>
           <div className="flex items-center gap-2 mt-1">
-            <Badge variant="blue">{loggedSets.length} sets logged</Badge>
             {recommendations[currentExercise?.exerciseId] && (
               <Badge variant="green">{recommendations[currentExercise.exerciseId].reasoning.replace('_', ' ')}</Badge>
             )}
@@ -233,9 +270,11 @@ export function ActiveWorkout() {
         <Card>
           <SetLogger
             setNumber={loggedSets.length + 1}
+            targetSets={currentExercise?.targetSets ?? 0}
             targetReps={8}
             recommendation={recommendations[currentExercise?.exerciseId] ?? null}
             weightUnit={weightUnit}
+            loggedSets={loggedSets}
             onLog={handleLogSet}
           />
         </Card>

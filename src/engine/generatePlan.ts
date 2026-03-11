@@ -20,6 +20,10 @@ const DIFFICULTY_CONFIG = {
 type Style = typeof STYLE_CONFIG[keyof typeof STYLE_CONFIG];
 type Diff = typeof DIFFICULTY_CONFIG[keyof typeof DIFFICULTY_CONFIG];
 
+function capitalize(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 function calcTotalSets(timeMinutes: number, rest: number, style: Style, diff: Diff): number {
   const raw = Math.ceil((timeMinutes * 60) / (style.setDuration + rest));
   return Math.min(raw, diff.maxSets);
@@ -159,6 +163,8 @@ export async function generateWeeklyPlan(
 
   const style = STYLE_CONFIG[constraints.trainingStyle];
   const diff = DIFFICULTY_CONFIG[constraints.difficulty ?? 'intermediate'];
+  const difficultyLabel = capitalize(constraints.difficulty ?? 'intermediate');
+  const trainingStyleLabel = capitalize(constraints.trainingStyle);
 
   const prefs = await db.userPreferences.get('default');
   const rest = Math.max(30, (prefs?.defaultRestTimer ?? style.defaultRest) + diff.restMod);
@@ -179,7 +185,7 @@ export async function generateWeeklyPlan(
 
   return {
     id: crypto.randomUUID(),
-    name: `${constraints.difficulty ?? 'intermediate'} ${constraints.trainingStyle} ${split.name}`,
+    name: `${split.name} (${difficultyLabel}) (${trainingStyleLabel})`,
     createdAt: new Date(),
     daysPerWeek: constraints.daysPerWeek,
     trainingStyle: constraints.trainingStyle,

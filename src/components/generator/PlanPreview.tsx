@@ -6,9 +6,14 @@ import type { WeeklyPlan } from '../../types';
 interface PlanPreviewProps {
   plan: WeeklyPlan;
   onRegenerate: () => void;
+  regenerateLabel?: string;
+  showRegenerateButton?: boolean;
+  onSetActive?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
+export function PlanPreview({ plan, onRegenerate, regenerateLabel = 'Regenerate', showRegenerateButton = true, onSetActive, onEdit, onDelete }: PlanPreviewProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -27,7 +32,7 @@ export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
           <ul className="space-y-1">
             {day.exercises.map((ex, j) => (
               <li key={j} className="flex justify-between text-sm">
-                <span className="text-zinc-300">{ex.exerciseName}</span>
+                <span className="text-zinc-300">{ex.exerciseName.replace(/_/g, ' ')}</span>
                 <span className="text-zinc-500">
                   {ex.sets} × {ex.reps}
                 </span>
@@ -42,9 +47,28 @@ export function PlanPreview({ plan, onRegenerate }: PlanPreviewProps) {
         <span>~{plan.estimatedWeeklyDuration} min/week</span>
       </div>
 
-      <Button fullWidth variant="secondary" onClick={onRegenerate}>
-        Regenerate
-      </Button>
+      <div className="flex gap-2">
+        {onSetActive && (
+          <Button variant="primary" onClick={onSetActive} className="flex-1">
+            Set Active
+          </Button>
+        )}
+        {onEdit && (
+          <Button variant="secondary" onClick={onEdit} className="flex-1">
+            Edit
+          </Button>
+        )}
+        {onDelete && (
+          <Button variant="danger" onClick={onDelete} className="flex-1">
+            Delete
+          </Button>
+        )}
+        {showRegenerateButton && (
+          <Button variant="secondary" onClick={onRegenerate} className="flex-1">
+            {regenerateLabel}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

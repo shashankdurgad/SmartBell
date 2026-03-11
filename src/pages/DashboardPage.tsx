@@ -6,16 +6,19 @@ import { Button } from '../components/shared/Button';
 import { EmptyState } from '../components/shared/EmptyState';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
+import { useUserStore } from '../stores/useUserStore';
 import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
 import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { useExercises } from '../hooks/useExercises';
-import WorkoutCalendar from '../components/shared/WorkoutCalendar';
+import { estimatedMax, kgToLbs } from '../utils/calculations';
+import type { WorkoutSession } from '../types';
 
 export function DashboardPage() {
   const navigate = useNavigate();
   const { plans, activePlan, loadPlans } = useWeeklyPlanStore();
   const { history, loadHistory } = useWorkoutStore();
+  const { weightUnit } = useUserStore();
   const [exerciseCount, setExerciseCount] = useState(0);
 
   useEffect(() => {
@@ -28,115 +31,108 @@ export function DashboardPage() {
   const totalVolume = history.reduce((sum, s) => sum + s.totalVolume, 0);
   const totalWorkouts = history.length;
 
-  // Exercises for dropdown
+  // Auto-select most recently performed strength-based exercise
   const { exercises } = useExercises();
-  const [selectedExercise, setSelectedExercise] = useState<string>('');
 
-  // when exercises load, default to first
-  useEffect(() => {
-    if (!selectedExercise && exercises.length > 0) {
-      setSelectedExercise(exercises[0].name);
-    }
-  }, [exercises, selectedExercise]);
+  // Progress chart displays last 60 days only.
+  const nowTimestamp = Date.now();
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+  const sixtyDaysAgoTimestamp = sixtyDaysAgo.getTime();
 
-  // Helper to extract total volume for a given exercise name from a session
-  // NOTE: Adjust this function if your session schema differs.
-  function getExerciseVolumeFromSession(session: any, exerciseName: string): number {
-    if (!exerciseName) return 0;
-    // Expected shape: session.exercises: Array<{ name: string, sets: Array<{ reps: number, weight: number }> }>
-    // Fallbacks included in case your shape uses volume directly per exercise
-    const items = (session.exercises || []).filter((e: any) => (e.name || e.exerciseName) === exerciseName);
-    if (items.length === 0) return 0;
-    let vol = 0;
-    for (const e of items) {
-      if (typeof e.totalVolume === 'number') {
-        vol += e.totalVolume;
-        continue;
-      }
-      const sets = e.sets || [];
-      for (const s of sets) {
-        const reps = Number(s.reps) || 0;
-        const weight = Number(s.weight) || 0;
-        vol += reps * weight;
+  // Find the most recently performed strength-based exercise
+  const selectedExercise = (() => {
+    // Sort sessions by date (most recent first)
+    const sortedSessions = [...history].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    // Find first exercise with valid strength data
+    for (const session of sortedSessions) {
+      for (const exercise of session.exercises) {
+        const hasValidData = exercise.sets.some(
+          (set) => !set.isWarmup && (set.weight ?? 0) > 0 && (set.completedReps ?? 0) > 0
+        );
+        if (hasValidData) {
+          return exercise.exerciseId;
+        }
       }
     }
-    return vol;
+    return '';
+  })();
+
+  // Get exercise name for display
+  const selectedExerciseName = selectedExercise
+    ? exercises.find((ex) => ex.id === selectedExercise)?.name.replace(/_/g, ' ') || ''
+    : '';
+
+  // Helper to get estimated 1RM for a given exercise from a session
+  function getEstimated1RMFromSession(session: WorkoutSession, exerciseId: string): number | null {
+    if (!exerciseId) return null;
+
+    // Find the exercise in the session
+    const exercise = session.exercises.find((e) => e.exerciseId === exerciseId);
+    if (!exercise || !exercise.sets || exercise.sets.length === 0) return null;
+
+    // Find the heaviest working set (non-warmup)
+    let maxWeight = 0;
+    let repsAtMax = 0;
+
+    for (const set of exercise.sets) {
+      if (set.isWarmup) continue;
+      const weight = set.weight || 0;
+      const reps = set.completedReps || 0;
+      if (weight > 0 && reps > 0 && weight > maxWeight) {
+        maxWeight = weight;
+        repsAtMax = reps;
+      }
+    }
+
+    if (maxWeight === 0 || repsAtMax === 0) return null;
+
+    // Calculate estimated 1RM (weights are stored in kg)
+    const est1RM = estimatedMax(maxWeight, repsAtMax);
+    
+    // Convert to display unit
+    return weightUnit === 'lbs' ? kgToLbs(est1RM) : est1RM;
   }
 
-  // Build series from history for the selected exercise
+  // Build series from history for the selected exercise (estimated 1RM trend)
+  // Filter to last 2 months (60 days)
   const series: SeriesPoint[] = history
-    .map((session: any, _: number) => ({
-      date: new Date(session.date),
-      x: new Date(session.date).getTime(),
-      y: getExerciseVolumeFromSession(session, selectedExercise),
-    }))
-    .filter(p => p.y > 0)
+    .map((session) => {
+      const est1RM = getEstimated1RMFromSession(session, selectedExercise);
+      return {
+        date: new Date(session.date),
+        x: new Date(session.date).getTime(),
+        y: est1RM || 0,
+      };
+    })
+    .filter(p => p.y > 0 && p.x >= sixtyDaysAgoTimestamp)
     .sort((a, b) => a.x - b.x)
-    .map((p, _) => ({ x: p.x, y: p.y }));
+    .map((p) => ({ x: p.x, y: p.y }));
 
-    // Build volume totals per calendar day (YYYY-MM-DD)
-    const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s: any) => {
-      const d = new Date(s.date);
-      const key = d.toISOString().slice(0, 10);
-      acc[key] = (acc[key] || 0) + (Number(s.totalVolume) || 0);
-      return acc;
-    }, {});
-
-    const last60Days = (() => {
-      const arr: { date: Date; volume: number }[] = [];
-      const today = new Date();
-      for (let i = 59; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        const key = d.toISOString().slice(0, 10);
-        arr.push({ date: d, volume: volumesByDate[key] || 0 });
-      }
-      return arr;
-    })();
-
-    // Calculate estimated 1RM using Epley and Brzycki formulas
+    // Calculate estimated 1RM from the most recent workout for this exercise
     function calculateEstimated1RM(): number | null {
       if (!selectedExercise) return null;
 
-      // Find the last set for the selected exercise with highest weight
-      let maxWeight = 0;
-      let repsAtMax = 0;
+      // Find the most recent session containing this exercise
+      const sortedSessions = [...history].sort((a, b) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
-      for (const session of history) {
-        for (const exercise of session.exercises || []) {
-          // Match exercise - check by name or ID
-          const matchesName = exercise.exerciseId === selectedExercise;
-          const exerciseData = exercises.find((ex: any) => ex.id === exercise.exerciseId);
-          const matchesById = exerciseData && exerciseData.name === selectedExercise;
-
-          if (matchesName || matchesById) {
-            for (const set of exercise.sets || []) {
-              const weight = set.weight || 0;
-              const reps = set.completedReps || set.completedReps || 0;
-              if (weight > 0 && reps > 0) {
-                if (weight > maxWeight) {
-                  maxWeight = weight;
-                  repsAtMax = reps;
-                }
-              }
-            }
-          }
+      for (const session of sortedSessions) {
+        const est1RM = getEstimated1RMFromSession(session, selectedExercise);
+        if (est1RM !== null) {
+          return est1RM;
         }
       }
 
-      if (maxWeight === 0 || repsAtMax === 0) return null;
-
-      // Epley formula: 1RM = weight × (1 + reps/30)
-      const epley = maxWeight * (1 + repsAtMax / 30);
-
-      // Brzycki formula: 1RM = weight / (1.0278 - 0.0278 × reps)
-      const brzycki = maxWeight / (1.0278 - 0.0278 * repsAtMax);
-
-      // Average the two
-      return (epley + brzycki) / 2;
+      return null;
     }
 
     const estimated1RM = calculateEstimated1RM();
+    const displayedEstimated1RM = estimated1RM;
 
 
   return (
@@ -155,7 +151,7 @@ export function DashboardPage() {
             <p className="text-xs text-gray-text mt-1">Workouts</p>
           </Card>
           <Card variant="elevated" padding="sm" className="text-center">
-            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume)}</p>
+            <p className="text-2xl font-bold text-yellow-accent">{formatVolume(totalVolume, weightUnit)}</p>
             <p className="text-xs text-gray-text mt-1">Volume</p>
           </Card>
         </div>
@@ -214,45 +210,41 @@ export function DashboardPage() {
         <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
           Estimated 1RM Trend
         </h1>
-        <Card className="mt-2">
+        <Card 
+          className="mt-2 cursor-pointer hover:border-blue-primary/50 transition-colors" 
+          onClick={() => navigate('/performance')}
+        >
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
-                <h3 className="text-3xl font-bold text-blue-primary">
-                  {estimated1RM ? Math.round(estimated1RM) : '—'}
-                </h3>
+            <div className="flex items-start justify-between">
+              <div className="space-y-2 flex-1">
+                <div>
+                  <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-4xl font-bold text-white-primary">
+                      {displayedEstimated1RM ? Math.round(displayedEstimated1RM) : '—'}
+                    </h3>
+                    <span className="text-sm text-gray-text">{displayedEstimated1RM ? weightUnit : ''}</span>
+                  </div>
+                </div>
+                {selectedExerciseName && (
+                  <p className="text-sm text-gray-text">
+                    Exercise: <span className="text-white">{selectedExerciseName}</span>
+                  </p>
+                )}
               </div>
-              <div className="flex items-center gap-3">
-                <select
-                  id="exercise-select"
-                  value={selectedExercise}
-                  onChange={(e) => setSelectedExercise(e.target.value)}
-                  className="w-40 bg-dark-700 border border-dark-600 rounded px-2 py-1 text-sm text-gray-text"
-                >
-                  <option value="">Select exercise…</option>
-                  {exercises.map((ex: any) => (
-                    <option key={ex.id || ex.name} value={ex.name}>{ex.name}</option>
-                  ))}
-                </select>
-              </div>
+              <svg className="w-5 h-5 text-gray-text flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
             </div>
-            <Card variant="outlined" className="mt-6">
-              <div className="p-4 overflow-x-auto">
-                <ExerciseProgressChart points={series} width={640} height={260} />
-              </div>
-            </Card>
-          </div>
-        </Card>
-        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mt-4">
-          Consistency
-        </h2>
-        <h1 className="text-lg font-semibold text-white-text tracking-wider">
-          Training Frequency
-        </h1>
-        <Card className="mt-4">
-          <div>
-            <WorkoutCalendar days={last60Days} />
+            <div>
+              <ExerciseProgressChart
+                points={series}
+                width={480}
+                height={240}
+                xTickDays={10}
+                xDomain={[sixtyDaysAgoTimestamp, nowTimestamp]}
+              />
+            </div>
           </div>
         </Card>
       </section>
@@ -266,7 +258,7 @@ export function DashboardPage() {
           {recentWorkouts.length > 0 ? (
             <div className="space-y-2">
               {recentWorkouts.map((session) => (
-                <Card key={session.id} variant="outlined" padding="sm">
+                <Card key={session.id} padding="sm">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-white">{session.dayName}</p>
@@ -276,7 +268,7 @@ export function DashboardPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-blue-light">
-                        {formatVolume(session.totalVolume)} vol
+                        Vol: {formatVolume(session.totalVolume, weightUnit)} {weightUnit}
                       </p>
                       <p className="text-xs text-gray-text">{session.totalSets} sets</p>
                     </div>
@@ -285,7 +277,7 @@ export function DashboardPage() {
               ))}
             </div>
           ) : (
-            <Card variant="outlined">
+            <Card>
               <p className="text-center text-gray-text text-sm py-4">
                 No workouts logged yet. Complete your first workout to see history.
               </p>
@@ -303,7 +295,6 @@ export function DashboardPage() {
               {plans.map((plan) => (
                 <Card
                   key={plan.id}
-                  variant="outlined"
                   padding="sm"
                   className="cursor-pointer hover:border-blue-primary/50 transition-colors"
                   onClick={() => navigate(`/plan/${plan.id}`)}
@@ -312,7 +303,7 @@ export function DashboardPage() {
                     <div>
                       <p className="font-medium text-white">{plan.name}</p>
                       <p className="text-sm text-gray-text">
-                        {plan.daysPerWeek} days &middot; {plan.splitType} &middot; {plan.trainingStyle}
+                        {plan.daysPerWeek} days &middot; {plan.trainingStyle}
                       </p>
                     </div>
                     <svg className="w-5 h-5 text-gray-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">

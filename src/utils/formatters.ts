@@ -1,11 +1,15 @@
 import { format, formatDistanceToNow } from 'date-fns';
+import type { WeightUnit } from '../types';
+import { kgToLbs } from './calculations';
+
+const LBS_TO_KG = 2.20462;
 
 export function formatDate(date: Date): string {
-  return format(date, 'MMM d, yyyy');
+  return format(date, 'dd/MM/yyyy');
 }
 
 export function formatDateTime(date: Date): string {
-  return format(date, 'MMM d, yyyy h:mm a');
+  return format(date, 'dd/MM/yyyy h:mm a');
 }
 
 export function formatRelativeTime(date: Date): string {
@@ -19,15 +23,43 @@ export function formatDuration(minutes: number): string {
   return mins > 0 ? `${hrs}h ${mins}m` : `${hrs}h`;
 }
 
-export function formatWeight(weight: number, unit: 'lbs' | 'kg'): string {
-  return `${weight} ${unit}`;
+export function formatWeight(weightKg: number, displayUnit: 'lbs' | 'kg'): string {
+  const displayWeight = displayUnit === 'lbs' ? kgToLbs(weightKg) : weightKg;
+  return `${displayWeight} ${displayUnit}`;
 }
 
-export function formatVolume(volume: number): string {
-  if (volume >= 1000) {
-    return `${(volume / 1000).toFixed(1)}k`;
+/**
+ * Convert volume between weight units
+ * Note: Volumes are now always stored in kg (weight in kg × reps)
+ * Conversion factor: 1kg = 2.20462 lbs
+ */
+export function convertVolume(volume: number, fromUnit: WeightUnit, toUnit: WeightUnit): number {
+  if (fromUnit === toUnit) return volume;
+  if (fromUnit === 'lbs' && toUnit === 'kg') {
+    return volume / LBS_TO_KG;
   }
-  return volume.toLocaleString();
+  if (fromUnit === 'kg' && toUnit === 'lbs') {
+    return volume * LBS_TO_KG;
+  }
+  return volume;
+}
+
+/**
+ * Format volume with optional unit conversion
+ * Note: Volumes are always stored in kg internally, specify displayUnit to convert for display
+ */
+export function formatVolume(volume: number, displayUnit?: WeightUnit): string {
+  let displayVolume = volume;
+  
+  // Convert from kg to display unit if needed
+  if (displayUnit && displayUnit !== 'kg') {
+    displayVolume = convertVolume(volume, 'kg', displayUnit);
+  }
+  
+  if (displayVolume >= 1000) {
+    return `${(displayVolume / 1000).toFixed(1)}k`;
+  }
+  return Math.round(displayVolume).toLocaleString();
 }
 
 export function formatTimer(seconds: number): string {

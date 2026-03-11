@@ -5,3 +5,4 @@ export { Modal } from './Modal';
 export { Spinner, FullPageSpinner } from './Spinner';
 export { Badge } from './Badge';
 export { EmptyState } from './EmptyState';
+export { ActiveWorkoutBanner } from './ActiveWorkoutBanner';

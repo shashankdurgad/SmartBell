@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface DayCell {
   date: Date;
   volume: number;
@@ -7,10 +5,17 @@ interface DayCell {
 
 interface Props {
   days: DayCell[];
+  unit?: 'kg' | 'lbs';
 }
 
-export default function WorkoutCalendar({ days }: Props) {
+export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
   if (!days || days.length === 0) return null;
+
+  const formatDayMonth = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${day}/${month}`;
+  };
 
   // Determine max volume for scaling
   const maxVolume = days.reduce((max, d) => (d.volume > max ? d.volume : max), 0);
@@ -41,14 +46,30 @@ export default function WorkoutCalendar({ days }: Props) {
     weeks.push(currentWeek);
   }
 
+  // Build month labels based on first non-zero volume day in each week
+  const monthLabels = weeks.map((week) => {
+    const real = week.find((d) => d.volume > 0);
+    const date = real ? real.date : week[0].date;
+    return date.toLocaleString('default', { month: 'short' });
+  });
+
   return (
     <div>
+      {/* month label row */}
+      <div className="flex gap-1 justify-center text-xs text-gray-text mb-1">
+        {monthLabels.map((m, i) => (
+          <div key={`ml-${i}`} className="w-11 text-center">
+            {i === 0 || m !== monthLabels[i - 1] ? m : ''}
+          </div>
+        ))}
+      </div>
       <div className="flex gap-1 justify-center">
         {weeks.map((week, weekIdx) => (
           <div key={`week-${weekIdx}`} className="flex flex-col gap-1">
             {week.map((day, dayIdx) => {
               const key = day.date.toISOString().slice(0, 10);
               const has = day.volume > 0;
+              const formattedDate = formatDayMonth(day.date);
               const maxLight = 60;
               const minLight = 15;
               let lightness = 8;
@@ -58,7 +79,7 @@ export default function WorkoutCalendar({ days }: Props) {
               }
 
               const bg = has ? `hsl(215 90% ${lightness}%)` : 'rgba(52, 52, 71, 0.31)';
-              const title = has ? `${key} — ${day.volume} vol` : key;
+              const title = has ? `${formattedDate} - ${Math.round(day.volume)} ${unit}` : formattedDate;
 
               return (
                 <div
@@ -74,6 +95,18 @@ export default function WorkoutCalendar({ days }: Props) {
             })}
           </div>
         ))}
+      </div>
+
+      <div className="mt-3 flex items-center gap-2 text-xs text-gray-text">
+        <span className="whitespace-nowrap">Low volume</span>
+        <div
+          className="h-2 flex-1 rounded-sm"
+          style={{
+            background: 'linear-gradient(to right, hsl(215 90% 15%), hsl(215 90% 60%))',
+          }}
+          aria-hidden="true"
+        />
+        <span className="whitespace-nowrap">High volume</span>
       </div>
     </div>
   );
