@@ -89,7 +89,7 @@ function getMuscleColor(
 	if (maxValue === 0) return baseColor;
 
 	if (mode === 'percentile' && averagePercentile !== null && averagePercentile !== undefined) {
-		const difference = value - averagePercentile;
+		const difference = (value >= averagePercentile ? 1 : -1) * Math.round(Math.sqrt(Math.abs(value**2 - averagePercentile**2))) * 0.4;
 
 		if (difference <= -5) {
 			// const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
@@ -300,7 +300,7 @@ function formatPercentile(value: number | null): string {
 function formatPercentileDelta(value: number | null, averagePercentile: number | null): string {
 	if (value === null || averagePercentile === null) return '';
 
-	const difference = Math.round(value - averagePercentile);
+	const difference = Math.round((value - averagePercentile));
 	return ` (${difference >= 0 ? '+' : ''}${difference} vs avg)`;
 }
 
@@ -480,7 +480,7 @@ export function AbstractPhysiqueDiagram({
 										[
 										{musclePercentileDetails[item.key].contributors.length > 0
 											? musclePercentileDetails[item.key].contributors
-													.map((contributor) => `${contributor.exercise}`)
+													.map((contributor) => `${contributor.exercise} - ${formatPercentile(contributor.percentile)}`)
 													.join(', ')
 											: 'No recorded data'}
 										]

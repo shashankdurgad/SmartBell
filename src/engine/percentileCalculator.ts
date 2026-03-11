@@ -95,7 +95,7 @@ export function calculatePercentile(
 
   // If above 95th percentile
   if (oneRM >= genderStandards[95]) {
-    return Math.min(100, 95 + ((oneRM - genderStandards[95]) / genderStandards[95]) * 5);
+    return 95 + ((oneRM - genderStandards[95]) / genderStandards[95]) * 5;
   }
 
   // Interpolate between percentile tiers
