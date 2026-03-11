@@ -1,15 +1,14 @@
 import { workoutRepo } from '../database/repositories/workoutRepo';
-import { estimatedMax, roundToIncrement } from '../utils/calculations';
+import { estimatedMax, roundToIncrement, kgToLbs, lbsToKg } from '../utils/calculations';
 import type { WeightRecommendation } from '../types';
 
 const INCREASE_THRESHOLD_RPE = 7;
 const COMPLETION_THRESHOLD = 0.75;
 const DELOAD_MULTIPLIER = 0.9;
-const INCREASE_MULTIPLIER_LBS = 2.5;
-const INCREASE_MULTIPLIER_KG = 1.25;
+const INCREASE_MULTIPLIER_KG = 1.25;  // Database stores in kg
 
 interface LastSetData {
-  weight: number;
+  weight: number;  // Always in kg (from database)
   completedReps: number;
   targetReps: number;
   rpe: number;
@@ -30,7 +29,7 @@ function getLastSetData(
 
   const lastSet = workingSets[workingSets.length - 1];
   return {
-    weight: lastSet.weight,
+    weight: lastSet.weight,  // Already in kg from database
     completedReps: lastSet.completedReps,
     targetReps: lastSet.targetReps,
     rpe: lastSet.rpe,
@@ -60,7 +59,7 @@ function detectTrend(
 
 export async function getWeightRecommendation(
   exerciseId: string,
-  unit: 'lbs' | 'kg' = 'lbs'
+  unit: 'lbs' | 'kg' = 'kg'
 ): Promise<WeightRecommendation> {
   const sessions = await workoutRepo.getByExerciseId(exerciseId);
 
@@ -87,52 +86,61 @@ export async function getWeightRecommendation(
   }
 
   const trend = detectTrend(sessions, exerciseId);
-  const increment = unit === 'lbs' ? INCREASE_MULTIPLIER_LBS : INCREASE_MULTIPLIER_KG;
+  const increment = INCREASE_MULTIPLIER_KG;  // Always use kg increment
   const completionRate = lastData.targetReps > 0
     ? lastData.completedReps / lastData.targetReps
     : 1;
 
+  // Helper to convert weight for display
+  const convertForDisplay = (weightKg: number): number => {
+    return unit === 'lbs' ? kgToLbs(weightKg) : weightKg;
+  };
+
   // Deload — declining trend
   if (trend === 'declining') {
     const deloadWeight = roundToIncrement(lastData.weight * DELOAD_MULTIPLIER, increment);
+    const displayWeight = convertForDisplay(deloadWeight);
     return {
-      recommendedWeight: deloadWeight,
+      recommendedWeight: displayWeight,
       reasoning: 'deload_fatigue',
       confidence: 'medium',
-      alternativeWeight: lastData.weight,
-      message: `Performance has been declining — try ${deloadWeight}${unit} to reset and recover.`,
+      alternativeWeight: convertForDisplay(lastData.weight),
+      message: `Performance has been declining — try ${displayWeight}${unit} to reset and recover.`,
     };
   }
 
   // Decrease — couldn't complete reps
   if (completionRate < COMPLETION_THRESHOLD) {
     const decreasedWeight = roundToIncrement(lastData.weight - increment * 2, increment);
+    const displayWeight = convertForDisplay(decreasedWeight);
     return {
-      recommendedWeight: decreasedWeight,
+      recommendedWeight: displayWeight,
       reasoning: 'decrease_recovery',
       confidence: 'high',
-      alternativeWeight: lastData.weight,
-      message: `You completed ${Math.round(completionRate * 100)}% of reps last time — drop to ${decreasedWeight}${unit}.`,
+      alternativeWeight: convertForDisplay(lastData.weight),
+      message: `You completed ${Math.round(completionRate * 100)}% of reps last time — drop to ${displayWeight}${unit}.`,
     };
   }
 
   // Increase — (low RPE) and completed all reps
   if (lastData.rpe <= INCREASE_THRESHOLD_RPE && completionRate >= 1) {
     const increasedWeight = roundToIncrement(lastData.weight + increment, increment);
+    const displayWeight = convertForDisplay(increasedWeight);
     return {
-      recommendedWeight: increasedWeight,
+      recommendedWeight: displayWeight,
       reasoning: 'increase_progression',
       confidence: 'high',
-      alternativeWeight: lastData.weight,
-      message: `Great work last time (RPE ${lastData.rpe}) — try ${increasedWeight}${unit} today.`,
+      alternativeWeight: convertForDisplay(lastData.weight),
+      message: `Great work last time (RPE ${lastData.rpe}) — try ${displayWeight}${unit} today.`,
     };
   }
 
   // Maintain 
+  const displayWeight = convertForDisplay(lastData.weight);
   return {
-    recommendedWeight: lastData.weight,
+    recommendedWeight: displayWeight,
     reasoning: 'maintain_consolidate',
     confidence: 'high',
-    message: `Stay at ${lastData.weight}${unit} and aim to improve reps or RPE.`,
+    message: `Stay at ${displayWeight}${unit} and aim to improve reps or RPE.`,
   };
 }
