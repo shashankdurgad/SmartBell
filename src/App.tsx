@@ -9,6 +9,9 @@ import { LibraryPage } from './pages/LibraryPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { seedDatabase } from './database/seed';
 import { useUserStore } from './stores/useUserStore';
+import { ActiveWorkout } from './components/Tracker/ActiveWorkout';
+import { WorkoutComplete } from './components/Tracker/WorkoutComplete';
+
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -36,6 +39,8 @@ function App() {
           <Route path="/workout" element={<WorkoutPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/workout/active" element={<ActiveWorkout />} />
+          <Route path="/workout/complete" element={<WorkoutComplete />} />
         </Routes>
         <BottomNav />
       </div>

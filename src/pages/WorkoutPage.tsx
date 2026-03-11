@@ -1,13 +1,42 @@
+
+import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
 import { EmptyState } from '../components/shared/EmptyState';
 import { Button } from '../components/shared/Button';
-import { useNavigate } from 'react-router-dom';
+import { Badge } from '../components/shared/Badge';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
+import { useWorkoutStore } from '../stores/useWorkoutStore';
+import { useUserStore } from '../stores/useUserStore';
+import { formatDate, formatDuration, formatVolume } from '../utils/formatters';
+import { useEffect } from 'react';
+import type { DailyWorkout } from '../types';
 
 export function WorkoutPage() {
   const navigate = useNavigate();
   const { activePlan } = useWeeklyPlanStore();
+  const { history, loadHistory, startSession } = useWorkoutStore();
+  const { weightUnit } = useUserStore();
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
+
+  const handleStart = (day: DailyWorkout) => {
+    startSession({
+      weeklyPlanId: activePlan!.id,
+      dailyWorkoutId: day.id,
+      dayNumber: day.dayNumber,
+      dayName: day.name,
+      date: new Date(),
+      startTime: new Date(),
+      exercises: day.exercises.map((ex) => ({
+        exerciseId: ex.exerciseId,
+        sets: [],
+      })),
+    });
+    navigate('/workout/active');
+  };
 
   return (
     <div className="min-h-screen pb-24">
@@ -16,50 +45,76 @@ export function WorkoutPage() {
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
         {activePlan ? (
           <>
-            <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
-              Today's Workout
-            </h2>
-            <div className="space-y-3">
-              {activePlan.workouts.map((day, index) => (
-                <Card
-                  key={day.id}
-                  variant="outlined"
-                  className="cursor-pointer hover:border-blue-primary/50 transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
+            <section>
+              <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
+                {activePlan.name}
+              </h2>
+              <div className="space-y-3">
+                {activePlan.workouts.map((day, index) => (
+                  <Card key={day.id} variant="outlined">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
                         <span className="w-8 h-8 rounded-full bg-blue-primary/20 flex items-center justify-center text-sm font-bold text-blue-primary">
                           {index + 1}
                         </span>
                         <div>
                           <p className="font-semibold text-white">{day.name}</p>
                           <p className="text-sm text-gray-text">
-                            {day.exercises.length} exercises &middot; ~{day.estimatedDuration}min
+                            {day.exercises.length} exercises · ~{day.estimatedDuration}min
                           </p>
                         </div>
                       </div>
+                      <Button size="sm" onClick={() => handleStart(day)}>
+                        Start
+                      </Button>
                     </div>
-                    <Button size="sm" variant="secondary">Start</Button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {day.targetMuscles.slice(0, 5).map((muscle) => (
-                      <span
-                        key={muscle}
-                        className="text-xs px-2 py-0.5 rounded-full bg-dark-600 text-gray-text"
-                      >
-                        {muscle}
-                      </span>
-                    ))}
-                    {day.targetMuscles.length > 5 && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-dark-600 text-gray-text">
-                        +{day.targetMuscles.length - 5}
-                      </span>
-                    )}
-                  </div>
-                </Card>
-              ))}
-            </div>
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {day.targetMuscles.slice(0, 5).map((muscle) => (
+                        <span
+                          key={muscle}
+                          className="text-xs px-2 py-0.5 rounded-full bg-dark-600 text-gray-text capitalize"
+                        >
+                          {muscle}
+                        </span>
+                      ))}
+                      {day.targetMuscles.length > 5 && (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-dark-600 text-gray-text">
+                          +{day.targetMuscles.length - 5}
+                        </span>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            {history.length > 0 && (
+              <section>
+                <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider mb-3">
+                  Recent Sessions
+                </h2>
+                <div className="space-y-2">
+                  {history.slice(0, 5).map((session) => (
+                    <Card key={session.id} variant="outlined" padding="sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-white">{session.dayName}</p>
+                          <p className="text-sm text-gray-text">
+                            {formatDate(new Date(session.date))} · {formatDuration(session.duration)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-blue-light">
+                            {formatVolume(session.totalVolume)} {weightUnit}
+                          </p>
+                          <p className="text-xs text-gray-text">{session.totalSets} sets</p>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
           </>
         ) : (
           <Card variant="elevated">
@@ -70,7 +125,7 @@ export function WorkoutPage() {
                 </svg>
               }
               title="No Active Plan"
-              description="Generate a workout plan first, then come back here to start logging your workouts."
+              description="Generate a workout plan first, then come back here to start logging."
               action={
                 <Button onClick={() => navigate('/generator')}>
                   Generate Plan
