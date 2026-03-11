@@ -10,6 +10,7 @@ import { DaySelector } from '../components/generator/DaySelector';
 import { DurationSlider } from '../components/generator/DurationSlider';
 import { ExerciseExcluder } from '../components/generator/ExerciseExcluder';
 import { db } from '../database/db';
+import { useUserStore } from '../stores/useUserStore';
 import type { UserPreferences } from '../database/db';
 
 const REST_PRESETS = [
@@ -21,6 +22,7 @@ const REST_PRESETS = [
 ];
 
 export function ProfilePage() {
+  const setDefaultRestSeconds = useUserStore((s) => s.setDefaultRestSeconds);
   const [trainingStyle, setTrainingStyle] = useState<'strength' | 'hypertrophy' | 'endurance'>('hypertrophy');
   const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'expert'>('intermediate');
   const [equipment, setEquipment] = useState<string[]>([]);
@@ -57,6 +59,8 @@ export function ProfilePage() {
     };
 
     await db.userPreferences.put(prefs);
+    // Keep workout rest timer settings in sync with profile preference.
+    await setDefaultRestSeconds(restTimer);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };

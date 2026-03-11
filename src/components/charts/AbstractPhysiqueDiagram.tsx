@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
 
 const MUSCLE_COLORS = {
@@ -42,6 +42,9 @@ interface Props {
 		biceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
 		triceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
 	};
+	heatmapMode?: 'volume' | 'percentile';
+	onHeatmapModeChange?: (mode: 'volume' | 'percentile') => void;
+	headerControl?: ReactNode;
 }
 
 type DiagramMuscleKey = keyof typeof MUSCLE_COLORS extends infer Key
@@ -292,11 +295,6 @@ const legendItems: Array<{ key: DiagramMuscleKey; label: string; color: string }
 	{ key: 'hamstringGlutes', label: 'Hamstrings & Glutes', color: MUSCLE_COLORS.hamstringGlutes },
 ];
 
-function formatPercentile(value: number | null): string {
-	if (value === null) return '—';
-	return `${Math.round(value)}th`;
-}
-
 function formatPercentileDelta(value: number | null, averagePercentile: number | null): string {
 	if (value === null || averagePercentile === null) return '';
 
@@ -308,8 +306,19 @@ export function AbstractPhysiqueDiagram({
 	muscleVolumes,
 	musclePercentiles,
 	musclePercentileDetails,
+	heatmapMode: controlledHeatmapMode,
+	onHeatmapModeChange,
+	headerControl,
 }: Props) {
-	const [heatmapMode, setHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+	const [internalHeatmapMode, setInternalHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+	const heatmapMode = controlledHeatmapMode ?? internalHeatmapMode;
+
+	const setHeatmapMode = (mode: 'volume' | 'percentile') => {
+		onHeatmapModeChange?.(mode);
+		if (controlledHeatmapMode === undefined) {
+			setInternalHeatmapMode(mode);
+		}
+	};
 	const weightUnit = useUserStore((state) => state.weightUnit);
 
 	const averagePercentile = (() => {
@@ -377,11 +386,10 @@ export function AbstractPhysiqueDiagram({
 			<div className="flex items-center justify-between">
 				<div>
 					<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
-					{/* {heatmapMode === 'percentile' && averagePercentile !== null && (
-						<p className="text-[11px] text-gray-text">Average percentile: {formatPercentile(averagePercentile)}</p>
-					)} */}
 				</div>
-				{musclePercentiles && (
+				{headerControl !== undefined ? (
+					headerControl
+				) : musclePercentiles ? (
 					<div className="flex gap-1 bg-dark-600 p-1 rounded">
 						<button
 							onClick={() => setHeatmapMode('volume')}
@@ -404,7 +412,7 @@ export function AbstractPhysiqueDiagram({
 							Percentile
 						</button>
 					</div>
-				)}
+				) : null}
 			</div>
 
 			<div className="grid grid-cols-2 gap-3">
@@ -480,7 +488,7 @@ export function AbstractPhysiqueDiagram({
 										[
 										{musclePercentileDetails[item.key].contributors.length > 0
 											? musclePercentileDetails[item.key].contributors
-													.map((contributor) => `${contributor.exercise} - ${formatPercentile(contributor.percentile)}`)
+													.map((contributor) => `${contributor.exercise}`)
 													.join(', ')
 											: 'No recorded data'}
 										]
