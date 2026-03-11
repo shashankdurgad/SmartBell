@@ -108,7 +108,7 @@ function getMuscleColor(
 		return 'hsl(210 85% 45%)';
 	}
 
-	const { h, s } = hexToHsl(baseColor);
+	const { h } = hexToHsl(baseColor);
 	
 	// For percentile mode, normalize to 0-100
 	const normalizedValue = mode === 'percentile' ? (value / 100) * 1.2 : value / maxValue * 1.2;
