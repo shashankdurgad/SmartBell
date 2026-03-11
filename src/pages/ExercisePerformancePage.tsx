@@ -10,7 +10,7 @@ import { useExercises } from '../hooks/useExercises';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
-import { convertVolume } from '../utils/formatters';
+import { convertVolume, formatDate } from '../utils/formatters';
 import type { WorkoutSession, WorkoutSet } from '../types';
 
 function getBestWorkingSet(sets: WorkoutSet[]): WorkoutSet | null {
@@ -242,8 +242,8 @@ export function ExercisePerformancePage() {
 
               <Card variant="outlined" padding="sm">
                 <p className="text-xs text-gray-text">Last Performed</p>
-                <p className="text-sm font-medium text-white mt-1">
-                  {latestEntry ? new Date(latestEntry.session.date).toLocaleDateString() : '-'}
+                <p className="text-xl font-semibold text-white mt-1">
+                  {latestEntry ? formatDate(new Date(latestEntry.session.date)) : '-'}
                 </p>
               </Card>
             </div>
@@ -287,7 +287,7 @@ export function ExercisePerformancePage() {
                       className="flex items-center justify-between rounded-lg bg-dark-700 px-3 py-2"
                     >
                       <span className="text-sm text-white">
-                        {new Date(item.session.date).toLocaleDateString()}
+                        {formatDate(new Date(item.session.date))}
                       </span>
                       <span className="text-xs text-gray-text">
                         {item.bestSet.weight.toFixed(1)} x {item.bestSet.completedReps}
