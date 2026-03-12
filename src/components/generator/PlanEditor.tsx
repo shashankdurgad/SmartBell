@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   DndContext,
   PointerSensor,
@@ -35,18 +35,27 @@ interface SortableExerciseItemProps {
 }
 
 function SortableExerciseItem({ id, exercise, onRemove, onEdit }: SortableExerciseItemProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+    transition: {
+      duration: 250,
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    },
+  });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.4 : 1,
+    zIndex: isDragging ? 1 : 'auto',
   };
 
   return (
     <li
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 bg-zinc-800 p-2 rounded text-sm"
+      className={`flex items-center gap-2 rounded bg-zinc-800 p-2 text-sm transition-shadow duration-200 ${
+        isDragging ? 'shadow-lg shadow-blue-950/40' : 'shadow-none'
+      }`}
     >
       <button
         className="flex-shrink-0 cursor-grab active:cursor-grabbing touch-none p-1 text-zinc-500 hover:text-zinc-300"
@@ -63,7 +72,7 @@ function SortableExerciseItem({ id, exercise, onRemove, onEdit }: SortableExerci
       <button className="flex-1 min-w-0 text-left hover:opacity-80" onClick={onEdit}>
         <div className="text-zinc-200">{exercise.exerciseName.replace(/_/g, ' ')}</div>
         <div className="text-xs text-zinc-500">
-          {exercise.sets} × {exercise.reps} • {exercise.restSeconds}s rest
+          {exercise.sets} × {exercise.reps} Reps
         </div>
       </button>
       <Button variant="danger" size="sm" onClick={onRemove} className="flex-shrink-0">
@@ -92,6 +101,20 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
   const [editReps, setEditReps] = useState('');
 
   const defaultRestSeconds = useUserStore((state) => state.defaultRestSeconds);
+  const exerciseSortableIdsRef = useRef(new WeakMap<RoutineExercise, string>());
+  const exerciseSortableIdCounterRef = useRef(0);
+
+  const getExerciseSortableId = (exercise: RoutineExercise) => {
+    const existingId = exerciseSortableIdsRef.current.get(exercise);
+    if (existingId) {
+      return existingId;
+    }
+
+    exerciseSortableIdCounterRef.current += 1;
+    const nextId = `${exercise.exerciseId}-${exerciseSortableIdCounterRef.current}`;
+    exerciseSortableIdsRef.current.set(exercise, nextId);
+    return nextId;
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -105,8 +128,11 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
       ...prev,
       workouts: prev.workouts.map((workout, idx) => {
         if (idx !== dayIndex) return workout;
-        const oldIndex = workout.exercises.findIndex((_, i) => String(i) === active.id);
-        const newIndex = workout.exercises.findIndex((_, i) => String(i) === over.id);
+        const oldIndex = workout.exercises.findIndex((exercise) => getExerciseSortableId(exercise) === active.id);
+        const newIndex = workout.exercises.findIndex((exercise) => getExerciseSortableId(exercise) === over.id);
+        if (oldIndex === -1 || newIndex === -1) {
+          return workout;
+        }
         return { ...workout, exercises: arrayMove(workout.exercises, oldIndex, newIndex) };
       }),
     }));
@@ -251,14 +277,14 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
                   onDragEnd={(event) => handleReorderExercises(dayIndex, event)}
                 >
                   <SortableContext
-                    items={day.exercises.map((_, i) => String(i))}
+                    items={day.exercises.map((exercise) => getExerciseSortableId(exercise))}
                     strategy={verticalListSortingStrategy}
                   >
                     <ul className="space-y-2 mb-4">
                       {day.exercises.map((ex, i) => (
                         <SortableExerciseItem
-                          key={String(i)}
-                          id={String(i)}
+                          key={getExerciseSortableId(ex)}
+                          id={getExerciseSortableId(ex)}
                           exercise={ex}
                           onRemove={() => handleRemoveExercise(dayIndex, i)}
                           onEdit={() => openEditExercise(dayIndex, i)}
