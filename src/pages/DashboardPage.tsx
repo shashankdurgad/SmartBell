@@ -4,15 +4,15 @@ import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
 import { Button } from '../components/shared/Button';
 import { EmptyState } from '../components/shared/EmptyState';
+import { AbstractPhysiqueDiagram } from '../components/charts/AbstractPhysiqueDiagram';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { exerciseRepo } from '../database/repositories/exerciseRepo';
 import { formatDate, formatVolume, formatDuration } from '../utils/formatters';
-import { ExerciseProgressChart, type SeriesPoint } from '../components/charts/ExerciseProgressChart';
 import { useExercises } from '../hooks/useExercises';
-import { estimatedMax, kgToLbs } from '../utils/calculations';
-import type { WorkoutSession } from '../types';
+import { convertVolume } from '../utils/formatters';
+import type { MuscleGroup } from '../types';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -30,109 +30,72 @@ export function DashboardPage() {
   const recentWorkouts = history.slice(0, 3);
   const totalVolume = history.reduce((sum, s) => sum + s.totalVolume, 0);
   const totalWorkouts = history.length;
-
-  // Auto-select most recently performed strength-based exercise
   const { exercises } = useExercises();
 
-  // Progress chart displays last 60 days only.
-  const nowTimestamp = Date.now();
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-  const sixtyDaysAgoTimestamp = sixtyDaysAgo.getTime();
+  const getExerciseSetVolumeKg = (sessionExercise: { sets: Array<{ isWarmup: boolean; weight: number; completedReps: number }> }): number => {
+    return sessionExercise.sets.reduce((sum, set) => {
+      if (set.isWarmup) return sum;
+      return sum + ((set.weight || 0) * (set.completedReps || 0));
+    }, 0);
+  };
 
-  // Find the most recently performed strength-based exercise
-  const selectedExercise = (() => {
-    // Sort sessions by date (most recent first)
-    const sortedSessions = [...history].sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+  const getDiagramGroupContributionMultiplier = (
+    primaryMuscles: readonly MuscleGroup[],
+    secondaryMuscles: readonly MuscleGroup[],
+    diagramGroupMuscles: MuscleGroup[]
+  ): number => {
+    const hasPrimaryTarget = diagramGroupMuscles.some((m) => primaryMuscles.includes(m));
+    if (hasPrimaryTarget) return 1;
 
-    // Find first exercise with valid strength data
-    for (const session of sortedSessions) {
-      for (const exercise of session.exercises) {
-        const hasValidData = exercise.sets.some(
-          (set) => !set.isWarmup && (set.weight ?? 0) > 0 && (set.completedReps ?? 0) > 0
+    const hasSecondaryTarget = diagramGroupMuscles.some((m) => secondaryMuscles.includes(m));
+    if (hasSecondaryTarget) return 0.5;
+
+    return 0;
+  };
+
+  const muscleGroupVolumes = {
+    chest: 0,
+    back: 0,
+    shoulders: 0,
+    quadriceps: 0,
+    hamstringGlutes: 0,
+    biceps: 0,
+    triceps: 0,
+  };
+
+  const diagramMuscles: { key: keyof typeof muscleGroupVolumes; muscles: MuscleGroup[] }[] = [
+    { key: 'chest', muscles: ['chest'] },
+    { key: 'back', muscles: ['lats', 'middle back', 'lower back'] },
+    { key: 'shoulders', muscles: ['shoulders'] },
+    { key: 'quadriceps', muscles: ['quadriceps'] },
+    { key: 'hamstringGlutes', muscles: ['hamstrings', 'glutes'] },
+    { key: 'biceps', muscles: ['biceps'] },
+    { key: 'triceps', muscles: ['triceps'] },
+  ];
+
+  for (const session of history) {
+    for (const diagramMuscleGroup of diagramMuscles) {
+      for (const workoutExercise of session.exercises) {
+        const exercise = exercises.find((ex) => ex.id === workoutExercise.exerciseId);
+        if (!exercise) continue;
+
+        const contributionMultiplier = getDiagramGroupContributionMultiplier(
+          exercise.primaryMuscles as readonly MuscleGroup[],
+          exercise.secondaryMuscles as readonly MuscleGroup[],
+          diagramMuscleGroup.muscles
         );
-        if (hasValidData) {
-          return exercise.exerciseId;
+
+        if (contributionMultiplier > 0) {
+          const exerciseVolume = getExerciseSetVolumeKg(workoutExercise);
+          muscleGroupVolumes[diagramMuscleGroup.key] += exerciseVolume * contributionMultiplier;
         }
       }
     }
-    return '';
-  })();
-
-  // Get exercise name for display
-  const selectedExerciseName = selectedExercise
-    ? exercises.find((ex) => ex.id === selectedExercise)?.name.replace(/_/g, ' ') || ''
-    : '';
-
-  // Helper to get estimated 1RM for a given exercise from a session
-  function getEstimated1RMFromSession(session: WorkoutSession, exerciseId: string): number | null {
-    if (!exerciseId) return null;
-
-    // Find the exercise in the session
-    const exercise = session.exercises.find((e) => e.exerciseId === exerciseId);
-    if (!exercise || !exercise.sets || exercise.sets.length === 0) return null;
-
-    // Find the heaviest working set (non-warmup)
-    let maxWeight = 0;
-    let repsAtMax = 0;
-
-    for (const set of exercise.sets) {
-      if (set.isWarmup) continue;
-      const weight = set.weight || 0;
-      const reps = set.completedReps || 0;
-      if (weight > 0 && reps > 0 && weight > maxWeight) {
-        maxWeight = weight;
-        repsAtMax = reps;
-      }
-    }
-
-    if (maxWeight === 0 || repsAtMax === 0) return null;
-
-    // Calculate estimated 1RM (weights are stored in kg)
-    const est1RM = estimatedMax(maxWeight, repsAtMax);
-    
-    // Convert to display unit
-    return weightUnit === 'lbs' ? kgToLbs(est1RM) : est1RM;
   }
 
-  // Build series from history for the selected exercise (estimated 1RM trend)
-  // Filter to last 2 months (60 days)
-  const series: SeriesPoint[] = history
-    .map((session) => {
-      const est1RM = getEstimated1RMFromSession(session, selectedExercise);
-      return {
-        date: new Date(session.date),
-        x: new Date(session.date).getTime(),
-        y: est1RM || 0,
-      };
-    })
-    .filter(p => p.y > 0 && p.x >= sixtyDaysAgoTimestamp)
-    .sort((a, b) => a.x - b.x)
-    .map((p) => ({ x: p.x, y: p.y }));
-
-    // Calculate estimated 1RM from the most recent workout for this exercise
-    function calculateEstimated1RM(): number | null {
-      if (!selectedExercise) return null;
-
-      // Find the most recent session containing this exercise
-      const sortedSessions = [...history].sort((a, b) => 
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-
-      for (const session of sortedSessions) {
-        const est1RM = getEstimated1RMFromSession(session, selectedExercise);
-        if (est1RM !== null) {
-          return est1RM;
-        }
-      }
-
-      return null;
-    }
-
-    const estimated1RM = calculateEstimated1RM();
-    const displayedEstimated1RM = estimated1RM;
+  for (const key of Object.keys(muscleGroupVolumes) as (keyof typeof muscleGroupVolumes)[]) {
+    muscleGroupVolumes[key] = convertVolume(muscleGroupVolumes[key], 'kg', weightUnit);
+  }
 
 
   return (
@@ -202,48 +165,35 @@ export function DashboardPage() {
         </section>
 
         
-      {/* Exercise Progress */}
+      {/* Physique Balance */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
-          Performance
-        </h2>
-        <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider mb-3">
-          Estimated 1RM Trend
-        </h1>
-        <Card 
-          className="mt-2 cursor-pointer hover:border-blue-primary/50 transition-colors" 
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="text-sm font-semibold text-gray-text uppercase tracking-wider">
+              Performance
+            </h2>
+            <h1 className="text-lg font-semibold text-white-text uppercase tracking-wider">
+              Physique Balance
+            </h1>
+          </div>
+        </div>
+        <Card
+          className="cursor-pointer hover:border-blue-primary/50 transition-colors"
           onClick={() => navigate('/performance')}
         >
           <div className="space-y-3">
             <div className="flex items-start justify-between">
-              <div className="space-y-2 flex-1">
-                <div>
-                  <p className="text-xs text-gray-text mb-1">Current Estimated 1RM</p>
-                  <div className="flex items-baseline gap-2">
-                    <h3 className="text-4xl font-bold text-white-primary">
-                      {displayedEstimated1RM ? Math.round(displayedEstimated1RM) : '—'}
-                    </h3>
-                    <span className="text-sm text-gray-text">{displayedEstimated1RM ? weightUnit : ''}</span>
-                  </div>
-                </div>
-                {selectedExerciseName && (
-                  <p className="text-sm text-gray-text">
-                    Exercise: <span className="text-white">{selectedExerciseName}</span>
-                  </p>
-                )}
-              </div>
-              <svg className="w-5 h-5 text-gray-text flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
+              <p className="text-sm text-gray-text">
+                Muscle emphasis from logged training volume.
+              </p>
+              <span className="text-gray-text ml-3 mt-0.5" aria-hidden="true">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </span>
             </div>
             <div>
-              <ExerciseProgressChart
-                points={series}
-                width={480}
-                height={240}
-                xTickDays={10}
-                xDomain={[sixtyDaysAgoTimestamp, nowTimestamp]}
-              />
+              <AbstractPhysiqueDiagram muscleVolumes={muscleGroupVolumes} />
             </div>
           </div>
         </Card>

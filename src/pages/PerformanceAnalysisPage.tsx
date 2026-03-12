@@ -12,6 +12,7 @@ import {
   calculateAllMuscleGroupPercentiles,
   calculatePercentile,
   type ExerciseName,
+  type Gender,
 } from '../engine/percentileCalculator';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
 import { convertVolume } from '../utils/formatters';
@@ -44,12 +45,12 @@ export function PerformanceAnalysisPage() {
   const [isExerciseSearchOpen, setIsExerciseSearchOpen] = useState<boolean>(false);
   const [exerciseSearchQuery, setExerciseSearchQuery] = useState<string>('');
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<MuscleGroup | 'all'>('all');
+  const [percentileGender, setPercentileGender] = useState<Gender>('male');
+  const [physiqueHeatmapMode, setPhysiqueHeatmapMode] = useState<'volume' | 'percentile'>('volume');
 
   useEffect(() => {
     loadHistory();
   }, [loadHistory]);
-
-  const percentileGender = 'male' as const;
 
   // Progress chart displays last 60 days only.
   const nowTimestamp = Date.now();
@@ -408,15 +409,17 @@ export function PerformanceAnalysisPage() {
       return validValues.reduce((sum, value) => sum + value, 0) / validValues.length;
     };
 
-    const getContributors = (...exerciseNames: ExerciseName[]): Array<{ exercise: string; percentile: number }> => {
-      return exerciseNames.reduce<Array<{ exercise: string; percentile: number }>>((contributors, exerciseName) => {
+    const getContributors = (
+      ...exerciseNames: ExerciseName[]
+    ): Array<{ exercise: string; hasData: boolean; percentile: number | null }> => {
+      return exerciseNames.map((exerciseName) => {
         const percentile = exercisePercentiles[exerciseName];
-        if (percentile !== null && percentile !== undefined) {
-          contributors.push({ exercise: exerciseName, percentile });
-        }
-
-        return contributors;
-      }, []);
+        return {
+          exercise: exerciseName,
+          hasData: percentile !== null && percentile !== undefined,
+          percentile: percentile ?? null,
+        };
+      });
     };
 
     return {
@@ -797,10 +800,66 @@ export function PerformanceAnalysisPage() {
             PHYSIQUE BALANCE DIAGRAM
           </h1>
           <Card>
-            <p className="text-sm text-gray-text mb-4">
-              Compare recent training volume with estimated strength percentiles.
-            </p>
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <p className="text-sm text-gray-text">
+                Compare recent training volume with estimated strength percentiles.
+              </p>
+              <div className="flex gap-1 bg-dark-700 p-1 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setPhysiqueHeatmapMode('volume')}
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                    physiqueHeatmapMode === 'volume'
+                      ? 'bg-blue-primary text-white'
+                      : 'text-gray-text hover:text-white'
+                  }`}
+                >
+                  Volume
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPhysiqueHeatmapMode('percentile')}
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                    physiqueHeatmapMode === 'percentile'
+                      ? 'bg-blue-primary text-white'
+                      : 'text-gray-text hover:text-white'
+                  }`}
+                >
+                  Percentile
+                </button>
+              </div>
+            </div>
             <AbstractPhysiqueDiagram
+              heatmapMode={physiqueHeatmapMode}
+              onHeatmapModeChange={setPhysiqueHeatmapMode}
+              headerControl={
+                physiqueHeatmapMode === 'percentile' ? (
+                <div className="flex gap-1 bg-dark-600 p-1 rounded">
+                  <button
+                    type="button"
+                    onClick={() => setPercentileGender('male')}
+                    className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                      percentileGender === 'male'
+                        ? 'bg-blue-primary text-white'
+                        : 'text-gray-text hover:text-white'
+                    }`}
+                  >
+                    Male
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPercentileGender('female')}
+                    className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                      percentileGender === 'female'
+                        ? 'bg-blue-primary text-white'
+                        : 'text-gray-text hover:text-white'
+                    }`}
+                  >
+                    Female
+                  </button>
+                </div>
+                ) : null
+              }
               muscleVolumes={muscleGroupVolumes}
               musclePercentiles={{
                 chest: diagramMusclePercentiles.chest.percentile,

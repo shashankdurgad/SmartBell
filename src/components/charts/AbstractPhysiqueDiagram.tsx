@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
 
 const MUSCLE_COLORS = {
@@ -34,14 +34,17 @@ interface Props {
 		triceps: number | null;
 	};
 	musclePercentileDetails?: {
-		chest: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		back: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		shoulders: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		quadriceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		hamstringGlutes: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		biceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		triceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		chest: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		back: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		shoulders: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		quadriceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		hamstringGlutes: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		biceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		triceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
 	};
+	heatmapMode?: 'volume' | 'percentile';
+	onHeatmapModeChange?: (mode: 'volume' | 'percentile') => void;
+	headerControl?: ReactNode;
 }
 
 type DiagramMuscleKey = keyof typeof MUSCLE_COLORS extends infer Key
@@ -89,7 +92,7 @@ function getMuscleColor(
 	if (maxValue === 0) return baseColor;
 
 	if (mode === 'percentile' && averagePercentile !== null && averagePercentile !== undefined) {
-		const difference = value - averagePercentile;
+		const difference = (value >= averagePercentile ? 1 : -1) * Math.round(Math.sqrt(Math.abs(value**2 - averagePercentile**2))) * 0.4;
 
 		if (difference <= -5) {
 			// const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
@@ -108,7 +111,7 @@ function getMuscleColor(
 		return 'hsl(210 85% 45%)';
 	}
 
-	const { h, s } = hexToHsl(baseColor);
+	const { h } = hexToHsl(baseColor);
 	
 	// For percentile mode, normalize to 0-100
 	const normalizedValue = mode === 'percentile' ? (value / 100) * 1.2 : value / maxValue * 1.2;
@@ -292,15 +295,10 @@ const legendItems: Array<{ key: DiagramMuscleKey; label: string; color: string }
 	{ key: 'hamstringGlutes', label: 'Hamstrings & Glutes', color: MUSCLE_COLORS.hamstringGlutes },
 ];
 
-function formatPercentile(value: number | null): string {
-	if (value === null) return '—';
-	return `${Math.round(value)}th`;
-}
-
 function formatPercentileDelta(value: number | null, averagePercentile: number | null): string {
 	if (value === null || averagePercentile === null) return '';
 
-	const difference = Math.round(value - averagePercentile);
+	const difference = Math.round((value - averagePercentile));
 	return ` (${difference >= 0 ? '+' : ''}${difference} vs avg)`;
 }
 
@@ -308,8 +306,19 @@ export function AbstractPhysiqueDiagram({
 	muscleVolumes,
 	musclePercentiles,
 	musclePercentileDetails,
+	heatmapMode: controlledHeatmapMode,
+	onHeatmapModeChange,
+	headerControl,
 }: Props) {
-	const [heatmapMode, setHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+	const [internalHeatmapMode, setInternalHeatmapMode] = useState<'volume' | 'percentile'>('volume');
+	const heatmapMode = controlledHeatmapMode ?? internalHeatmapMode;
+
+	const setHeatmapMode = (mode: 'volume' | 'percentile') => {
+		onHeatmapModeChange?.(mode);
+		if (controlledHeatmapMode === undefined) {
+			setInternalHeatmapMode(mode);
+		}
+	};
 	const weightUnit = useUserStore((state) => state.weightUnit);
 
 	const averagePercentile = (() => {
@@ -377,11 +386,10 @@ export function AbstractPhysiqueDiagram({
 			<div className="flex items-center justify-between">
 				<div>
 					<h3 className="text-sm font-medium text-gray-light">Physique Balance</h3>
-					{/* {heatmapMode === 'percentile' && averagePercentile !== null && (
-						<p className="text-[11px] text-gray-text">Average percentile: {formatPercentile(averagePercentile)}</p>
-					)} */}
 				</div>
-				{musclePercentiles && (
+				{headerControl !== undefined ? (
+					headerControl
+				) : musclePercentiles ? (
 					<div className="flex gap-1 bg-dark-600 p-1 rounded">
 						<button
 							onClick={() => setHeatmapMode('volume')}
@@ -404,7 +412,7 @@ export function AbstractPhysiqueDiagram({
 							Percentile
 						</button>
 					</div>
-				)}
+				) : null}
 			</div>
 
 			<div className="grid grid-cols-2 gap-3">
@@ -476,15 +484,22 @@ export function AbstractPhysiqueDiagram({
 									)}
 								</div>
 								{heatmapMode === 'percentile' && musclePercentileDetails && (
-									<p className="mt-0.5 text-[11px] leading-relaxed text-gray-text">
-										[
-										{musclePercentileDetails[item.key].contributors.length > 0
-											? musclePercentileDetails[item.key].contributors
-													.map((contributor) => `${contributor.exercise}`)
-													.join(', ')
-											: 'No recorded data'}
-										]
-									</p>
+									<div className="mt-1 flex flex-wrap gap-1">
+										{[...musclePercentileDetails[item.key].contributors].sort((a, b) => Number(b.hasData) - Number(a.hasData)).map((contributor) => (
+											<span
+												key={`${item.key}-${contributor.exercise}`}
+												className={`rounded px-1 py-0.5 text-[11px] leading-relaxed ${
+													contributor.hasData
+														? 'bg-blue-primary/20 text-blue-200 borderless'
+														: 'bg-dark-600 text-gray-text borderless'
+
+												}`}
+												title={contributor.hasData ? 'Recorded data available' : 'No recorded data'}
+											>
+												{contributor.exercise}
+											</span>
+										))}
+									</div>
 								)}
 							</div>
 						</div>

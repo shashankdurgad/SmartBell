@@ -10,7 +10,11 @@ import { DaySelector } from '../components/generator/DaySelector';
 import { DurationSlider } from '../components/generator/DurationSlider';
 import { ExerciseExcluder } from '../components/generator/ExerciseExcluder';
 import { db } from '../database/db';
+import { useUserStore } from '../stores/useUserStore';
+import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import type { UserPreferences } from '../database/db';
+import { weeklyPlanRepo } from '../database/repositories/weeklyPlanRepo';
+import { calcWorkoutDuration } from '../utils/calculations';
 
 const REST_PRESETS = [
   { label: '30s', value: 30 },
@@ -21,6 +25,8 @@ const REST_PRESETS = [
 ];
 
 export function ProfilePage() {
+  const setDefaultRestSeconds = useUserStore((s) => s.setDefaultRestSeconds);
+  const loadPlans = useWeeklyPlanStore((s) => s.loadPlans);
   const [trainingStyle, setTrainingStyle] = useState<'strength' | 'hypertrophy' | 'endurance'>('hypertrophy');
   const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'expert'>('intermediate');
   const [equipment, setEquipment] = useState<string[]>([]);
@@ -57,6 +63,26 @@ export function ProfilePage() {
     };
 
     await db.userPreferences.put(prefs);
+    // Keep workout rest timer settings in sync with profile preference.
+    await setDefaultRestSeconds(restTimer);
+
+    // Recalculate estimated durations for all stored plans using the new rest time.
+    const allPlans = await weeklyPlanRepo.getAll();
+    for (const plan of allPlans) {
+      const workouts = plan.workouts.map((w) => ({
+        ...w,
+        estimatedDuration: calcWorkoutDuration(w.exercises, plan.trainingStyle, restTimer),
+      }));
+      await weeklyPlanRepo.save({
+        ...plan,
+        workouts,
+        estimatedWeeklyDuration: workouts.reduce((sum, w) => sum + w.estimatedDuration, 0),
+      });
+    }
+
+    // Refresh the in-memory store so the Workout page reflects the new durations.
+    await loadPlans();
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
