@@ -34,13 +34,13 @@ interface Props {
 		triceps: number | null;
 	};
 	musclePercentileDetails?: {
-		chest: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		back: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		shoulders: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		quadriceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		hamstringGlutes: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		biceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
-		triceps: { percentile: number | null; contributors: Array<{ exercise: string; percentile: number }> };
+		chest: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		back: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		shoulders: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		quadriceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		hamstringGlutes: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		biceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
+		triceps: { percentile: number | null; contributors: Array<{ exercise: string; hasData: boolean; percentile: number | null }> };
 	};
 	heatmapMode?: 'volume' | 'percentile';
 	onHeatmapModeChange?: (mode: 'volume' | 'percentile') => void;
@@ -484,15 +484,22 @@ export function AbstractPhysiqueDiagram({
 									)}
 								</div>
 								{heatmapMode === 'percentile' && musclePercentileDetails && (
-									<p className="mt-0.5 text-[11px] leading-relaxed text-gray-text">
-										[
-										{musclePercentileDetails[item.key].contributors.length > 0
-											? musclePercentileDetails[item.key].contributors
-													.map((contributor) => `${contributor.exercise}`)
-													.join(', ')
-											: 'No recorded data'}
-										]
-									</p>
+									<div className="mt-1 flex flex-wrap gap-1">
+										{[...musclePercentileDetails[item.key].contributors].sort((a, b) => Number(b.hasData) - Number(a.hasData)).map((contributor) => (
+											<span
+												key={`${item.key}-${contributor.exercise}`}
+												className={`rounded px-1 py-0.5 text-[11px] leading-relaxed ${
+													contributor.hasData
+														? 'bg-blue-primary/20 text-blue-200 borderless'
+														: 'bg-dark-600 text-gray-text borderless'
+
+												}`}
+												title={contributor.hasData ? 'Recorded data available' : 'No recorded data'}
+											>
+												{contributor.exercise}
+											</span>
+										))}
+									</div>
 								)}
 							</div>
 						</div>

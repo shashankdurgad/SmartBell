@@ -409,15 +409,17 @@ export function PerformanceAnalysisPage() {
       return validValues.reduce((sum, value) => sum + value, 0) / validValues.length;
     };
 
-    const getContributors = (...exerciseNames: ExerciseName[]): Array<{ exercise: string; percentile: number }> => {
-      return exerciseNames.reduce<Array<{ exercise: string; percentile: number }>>((contributors, exerciseName) => {
+    const getContributors = (
+      ...exerciseNames: ExerciseName[]
+    ): Array<{ exercise: string; hasData: boolean; percentile: number | null }> => {
+      return exerciseNames.map((exerciseName) => {
         const percentile = exercisePercentiles[exerciseName];
-        if (percentile !== null && percentile !== undefined) {
-          contributors.push({ exercise: exerciseName, percentile });
-        }
-
-        return contributors;
-      }, []);
+        return {
+          exercise: exerciseName,
+          hasData: percentile !== null && percentile !== undefined,
+          percentile: percentile ?? null,
+        };
+      });
     };
 
     return {

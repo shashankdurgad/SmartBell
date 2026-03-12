@@ -1,14 +1,81 @@
 import { useState } from 'react';
+import {
+  DndContext,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Card } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { Badge } from '../shared/Badge';
 import { Input } from '../shared/Input';
-import type { WeeklyPlan, DailyWorkout, RoutineExercise } from '../../types';
+import type { WeeklyPlan, RoutineExercise } from '../../types';
 import { useExercises } from '../../hooks/useExercises';
 import { Modal } from '../shared/Modal';
 import { Spinner } from '../shared/Spinner';
 import type { Exercise, MuscleGroup } from '../../types';
 import { ALL_MUSCLE_GROUPS } from '../../types/exercise.types';
+import { useUserStore } from '../../stores/useUserStore';
+import { calcWorkoutDuration } from '../../utils/calculations';
+
+interface SortableExerciseItemProps {
+  id: string;
+  exercise: RoutineExercise;
+  onRemove: () => void;
+  onEdit: () => void;
+}
+
+function SortableExerciseItem({ id, exercise, onRemove, onEdit }: SortableExerciseItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+  };
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center gap-2 bg-zinc-800 p-2 rounded text-sm"
+    >
+      <button
+        className="flex-shrink-0 cursor-grab active:cursor-grabbing touch-none p-1 text-zinc-500 hover:text-zinc-300"
+        aria-label="Drag to reorder"
+        {...attributes}
+        {...listeners}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+          <circle cx="7" cy="5" r="1.2" /><circle cx="13" cy="5" r="1.2" />
+          <circle cx="7" cy="10" r="1.2" /><circle cx="13" cy="10" r="1.2" />
+          <circle cx="7" cy="15" r="1.2" /><circle cx="13" cy="15" r="1.2" />
+        </svg>
+      </button>
+      <button className="flex-1 min-w-0 text-left hover:opacity-80" onClick={onEdit}>
+        <div className="text-zinc-200">{exercise.exerciseName.replace(/_/g, ' ')}</div>
+        <div className="text-xs text-zinc-500">
+          {exercise.sets} × {exercise.reps} • {exercise.restSeconds}s rest
+        </div>
+      </button>
+      <Button variant="danger" size="sm" onClick={onRemove} className="flex-shrink-0">
+        Remove
+      </Button>
+    </li>
+  );
+}
+
+function calcEstimatedDuration(exercises: RoutineExercise[], trainingStyle: string, defaultRestSeconds: number): number {
+  return calcWorkoutDuration(exercises, trainingStyle, defaultRestSeconds);
+}
 
 interface PlanEditorProps {
   plan: WeeklyPlan;
@@ -20,23 +87,52 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
   const [editedPlan, setEditedPlan] = useState<WeeklyPlan>(plan);
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
   const [showAddExercise, setShowAddExercise] = useState(false);
+  const [editingExercise, setEditingExercise] = useState<{ dayIndex: number; exerciseIndex: number } | null>(null);
+  const [editSets, setEditSets] = useState('');
+  const [editReps, setEditReps] = useState('');
+
+  const defaultRestSeconds = useUserStore((state) => state.defaultRestSeconds);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
+  );
+
+  const handleReorderExercises = (dayIndex: number, event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    setEditedPlan((prev) => ({
+      ...prev,
+      workouts: prev.workouts.map((workout, idx) => {
+        if (idx !== dayIndex) return workout;
+        const oldIndex = workout.exercises.findIndex((_, i) => String(i) === active.id);
+        const newIndex = workout.exercises.findIndex((_, i) => String(i) === over.id);
+        return { ...workout, exercises: arrayMove(workout.exercises, oldIndex, newIndex) };
+      }),
+    }));
+  };
   const [isSaving, setIsSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMuscles, setSelectedMuscles] = useState<MuscleGroup[]>([]);
   const { exercises, isLoading } = useExercises({ muscles: selectedMuscles.length > 0 ? selectedMuscles : undefined, searchQuery });
 
   const handleRemoveExercise = (dayIndex: number, exerciseIndex: number) => {
-    setEditedPlan((prev) => ({
-      ...prev,
-      workouts: prev.workouts.map((workout, idx) =>
-        idx === dayIndex
-          ? {
-              ...workout,
-              exercises: workout.exercises.filter((_, j) => j !== exerciseIndex),
-            }
-          : workout
-      ),
-    }));
+    setEditedPlan((prev) => {
+      const workouts = prev.workouts.map((workout, idx) => {
+        if (idx !== dayIndex) return workout;
+        const exercises = workout.exercises.filter((_, j) => j !== exerciseIndex);
+        return {
+          ...workout,
+          exercises,
+          estimatedDuration: calcEstimatedDuration(exercises, prev.trainingStyle, defaultRestSeconds),
+        };
+      });
+      return {
+        ...prev,
+        workouts,
+        estimatedWeeklyDuration: workouts.reduce((sum, w) => sum + w.estimatedDuration, 0),
+      };
+    });
   };
 
   const handleAddExercise = (dayIndex: number, exercise: Exercise) => {
@@ -45,20 +141,25 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
       exerciseName: exercise.name,
       sets: 3,
       reps: '8-12',
-      restSeconds: 60,
+      restSeconds: defaultRestSeconds,
     };
 
-    setEditedPlan((prev) => ({
-      ...prev,
-      workouts: prev.workouts.map((workout, idx) =>
-        idx === dayIndex
-          ? {
-              ...workout,
-              exercises: [...workout.exercises, newExercise],
-            }
-          : workout
-      ),
-    }));
+    setEditedPlan((prev) => {
+      const workouts = prev.workouts.map((workout, idx) => {
+        if (idx !== dayIndex) return workout;
+        const exercises = [...workout.exercises, newExercise];
+        return {
+          ...workout,
+          exercises,
+          estimatedDuration: calcEstimatedDuration(exercises, prev.trainingStyle, defaultRestSeconds),
+        };
+      });
+      return {
+        ...prev,
+        workouts,
+        estimatedWeeklyDuration: workouts.reduce((sum, w) => sum + w.estimatedDuration, 0),
+      };
+    });
     setShowAddExercise(false);
   };
 
@@ -69,6 +170,39 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const openEditExercise = (dayIndex: number, exerciseIndex: number) => {
+    const ex = editedPlan.workouts[dayIndex].exercises[exerciseIndex];
+    setEditSets(String(ex.sets));
+    setEditReps(ex.reps);
+    setEditingExercise({ dayIndex, exerciseIndex });
+  };
+
+  const handleUpdateExercise = () => {
+    if (!editingExercise) return;
+    const { dayIndex, exerciseIndex } = editingExercise;
+    const sets = Math.max(1, parseInt(editSets, 10) || 1);
+    const reps = editReps.trim() || '8-12';
+    setEditedPlan((prev) => {
+      const workouts = prev.workouts.map((workout, idx) => {
+        if (idx !== dayIndex) return workout;
+        const exercises = workout.exercises.map((ex, j) =>
+          j === exerciseIndex ? { ...ex, sets, reps } : ex
+        );
+        return {
+          ...workout,
+          exercises,
+          estimatedDuration: calcEstimatedDuration(exercises, prev.trainingStyle, defaultRestSeconds),
+        };
+      });
+      return {
+        ...prev,
+        workouts,
+        estimatedWeeklyDuration: workouts.reduce((sum, w) => sum + w.estimatedDuration, 0),
+      };
+    });
+    setEditingExercise(null);
   };
 
   const currentDay = selectedDayIndex !== null ? editedPlan.workouts[selectedDayIndex] : null;
@@ -88,79 +222,81 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
         <Badge variant="blue">{editedPlan.trainingStyle}</Badge>
       </div>
 
-      {/* Day List */}
+      {/* Day List — editor replaces the card inline */}
       <div className="space-y-2">
-        {editedPlan.workouts.map((day, dayIndex) => (
-          <Card
-            key={day.id}
-            className={`cursor-pointer transition-colors ${
-              selectedDayIndex === dayIndex
-                ? 'bg-blue-900 border-blue-500'
-                : 'hover:bg-zinc-800'
-            }`}
-            onClick={() => setSelectedDayIndex(dayIndex)}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium text-white">{day.name}</h3>
-                <p className="text-xs text-zinc-500">
-                  {day.exercises.length} exercises
-                </p>
+        {editedPlan.workouts.map((day, dayIndex) =>
+          selectedDayIndex === dayIndex ? (
+            <Card key={day.id} className="border-blue-500 bg-blue-950">
+              {/* Header row with back button */}
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="font-medium text-white">{day.name}</h3>
+                  <p className="text-xs text-zinc-400">
+                    {day.targetMuscles.join(', ')}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedDayIndex(null)}
+                  className="text-xs text-zinc-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-zinc-700"
+                >
+                  ✕ Close
+                </button>
               </div>
-              <span className="text-xs text-zinc-500">~{day.estimatedDuration} min</span>
-            </div>
-          </Card>
-        ))}
-      </div>
 
-      {/* Day Editor */}
-      {currentDay && (
-        <Card className="border-blue-500 bg-blue-950">
-          <div className="mb-4">
-            <h3 className="font-medium text-white mb-2">{currentDay.name}</h3>
-            <p className="text-xs text-zinc-400 mb-4">
-              Target muscles: {currentDay.targetMuscles.join(', ')}
-            </p>
-
-            {currentDay.exercises.length === 0 ? (
-              <p className="text-sm text-zinc-500 mb-4">No exercises added yet</p>
-            ) : (
-              <ul className="space-y-2 mb-4">
-                {currentDay.exercises.map((ex, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center justify-between bg-zinc-800 p-2 rounded text-sm"
+              {day.exercises.length === 0 ? (
+                <p className="text-sm text-zinc-500 mb-4">No exercises added yet</p>
+              ) : (
+                <DndContext
+                  sensors={sensors}
+                  onDragEnd={(event) => handleReorderExercises(dayIndex, event)}
+                >
+                  <SortableContext
+                    items={day.exercises.map((_, i) => String(i))}
+                    strategy={verticalListSortingStrategy}
                   >
-                    <div className="flex-1">
-                      <div className="text-zinc-200">{ex.exerciseName.replace(/_/g, ' ')}</div>
-                      <div className="text-xs text-zinc-500">
-                        {ex.sets} × {ex.reps} • {ex.restSeconds}s rest
-                      </div>
-                    </div>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleRemoveExercise(selectedDayIndex, i)}
-                      className="ml-2"
-                    >
-                      Remove
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            )}
+                    <ul className="space-y-2 mb-4">
+                      {day.exercises.map((ex, i) => (
+                        <SortableExerciseItem
+                          key={String(i)}
+                          id={String(i)}
+                          exercise={ex}
+                          onRemove={() => handleRemoveExercise(dayIndex, i)}
+                          onEdit={() => openEditExercise(dayIndex, i)}
+                        />
+                      ))}
+                    </ul>
+                  </SortableContext>
+                </DndContext>
+              )}
 
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowAddExercise(true)}
-              className="w-full"
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setShowAddExercise(true)}
+                className="w-full"
+              >
+                + Add Exercise
+              </Button>
+            </Card>
+          ) : (
+            <Card
+              key={day.id}
+              className="cursor-pointer transition-colors hover:bg-zinc-800"
+              onClick={() => setSelectedDayIndex(dayIndex)}
             >
-              + Add Exercise
-            </Button>
-          </div>
-        </Card>
-      )}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">{day.name}</h3>
+                  <p className="text-xs text-zinc-500">
+                    {day.exercises.length} exercises
+                  </p>
+                </div>
+                <span className="text-xs text-zinc-500">~{day.estimatedDuration} min</span>
+              </div>
+            </Card>
+          )
+        )}
+      </div>
 
       {/* Action Buttons */}
       <div className="flex gap-2">
@@ -181,6 +317,48 @@ export function PlanEditor({ plan, onSave, onCancel }: PlanEditorProps) {
           {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
+
+      {/* Edit Exercise Modal */}
+      <Modal isOpen={editingExercise !== null} onClose={() => setEditingExercise(null)}>
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-white">
+            {editingExercise !== null
+              ? editedPlan.workouts[editingExercise.dayIndex].exercises[editingExercise.exerciseIndex].exerciseName.replace(/_/g, ' ')
+              : ''}
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-light mb-1">Sets</label>
+              <Input
+                type="number"
+                min={1}
+                max={20}
+                value={editSets}
+                onChange={(e) => setEditSets(e.target.value)}
+                className="text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-light mb-1">Reps</label>
+              <Input
+                type="text"
+                placeholder="e.g. 8-12"
+                value={editReps}
+                onChange={(e) => setEditReps(e.target.value)}
+                className="text-sm"
+              />
+            </div>
+          </div>
+          <div className="flex gap-2 pt-1">
+            <Button variant="secondary" className="flex-1" onClick={() => setEditingExercise(null)}>
+              Cancel
+            </Button>
+            <Button variant="primary" className="flex-1" onClick={handleUpdateExercise}>
+              Apply
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* Add Exercise Modal */}
       <Modal isOpen={showAddExercise} onClose={() => setShowAddExercise(false)}>

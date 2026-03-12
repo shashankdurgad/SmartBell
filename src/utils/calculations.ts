@@ -40,3 +40,22 @@ export function roundToIncrement(value: number, increment: number): number {
 export function generateId(): string {
   return `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
+
+const SET_DURATION_BY_STYLE: Record<string, number> = {
+  strength: 40,
+  hypertrophy: 60,
+  endurance: 60,
+};
+
+export function calcWorkoutDuration(
+  exercises: Array<{ sets: number }>,
+  trainingStyle: string,
+  defaultRestSeconds: number
+): number {
+  const setDuration = SET_DURATION_BY_STYLE[trainingStyle] ?? 60;
+  const totalSeconds = exercises.reduce(
+    (sum, ex) => sum + ex.sets * (setDuration + defaultRestSeconds),
+    0
+  );
+  return Math.max(1, Math.round(totalSeconds / 60));
+}
