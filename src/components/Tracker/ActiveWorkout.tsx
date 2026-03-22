@@ -49,6 +49,7 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
   const [reps, setReps] = useState<string>('');
   const [rpe, setRpe] = useState<number>(7);
   const [isWarmup, setIsWarmup] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
   const placeholderWeight = getPlaceholderWeight();
   const placeholderReps = loggedSets.length > 0 ? loggedSets[loggedSets.length - 1].completedReps : targetReps;
@@ -57,11 +58,19 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
     // Reset inputs when moving to next set
     setWeight('');
     setReps('');
+    setValidationError(null);
   }, [setNumber]);
 
   const handleLog = () => {
     const finalWeight = weight === '' ? placeholderWeight : Number(weight);
     const finalReps = reps === '' ? placeholderReps : Number(reps);
+
+    if (finalWeight < 0 || finalReps < 0) {
+      setValidationError('Weight and reps must be zero or greater to log a set.');
+      return;
+    }
+
+    setValidationError(null);
     onLog({ setNumber, weight: finalWeight, targetReps, completedReps: finalReps, rpe, isWarmup });
   };
 
@@ -90,7 +99,10 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
             const current = w === '' ? placeholderWeight : Number(w);
             return String(Math.max(0, current - increment));
           })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder={String(placeholderWeight)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <input type="number" value={weight} onChange={(e) => {
+            setWeight(e.target.value);
+            if (validationError) setValidationError(null);
+          }} placeholder={String(placeholderWeight)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
           <button onClick={() => setWeight((w) => {
             const current = w === '' ? placeholderWeight : Number(w);
             return String(current + increment);
@@ -104,7 +116,10 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
             const current = r === '' ? placeholderReps : Number(r);
             return String(Math.max(0, current - 1));
           })} className="w-12 h-12 rounded-xl bg-dark-700 text-white text-xl font-bold flex items-center justify-center active:scale-95 transition-transform">-</button>
-          <input type="number" value={reps} onChange={(e) => setReps(e.target.value)} placeholder={String(placeholderReps)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
+          <input type="number" value={reps} onChange={(e) => {
+            setReps(e.target.value);
+            if (validationError) setValidationError(null);
+          }} placeholder={String(placeholderReps)} className="flex-1 text-center text-2xl font-bold bg-dark-700 rounded-xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary placeholder:text-gray-500" />
           <button onClick={() => setReps((r) => {
             const current = r === '' ? placeholderReps : Number(r);
             return String(current + 1);
@@ -122,6 +137,9 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
           <span>Max effort</span>
         </div>
       </div>
+      {validationError && (
+        <p className="text-sm text-red-accent">{validationError}</p>
+      )}
       <Button fullWidth size="lg" onClick={handleLog}>Log Set</Button>
     </div>
   );
