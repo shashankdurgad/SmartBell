@@ -33,6 +33,7 @@ interface SetLoggerProps {
 }
 
 function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUnit, loggedSets, onLog }: SetLoggerProps) {
+  const isBeyondTargetSets = setNumber > targetSets;
   // Use recommendation weight if available, otherwise use last logged set weight, otherwise empty
   const getPlaceholderWeight = () => {
     if (recommendation?.recommendedWeight != null) {
@@ -77,7 +78,10 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-text">Set {setNumber} of {targetSets} {isWarmup ? '(Warmup)' : ''}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-text">Set {setNumber} of {targetSets} {isWarmup ? '(Warmup)' : ''}</span>
+          {isBeyondTargetSets && <Badge variant="yellow">Extra Set</Badge>}
+        </div>
         <button
           onClick={() => setIsWarmup(!isWarmup)}
           className={`text-xs px-3 py-1 rounded-full border transition-colors ${
@@ -277,7 +281,10 @@ export function ActiveWorkout() {
             <div className="space-y-1">
               {loggedSets.map((set, i) => (
                 <div key={i} className="flex justify-between text-sm">
-                  <span className="text-gray-text">Set {set.setNumber} {set.isWarmup ? '(W)' : ''}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-text">Set {set.setNumber} {set.isWarmup ? '(W)' : ''}</span>
+                    {set.setNumber > currentExercise.targetSets && <Badge variant="yellow">Extra Set</Badge>}
+                  </div>
                   <span className="text-white font-medium">{formatWeight(set.weight, weightUnit)} x {set.completedReps} reps</span>
                   <span className="text-gray-text">RPE {set.rpe}</span>
                 </div>
