@@ -13,6 +13,68 @@ const DEFAULT_SETTINGS: AppSettings = {
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const SIX_MONTHS_AGO = 6;
 
+type SeedExerciseProfile = {
+  id: string;
+  equipment?: string | null;
+  category?: string;
+  mechanic?: string | null;
+  primaryMuscles?: string[];
+};
+
+const EXERCISE_PROFILE_BY_ID = new Map<string, SeedExerciseProfile>(
+  (exercisesData as SeedExerciseProfile[]).map((exercise) => [exercise.id, exercise])
+);
+
+const EQUIPMENT_BASE_RANGES: Record<string, { min: number; max: number }> = {
+  barbell: { min: 75, max: 100 },
+  dumbbell: { min: 20, max: 45 },
+  machine: { min: 40, max: 90 },
+  cable: { min: 20, max: 65 },
+  kettlebells: { min: 20, max: 60 },
+  'e-z curl bar': { min: 35, max: 70 },
+  'body only': { min: 5, max: 35 },
+  bands: { min: 10, max: 45 },
+  'medicine ball': { min: 10, max: 55 },
+  'exercise ball': { min: 5, max: 30 },
+  'foam roll': { min: 5, max: 20 },
+  other: { min: 15, max: 70 },
+};
+
+const MUSCLE_LOAD_MULTIPLIER: Record<string, number> = {
+  quadriceps: 1.25,
+  hamstrings: 1.2,
+  glutes: 1.2,
+  chest: 1,
+  'middle back': 1.15,
+  lats: 1.12,
+  shoulders: 0.7,
+  traps: 1,
+  'lower back': 1.5,
+  calves: 0.92,
+  triceps: 0.7,
+  biceps: 0.6,
+  forearms: 0.82,
+  abdominals: 0.78,
+  adductors: 0.9,
+  abductors: 0.88,
+  neck: 0.72,
+};
+
+const CATEGORY_MULTIPLIER: Record<string, number> = {
+  powerlifting: 1.25,
+  strength: 1.1,
+  'olympic weightlifting': 1.22,
+  strongman: 1.34,
+  plyometrics: 0.72,
+  cardio: 0.45,
+  stretching: 0.35,
+};
+
+const MECHANIC_MULTIPLIER: Record<string, number> = {
+  compound: 1.12,
+  isolation: 0.86,
+};
+
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -33,6 +95,78 @@ function parseRepTarget(reps: string): number {
   }
 
   return 10;
+}
+
+function pickRandomItems<T>(values: T[], count: number): T[] {
+  const pool = [...values];
+  const selected: T[] = [];
+
+  while (pool.length > 0 && selected.length < count) {
+    const index = randomInt(0, pool.length - 1);
+    selected.push(pool[index]);
+    pool.splice(index, 1);
+  }
+
+  return selected;
+}
+
+function getRandomizedBaseWeight(min: number, max: number): number {
+  const boundedMin = Math.max(5, Math.min(min, max));
+  const boundedMax = Math.max(boundedMin, max);
+  return randomInt(Math.round(boundedMin), Math.round(boundedMax));
+}
+
+function resolveBaseWeightForExercise(exerciseId: string, favoredMuscles: Set<string>): number {
+  const profile = EXERCISE_PROFILE_BY_ID.get(exerciseId);
+  const equipment = profile?.equipment ?? 'other';
+  const category = profile?.category ?? 'strength';
+  const mechanic = profile?.mechanic ?? null;
+  const primaryMuscles = profile?.primaryMuscles ?? [];
+
+  const equipmentRange = EQUIPMENT_BASE_RANGES[equipment] ?? EQUIPMENT_BASE_RANGES.other;
+  const categoryMultiplier = CATEGORY_MULTIPLIER[category] ?? 1;
+  const mechanicMultiplier = mechanic ? (MECHANIC_MULTIPLIER[mechanic] ?? 1) : 1;
+
+  const primaryMuscleMultipliers = primaryMuscles
+    .map((muscle) => MUSCLE_LOAD_MULTIPLIER[muscle] ?? 0.95)
+    .sort((a, b) => b - a);
+
+  const muscleMultiplier =
+    primaryMuscleMultipliers.length > 0
+      ? (primaryMuscleMultipliers[0] + (primaryMuscleMultipliers[1] ?? primaryMuscleMultipliers[0])) / 2
+      : 0.95;
+
+  const favoredMultiplier = primaryMuscles.some((muscle) => favoredMuscles.has(muscle))
+    ? 1 + randomInt(4, 10) / 100
+    : 1;
+
+  const baseMin = equipmentRange.min * categoryMultiplier * mechanicMultiplier * muscleMultiplier * favoredMultiplier;
+  const baseMax = equipmentRange.max * categoryMultiplier * mechanicMultiplier * muscleMultiplier * favoredMultiplier;
+
+  return getRandomizedBaseWeight(baseMin, baseMax);
+}
+
+function pickFavoredMuscles(activePlan: WeeklyPlan): Set<string> {
+  const musclePool = new Set<string>();
+
+  for (const workoutDay of activePlan.workouts) {
+    for (const exercise of workoutDay.exercises) {
+      const profile = EXERCISE_PROFILE_BY_ID.get(exercise.exerciseId);
+      for (const muscle of profile?.primaryMuscles ?? []) {
+        musclePool.add(muscle);
+      }
+    }
+
+    for (const muscle of workoutDay.targetMuscles) {
+      musclePool.add(muscle);
+    }
+  }
+
+  const candidates = [...musclePool];
+  if (candidates.length === 0) return new Set();
+
+  const favoredCount = Math.min(candidates.length, randomInt(2, 4));
+  return new Set(pickRandomItems(candidates, favoredCount));
 }
 
 function buildExerciseSets(
@@ -114,7 +248,8 @@ function createSessionForWorkoutDay(
   workoutDay: DailyWorkout,
   sessionDate: Date,
   elapsedRatio: number,
-  exerciseBaseWeights: Map<string, number>
+  exerciseBaseWeights: Map<string, number>,
+  favoredMuscles: Set<string>
 ): WorkoutSession {
   const sessionExercises = [];
   let totalVolume = 0;
@@ -123,7 +258,7 @@ function createSessionForWorkoutDay(
 
   for (const exercise of workoutDay.exercises) {
     const existingBaseWeight = exerciseBaseWeights.get(exercise.exerciseId);
-    const baseWeight = existingBaseWeight ?? randomInt(35, 185);
+    const baseWeight = existingBaseWeight ?? resolveBaseWeightForExercise(exercise.exerciseId, favoredMuscles);
     exerciseBaseWeights.set(exercise.exerciseId, baseWeight);
 
     const generated = buildExerciseSets(exercise, baseWeight, elapsedRatio);
@@ -164,6 +299,7 @@ function generatePlanSessionsForLastSixMonths(activePlan: WeeklyPlan): WorkoutSe
   const { startDate, endDate } = getSixMonthWindow();
   const sessions: WorkoutSession[] = [];
   const exerciseBaseWeights = new Map<string, number>();
+  const favoredMuscles = pickFavoredMuscles(activePlan);
 
   const workoutsByOrder = [...activePlan.workouts].sort((a, b) => a.dayNumber - b.dayNumber);
   if (workoutsByOrder.length === 0) return sessions;
@@ -183,7 +319,14 @@ function generatePlanSessionsForLastSixMonths(activePlan: WeeklyPlan): WorkoutSe
       const elapsedRatio = Math.min(1, Math.max(0, elapsed / totalWindow));
 
       sessions.push(
-        createSessionForWorkoutDay(activePlan, workoutDay, sessionDate, elapsedRatio, exerciseBaseWeights)
+        createSessionForWorkoutDay(
+          activePlan,
+          workoutDay,
+          sessionDate,
+          elapsedRatio,
+          exerciseBaseWeights,
+          favoredMuscles
+        )
       );
     }
 

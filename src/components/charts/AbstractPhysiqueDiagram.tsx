@@ -95,16 +95,12 @@ function getMuscleColor(
 		const difference = (value >= averagePercentile ? 1 : -1) * Math.round(Math.sqrt(Math.abs(value**2 - averagePercentile**2))) * 0.4;
 
 		if (difference <= -5) {
-			// const intensity = Math.min((Math.abs(difference) - 5) / 20, 1);
-			// const lightness = Math.round(52 - intensity * 14);
 			const lightness = Math.round(Math.max(45+(difference+5)*3,35))
 			return `hsl(4 60% ${lightness}%)`;
 		}
 
 		if (difference >= 5) {
-			// const intensity = Math.min((difference - 5) / 20, 1);
-			// const lightness = Math.round(46 - intensity * 12);
-			const lightness = Math.round(Math.max(45-(difference-5)*3,20))
+			const lightness = Math.round(Math.max(45-(difference-5)*3,25))
 			return `hsl(148 75% ${lightness}%)`;
 		}
 
@@ -116,10 +112,13 @@ function getMuscleColor(
 	// For percentile mode, normalize to 0-100
 	const normalizedValue = mode === 'percentile' ? (value / 100) * 1.2 : value / maxValue * 1.2;
 	const ratio = Math.min(normalizedValue, 1);
-	
+
 	const minLight = 20;
 	const maxLight = 65;
-	const lightness = Math.round(minLight + ratio * (maxLight - minLight));
+	const lightness =
+		mode === 'volume'
+			? Math.round(maxLight - ratio * (maxLight - minLight))
+			: Math.round(minLight + ratio * (maxLight - minLight));
 
 	return `hsl(${h} 85% ${lightness}%)`;
 }
