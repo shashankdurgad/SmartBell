@@ -13,6 +13,7 @@ import { db } from '../database/db';
 import { useUserStore } from '../stores/useUserStore';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import type { UserPreferences } from '../database/db';
+import type { WeightUnit } from '../types';
 import { weeklyPlanRepo } from '../database/repositories/weeklyPlanRepo';
 import { calcWorkoutDuration } from '../utils/calculations';
 
@@ -25,6 +26,8 @@ const REST_PRESETS = [
 ];
 
 export function ProfilePage() {
+  const weightUnit = useUserStore((s) => s.weightUnit);
+  const setWeightUnit = useUserStore((s) => s.setWeightUnit);
   const setDefaultRestSeconds = useUserStore((s) => s.setDefaultRestSeconds);
   const loadPlans = useWeeklyPlanStore((s) => s.loadPlans);
   const [trainingStyle, setTrainingStyle] = useState<'strength' | 'hypertrophy' | 'endurance'>('hypertrophy');
@@ -33,8 +36,13 @@ export function ProfilePage() {
   const [daysPerWeek, setDaysPerWeek] = useState(3);
   const [timePerSession, setTimePerSession] = useState(45);
   const [restTimer, setRestTimer] = useState(120);
+  const [selectedWeightUnit, setSelectedWeightUnit] = useState<WeightUnit>(weightUnit);
   const [excludedExercises, setExcludedExercises] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setSelectedWeightUnit(weightUnit);
+  }, [weightUnit]);
 
   // Load saved preferences
   useEffect(() => {
@@ -63,6 +71,7 @@ export function ProfilePage() {
     };
 
     await db.userPreferences.put(prefs);
+    await setWeightUnit(selectedWeightUnit);
     // Keep workout rest timer settings in sync with profile preference.
     await setDefaultRestSeconds(restTimer);
 
@@ -110,6 +119,27 @@ export function ProfilePage() {
 
         <Card>
           <EquipmentPicker value={equipment} onChange={setEquipment} />
+        </Card>
+
+        <Card>
+          <h3 className="text-sm font-medium text-zinc-400 mb-3">Weight Unit</h3>
+          <p className="text-xs text-zinc-500 mb-3">Used for workout entry, recommendations, and charts</p>
+          <div className="grid grid-cols-2 gap-2">
+            {(['lbs', 'kg'] as const).map((unit) => (
+              <button
+                key={unit}
+                type="button"
+                onClick={() => setSelectedWeightUnit(unit)}
+                className={`py-2.5 rounded-xl border text-sm font-medium uppercase tracking-wide transition-all ${
+                  selectedWeightUnit === unit
+                    ? 'border-indigo-500 bg-indigo-500/10 text-white'
+                    : 'border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:border-zinc-500'
+                }`}
+              >
+                {unit}
+              </button>
+            ))}
+          </div>
         </Card>
 
         {/* Rest Timer */}

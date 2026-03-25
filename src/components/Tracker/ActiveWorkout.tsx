@@ -43,15 +43,20 @@ function SetLogger({
   workingSetsLogged,
   onLog,
 }: SetLoggerProps) {
+  const normalizePlaceholderWeight = (value: number) => {
+    if (weightUnit !== 'lbs') return value;
+    return Math.round(value * 2) / 2;
+  };
+
   // Use recommendation weight if available, otherwise use last logged set weight, otherwise empty
   const getPlaceholderWeight = () => {
     if (recommendation?.recommendedWeight != null) {
-      return recommendation.recommendedWeight;
+      return normalizePlaceholderWeight(recommendation.recommendedWeight);
     }
     if (loggedSets.length > 0) {
       const lastSet = loggedSets[loggedSets.length - 1];
       // loggedSets store weight in kg, convert to display unit
-      return weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight;
+      return normalizePlaceholderWeight(weightUnit === 'lbs' ? kgToLbs(lastSet.weight) : lastSet.weight);
     }
     return 0;
   };
