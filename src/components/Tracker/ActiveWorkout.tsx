@@ -29,11 +29,20 @@ interface SetLoggerProps {
   recommendation: WeightRecommendation | null;
   weightUnit: 'lbs' | 'kg';
   loggedSets: WorkoutSet[];
+  workingSetsLogged: number;
   onLog: (set: WorkoutSet) => void;
 }
 
-function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUnit, loggedSets, onLog }: SetLoggerProps) {
-  const isBeyondTargetSets = setNumber > targetSets;
+function SetLogger({
+  setNumber,
+  targetSets,
+  targetReps,
+  recommendation,
+  weightUnit,
+  loggedSets,
+  workingSetsLogged,
+  onLog,
+}: SetLoggerProps) {
   // Use recommendation weight if available, otherwise use last logged set weight, otherwise empty
   const getPlaceholderWeight = () => {
     if (recommendation?.recommendedWeight != null) {
@@ -50,6 +59,7 @@ function SetLogger({ setNumber, targetSets, targetReps, recommendation, weightUn
   const [reps, setReps] = useState<string>('');
   const [rpe, setRpe] = useState<number>(7);
   const [isWarmup, setIsWarmup] = useState(false);
+  const isBeyondTargetSets = workingSetsLogged + (isWarmup ? 0 : 1) > targetSets;
   const [validationError, setValidationError] = useState<string | null>(null);
   const increment = weightUnit === 'lbs' ? 2.5 : 1.25;
   const placeholderWeight = getPlaceholderWeight();
@@ -194,6 +204,7 @@ export function ActiveWorkout() {
   const totalExercises = activeSession.exercises.length;
   const progress = (currentExerciseIndex / totalExercises) * 100;
   const loggedSets = currentExercise?.sets ?? [];
+  const workingSetsLogged = loggedSets.filter((set) => !set.isWarmup).length;
 
   const handleLogSet = async (set: WorkoutSet) => {
     // Don't save sets with 0 reps
@@ -279,27 +290,35 @@ export function ActiveWorkout() {
           <Card variant="outlined" padding="sm">
             <p className="text-xs text-gray-text mb-2">Logged Sets</p>
             <div className="space-y-1">
-              {loggedSets.map((set, i) => (
-                <div key={i} className="flex justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-text">Set {set.setNumber} {set.isWarmup ? '(W)' : ''}</span>
-                    {set.setNumber > currentExercise.targetSets && <Badge variant="yellow">Extra Set</Badge>}
+              {loggedSets.map((set, i) => {
+                const workingSetNumber = loggedSets
+                  .slice(0, i + 1)
+                  .filter((loggedSet) => !loggedSet.isWarmup).length;
+                const isBeyondTarget = !set.isWarmup && workingSetNumber > currentExercise.targetSets;
+
+                return (
+                  <div key={i} className="flex justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-text">Set {set.setNumber} {set.isWarmup ? '(W)' : ''}</span>
+                      {isBeyondTarget && <Badge variant="yellow">Extra Set</Badge>}
+                    </div>
+                    <span className="text-white font-medium">{formatWeight(set.weight, weightUnit)} x {set.completedReps} reps</span>
+                    <span className="text-gray-text">RPE {set.rpe}</span>
                   </div>
-                  <span className="text-white font-medium">{formatWeight(set.weight, weightUnit)} x {set.completedReps} reps</span>
-                  <span className="text-gray-text">RPE {set.rpe}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         )}
         <Card>
           <SetLogger
-            setNumber={loggedSets.length + 1}
+            setNumber={workingSetsLogged + 1}
             targetSets={currentExercise?.targetSets ?? 0}
             targetReps={8}
             recommendation={recommendations[currentExercise?.exerciseId] ?? null}
             weightUnit={weightUnit}
             loggedSets={loggedSets}
+            workingSetsLogged={workingSetsLogged}
             onLog={handleLogSet}
           />
         </Card>

@@ -112,13 +112,10 @@ function getMuscleColor(
 	// For percentile mode, normalize to 0-100
 	const normalizedValue = mode === 'percentile' ? (value / 100) * 1.2 : value / maxValue * 1.2;
 	const ratio = Math.min(normalizedValue, 1);
-
+	
 	const minLight = 20;
 	const maxLight = 65;
-	const lightness =
-		mode === 'volume'
-			? Math.round(maxLight - ratio * (maxLight - minLight))
-			: Math.round(minLight + ratio * (maxLight - minLight));
+	const lightness = Math.round(minLight + ratio * (maxLight - minLight));
 
 	return `hsl(${h} 85% ${lightness}%)`;
 }

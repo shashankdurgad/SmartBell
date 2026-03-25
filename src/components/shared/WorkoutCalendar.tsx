@@ -70,12 +70,12 @@ export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
               const key = day.date.toISOString().slice(0, 10);
               const has = day.volume > 0;
               const formattedDate = formatDayMonth(day.date);
-              const maxLight = 80;
-              const minLight = 25;
+              const maxLight = 60;
+              const minLight = 15;
               let lightness = 8;
               if (has && maxVolume > 0) {
                 const ratio = day.volume / maxVolume * 1.2;
-                lightness = Math.round(maxLight - ratio * (maxLight - minLight));
+                lightness = Math.round(minLight + ratio * (maxLight - minLight));
               }
 
               const bg = has ? `hsl(215 90% ${lightness}%)` : 'rgba(52, 52, 71, 0.31)';
@@ -102,7 +102,7 @@ export default function WorkoutCalendar({ days, unit = 'kg' }: Props) {
         <div
           className="h-2 flex-1 rounded-sm"
           style={{
-            background: 'linear-gradient(to right, hsl(215 90% 60%), hsl(215 90% 15%))',
+            background: 'linear-gradient(to right, hsl(215 90% 15%), hsl(215 90% 60%))',
           }}
           aria-hidden="true"
         />
