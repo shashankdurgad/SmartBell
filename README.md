@@ -617,6 +617,7 @@ WorkoutPage → picks day → ActiveWorkout → SetLogger → useWorkoutStore.lo
 ### Build Process
 
 ```bash
+npm install      # Install dependencies
 npm run dev      # Start dev server
 npm run build    # tsc -b && vite build
 npx tsc --noEmit # Type check only
