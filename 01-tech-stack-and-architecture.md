@@ -19,7 +19,6 @@ This document details the complete technology stack and architectural decisions 
 **Why React 18?**
 - Concurrent rendering for smoother UI updates
 - Automatic batching for better performance
-- Transitions API for non-urgent updates
 - Mature ecosystem with excellent TypeScript support
 
 **Why TypeScript?**
@@ -62,9 +61,9 @@ This document details the complete technology stack and architectural decisions 
 
 | Store | Responsibilities |
 |-------|------------------|
-| **Workout Store** | Active workout session, current exercise, timer state, RPE tracking |
-| **WeeklyPlan Store** | Generated weekly plans, saved plans, plan configuration, active day selection |
-| **User Store** | User preferences, settings, equipment availability |
+| **Workout Store** | Active workout session, current exercise, rest timer state, session history |
+| **WeeklyPlan Store** | Generated weekly plans, active plan, active day index (persisted to localStorage) |
+| **User Store** | Weight unit, default rest time, training style, available equipment |
 
 ---
 
@@ -84,12 +83,14 @@ This document details the complete technology stack and architectural decisions 
 **Database Schema:**
 
 ```typescript
-// Database tables
-exercises      → 800+ pre-loaded exercises with applicability scores
-weeklyPlans    → User-saved weekly workout plans
-dailyWorkouts  → Individual day workouts within plans
-workouts       → Completed workout session history
-settings       → User preferences and configuration
+// Database tables (Dexie v6 schema)
+exercises        → 873 pre-loaded exercises with applicability scores
+weeklyPlans      → User-saved weekly workout plans
+dailyWorkouts    → Individual day workouts within plans
+workoutSessions  → Completed workout session history
+personalRecords  → Per-exercise PRs (weight, reps, volume, estimated 1RM)
+settings         → App settings (weight unit, default rest, training style)
+userPreferences  → Generator preferences (equipment, difficulty, exclusions)
 ```
 
 ---
@@ -98,21 +99,25 @@ settings       → User preferences and configuration
 
 | Technology | Purpose |
 |------------|---------|
-| **Tailwind CSS** | Utility-first CSS framework |
-| **Headless UI** | Accessible, unstyled UI components |
-| **Recharts** | Data visualization and charts |
+| **Tailwind CSS v4** | Utility-first CSS framework (via `@tailwindcss/vite` plugin) |
+| **Headless UI** | Accessible, unstyled UI components (modals, transitions) |
 
-**Why Tailwind CSS?**
+**Why Tailwind CSS v4?**
 - Rapid prototyping with utility classes
-- Consistent design system through configuration
-- Small production bundle with PurgeCSS
-- No context switching between CSS and JSX files
+- Consistent design system via `@theme {}` blocks
+- No `tailwind.config.js` or PostCSS required — uses Vite plugin directly
+- Small production bundle
 
 **Why Headless UI?**
 - Fully accessible (WAI-ARIA compliant) out of the box
-- Unstyled—complete design freedom with Tailwind
-- Handles complex interactions (modals, dropdowns, tabs)
-- Official Tailwind Labs product with first-class support
+- Unstyled — complete design freedom with Tailwind
+- Handles complex interactions (modals, dropdowns, transitions)
+
+**Charts:**
+All charts are custom SVG components — no charting library used:
+- `ExerciseProgressChart.tsx` — Catmull-Rom spline line chart
+- `MonthlyPRsChart.tsx` — bar chart
+- `AbstractPhysiqueDiagram.tsx` — front/back silhouette heatmap
 
 ---
 
@@ -123,46 +128,43 @@ settings       → User preferences and configuration
 | **React Hook Form** | Form state management and validation |
 | **Zod** | Runtime schema validation |
 | **date-fns** | Date manipulation and formatting |
+| **@dnd-kit** | Drag-and-drop for plan editor |
 
 **Why React Hook Form?**
 - Minimal re-renders through uncontrolled inputs
 - Built-in validation with excellent Zod integration
-- Small bundle size (~8KB)
 - TypeScript-first design
 
 **Why Zod?**
 - TypeScript-first schema validation
 - Runtime validation for user inputs
 - Automatic TypeScript type inference
-- Composable schemas for complex data structures
 
 ---
 
 ## System Architecture
 
-### Three-Layer Architecture
+### Four-Layer Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    User Interface (React)                    │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │  WeeklyPlan  │  │    Tracker   │  │  Analytics   │       │
-│  │  Generator   │  │  Components  │  │  Components  │       │
+│  │  Generator   │  │   Tracker    │  │  Analytics   │       │
+│  │  Components  │  │  Components  │  │    Pages     │       │
 │  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              Business Logic Layer (TypeScript)               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │  WeeklyPlan  │  │    Weight    │  │   Progress   │       │
-│  │  Generator   │  │ Recommender  │  │   Analyzer   │       │
-│  │   Engine     │  │    Engine    │  │              │       │
-│  └──────────────┘  └──────────────┘  └──────────────┘       │
-│  ┌──────────────┐  ┌──────────────┐                         │
-│  │    Split     │  │    Volume    │                         │
-│  │   Selector   │  │   Balancer   │                         │
-│  └──────────────┘  └──────────────┘                         │
+│  ┌──────────────────┐  ┌──────────────┐  ┌──────────────┐   │
+│  │   generatePlan   │  │   weight     │  │  percentile  │   │
+│  │      .ts         │  │ Recommender  │  │ Calculator   │   │
+│  │ (split select,   │  │    .ts       │  │    .ts       │   │
+│  │ volume balance,  │  │              │  │              │   │
+│  │ exercise score)  │  │              │  │              │   │
+│  └──────────────────┘  └──────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
@@ -178,10 +180,14 @@ settings       → User preferences and configuration
 ┌─────────────────────────────────────────────────────────────┐
 │             Data Layer (IndexedDB via Dexie)                 │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │  Exercises   │  │ WeeklyPlans  │  │   Workouts   │       │
-│  │  (800+ pre-  │  │  (User saved │  │  (Session    │       │
-│  │   loaded)    │  │    plans)    │  │   history)   │       │
+│  │  Exercises   │  │ WeeklyPlans  │  │  Workout     │       │
+│  │  (873 pre-   │  │  (user saved │  │  Sessions    │       │
+│  │   loaded)    │  │    plans)    │  │  (history)   │       │
 │  └──────────────┘  └──────────────┘  └──────────────┘       │
+│  ┌──────────────┐  ┌──────────────┐                         │
+│  │  Personal    │  │   Settings / │                         │
+│  │  Records     │  │ Preferences  │                         │
+│  └──────────────┘  └──────────────┘                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -191,24 +197,22 @@ settings       → User preferences and configuration
 - Render user interface
 - Handle user interactions
 - Display data from stores
-- No business logic—only presentation
+- No business logic — only presentation
 
 **Business Logic Layer (Engines)**
-- WeeklyPlan Generator Engine: Creates weekly workout plans based on days per week
-- Split Selector: Chooses optimal workout split based on training frequency
-- Volume Balancer: Ensures all muscle groups receive adequate weekly volume
-- Weight Recommender Engine: Suggests weights based on performance history
-- Progress Analyzer: Calculates trends, PRs, and analytics
+- `generatePlan.ts`: Split selection, set budgeting, muscle allocation, exercise scoring, daily workout construction
+- `weightRecommender.ts`: Weighted linear regression on e1RM history to predict next session weight
+- `percentileCalculator.ts`: Compare user e1RMs against population strength standards
 
 **State Management Layer (Zustand)**
-- Manage application state
+- Manage in-memory application state
 - Bridge between UI and data layers
-- Handle state updates and subscriptions
+- Handle real-time updates (rest timer, set logging)
 
 **Data Layer (Dexie/IndexedDB)**
-- Persist data locally
-- Handle CRUD operations
-- Maintain data integrity
+- Persist all data locally on device
+- Handle CRUD operations via repository pattern
+- No backend or network required
 
 ---
 
@@ -216,74 +220,90 @@ settings       → User preferences and configuration
 
 ```
 src/
-├── components/              # React UI components
-│   ├── Generator/           # Weekly plan creation UI
-│   │   ├── DaysPerWeekSelector.tsx
-│   │   ├── ConstraintForm.tsx
-│   │   ├── WeeklyPlanDisplay.tsx
-│   │   ├── DailyWorkoutCard.tsx
-│   │   ├── WeeklySummary.tsx
-│   │   └── ExerciseCard.tsx
-│   ├── Tracker/             # Workout logging UI
-│   │   ├── ActiveWorkout.tsx
-│   │   ├── SetLogger.tsx
-│   │   ├── RestTimer.tsx
-│   │   └── DaySelector.tsx
-│   ├── Analytics/           # Progress charts & stats
-│   │   ├── ProgressChart.tsx
-│   │   ├── VolumeChart.tsx
-│   │   ├── WeeklyVolumeBalance.tsx
-│   │   └── PRList.tsx
-│   └── Library/             # Exercise browser
-│       ├── ExerciseList.tsx
-│       └── ExerciseDetail.tsx
+├── components/
+│   ├── Generator/
+│   │   ├── GeneratorForm.tsx        # Top-level form, composes all pickers
+│   │   ├── TrainingStylePicker.tsx
+│   │   ├── DifficultyPicker.tsx
+│   │   ├── DaySelector.tsx
+│   │   ├── DurationSlider.tsx
+│   │   ├── EquipmentPicker.tsx
+│   │   ├── ExerciseExcluder.tsx
+│   │   ├── PlanPreview.tsx          # Generated plan display
+│   │   └── PlanEditor.tsx           # Drag-and-drop plan editor
+│   ├── Tracker/
+│   │   ├── ActiveWorkout.tsx        # Full workout UI (SetLogger + RestTimer inline)
+│   │   └── WorkoutComplete.tsx
+│   ├── charts/
+│   │   ├── ExerciseProgressChart.tsx  # Custom SVG spline chart
+│   │   ├── MonthlyPRsChart.tsx        # Custom SVG bar chart
+│   │   └── AbstractPhysiqueDiagram.tsx # SVG front/back silhouette heatmap
+│   └── shared/
+│       ├── index.ts
+│       ├── ActiveWorkoutBanner.tsx
+│       ├── WorkoutCalendar.tsx      # GitHub-style volume heatmap
+│       ├── BottomNav.tsx
+│       ├── PageHeader.tsx
+│       ├── Button.tsx
+│       ├── Card.tsx
+│       ├── Input.tsx
+│       ├── Modal.tsx
+│       ├── Spinner.tsx
+│       ├── Badge.tsx
+│       └── EmptyState.tsx
 │
-├── engine/                  # Core business logic
-│   ├── weeklyPlanGenerator.ts   # Weekly plan creation algorithm
-│   ├── splitSelector.ts         # Workout split selection
-│   ├── volumeBalancer.ts        # Weekly volume distribution
-│   ├── dailyRoutineGenerator.ts # Single day routine creation
-│   ├── exerciseScorer.ts        # Applicability scoring
-│   ├── weightRecommender.ts     # Weight suggestion logic
-│   └── progressAnalyzer.ts      # Analytics calculations
+├── pages/
+│   ├── DashboardPage.tsx
+│   ├── GeneratorPage.tsx
+│   ├── WorkoutPage.tsx
+│   ├── LibraryPage.tsx
+│   ├── ProfilePage.tsx
+│   ├── PlanDetailsPage.tsx
+│   ├── ExercisePerformancePage.tsx
+│   └── PerformanceAnalysisPage.tsx
 │
-├── stores/                  # Zustand state stores
+├── engine/
+│   ├── generatePlan.ts          # Weekly plan generation algorithm
+│   ├── weightRecommender.ts     # Weight suggestion via regression
+│   └── percentileCalculator.ts  # Strength percentile comparisons
+│
+├── stores/
 │   ├── useWorkoutStore.ts
 │   ├── useWeeklyPlanStore.ts
 │   └── useUserStore.ts
 │
-├── database/                # Dexie.js database setup
-│   ├── db.ts                    # Database initialization
-│   ├── seed.ts                  # Initial data seeding
-│   ├── migrations/
-│   │   └── v2-weekly-plans.ts   # Migration to weekly plan schema
+├── database/
+│   ├── db.ts                    # Dexie schema (v6, 7 tables)
+│   ├── seed.ts                  # Seeds 873 exercises + 6 months sample data
 │   └── repositories/
 │       ├── exerciseRepo.ts
 │       ├── weeklyPlanRepo.ts
-│       └── workoutRepo.ts
+│       ├── workoutRepo.ts
+│       └── personalRecordRepo.ts
 │
-├── types/                   # TypeScript definitions
+├── types/
+│   ├── index.ts                 # Barrel export
 │   ├── exercise.types.ts
-│   ├── weeklyPlan.types.ts
-│   ├── dailyWorkout.types.ts
 │   ├── split.types.ts
-│   └── workout.types.ts
+│   ├── weeklyPlan.types.ts      # WeeklyPlan, DailyWorkout, RoutineExercise
+│   └── workout.types.ts         # WorkoutSession, WorkoutSet, PersonalRecord
 │
-├── hooks/                   # Custom React hooks
+├── hooks/
 │   ├── useExercises.ts
 │   ├── useWeeklyPlan.ts
 │   ├── useWorkoutTimer.ts
-│   └── useAnalytics.ts
+│   ├── useAnalytics.ts
+│   └── useMuscleGroupPercentiles.ts
 │
-├── utils/                   # Helper functions
-│   ├── calculations.ts
-│   ├── formatters.ts
-│   └── validators.ts
+├── utils/
+│   ├── calculations.ts          # 1RM formulas, unit conversion, volume
+│   ├── formatters.ts            # Date, weight, duration, timer formatting
+│   └── validators.ts            # Zod schemas
 │
-└── data/                    # Static data
-    ├── exercises.json           # Free Exercise DB (800+ exercises)
-    ├── applicability-scores.json # Custom scoring data
-    └── split-templates.json     # Workout split configurations
+└── data/
+    ├── exercises.json           # 873 exercises with applicability scores
+    ├── split-templates.ts       # All 7 split variants (1-7 days/week)
+    └── volume-config.ts         # Sets/reps/rest config per training style
 ```
 
 ---
@@ -299,16 +319,17 @@ interface Exercise {
   primaryMuscles: MuscleGroup[];
   secondaryMuscles: MuscleGroup[];
   equipment: Equipment;
-  difficulty: 'beginner' | 'intermediate' | 'expert';
+  level: 'beginner' | 'intermediate' | 'expert';
   mechanic: 'compound' | 'isolation';
   force: 'push' | 'pull' | 'static';
   instructions: string[];
   images: string[];
-  category: 'strength' | 'cardio' | 'stretching';
+  category: 'strength' | 'cardio' | 'stretching' | 'powerlifting' | 'olympic_weightlifting';
+  commonality: number;          // 0-1, used to prefer popular exercises
   applicability: {
-    strength: number;     // 0-10
-    hypertrophy: number;  // 0-10
-    endurance: number;    // 0-10
+    strength: number;           // 0-10
+    hypertrophy: number;        // 0-10
+    endurance: number;          // 0-10
   };
 }
 ```
@@ -321,9 +342,9 @@ interface WeeklyPlan {
   name: string;
   createdAt: Date;
   daysPerWeek: number;
-  splitType: string;
   trainingStyle: TrainingStyle;
   totalWeeklyVolume: number;
+  estimatedWeeklyDuration: number;
   workouts: DailyWorkout[];
 }
 
@@ -339,12 +360,11 @@ interface DailyWorkout {
 
 interface RoutineExercise {
   exerciseId: string;
+  exerciseName: string;
   sets: number;
   reps: string;           // "8-12" or "5"
   restSeconds: number;
 }
-
-type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 ```
 
 ### Workout Session
@@ -354,23 +374,42 @@ interface WorkoutSession {
   id: string;
   weeklyPlanId: string;
   dailyWorkoutId: string;
+  dayNumber: number;
+  dayName: string;
   date: Date;
+  startTime: Date;
+  endTime?: Date;
   exercises: WorkoutExercise[];
   totalVolume: number;
-  duration: number;
-  notes?: string;
+  totalSets: number;
+  totalReps: number;
+  duration: number;       // Minutes
 }
 
 interface WorkoutExercise {
   exerciseId: string;
   sets: WorkoutSet[];
+  targetSets: number;
+  personalRecord?: PRType;
 }
 
 interface WorkoutSet {
+  setNumber: number;
   weight: number;
-  reps: number;
+  targetReps: number;
+  completedReps: number;
   rpe: number;            // 1-10
-  completed: boolean;
+  isWarmup: boolean;
+}
+
+interface PersonalRecord {
+  id: string;
+  exerciseId: string;
+  type: 'weight' | 'reps' | 'volume' | 'estimated_1rm';
+  value: number;
+  date: Date;
+  previousValue?: number;
+  improvement?: number;
 }
 ```
 
@@ -387,19 +426,11 @@ interface WorkoutSet {
 | Authentication | None required (single-user app) |
 | Cost | $0/month |
 
-### Offline-First Design
-
-- IndexedDB persists all data locally
-- PWA service worker caches application shell
-- Full functionality without internet connection
-- Ideal for gym environments with poor WiFi
-
 ### Type Safety Throughout
 
 - TypeScript for all source files
-- Zod schemas for runtime validation
+- Zod schemas for runtime validation at form boundaries
 - Strict null checks enabled
-- No `any` types allowed
 
 ---
 
@@ -408,7 +439,9 @@ interface WorkoutSet {
 ### Build Process
 
 ```bash
-npm run build    # Produces optimized production build
+npm run dev      # Start dev server
+npm run build    # tsc -b && vite build
+npx tsc --noEmit # Type check only
 ```
 
 ### Hosting Options
@@ -437,10 +470,8 @@ Total:       $0/month
 | Metric | Target |
 |--------|--------|
 | Weekly plan generation | < 5 seconds |
-| Workout logging | < 2 minutes total |
 | First Contentful Paint | < 1.5 seconds |
 | Time to Interactive | < 3 seconds |
-| Lighthouse Score | > 90 |
 
 ---
 
@@ -455,8 +486,7 @@ Total:       $0/month
 
 ### Advanced Features (Post-MVP)
 
-- AI form checker using phone camera
-- Workout buddy matching
-- Trainer marketplace integration
-- Nutrition tracking integration
 - Mesocycle and periodization planning
+- Nutrition tracking integration
+- PWA / offline service worker
+- Data export / import

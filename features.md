@@ -15,7 +15,7 @@
 The user fills out `src/components/Generator/GeneratorForm.tsx` which collects:
 - **Training Style** — Strength (3-5 reps), Hypertrophy (8-12 reps), Endurance (15-20 reps)
 - **Difficulty** — Beginner / Intermediate / Expert
-- **Days per week** — 1-6 days
+- **Days per week** — 1-7 days
 - **Session duration** — 15-120 min slider
 - **Available equipment** — Multi-select grouped by category (free weights, cables, machines, etc.)
 - **Excluded exercises** — Autocomplete search to blacklist specific exercises
@@ -187,6 +187,10 @@ Reached by clicking any exercise in the Library. Shows:
 
 **Personal Records Summary** — Best weight, best reps, best volume, best estimated 1RM with dates.
 
+**Recent Sessions Table** — Last 8 sessions for the exercise showing date, top set weight, and reps.
+
+**Session Stats** — Total logged session count and last performed date.
+
 ### Performance Analysis Page (`src/pages/PerformanceAnalysisPage.tsx`)
 
 Full analytics dashboard with 4 sections:
@@ -205,18 +209,32 @@ Full analytics dashboard with 4 sections:
   - Uses **linear interpolation** between tiers to get a precise percentile
 - Displays each exercise as a horizontal bar with percentile label (e.g., "67th percentile")
 
-**Section 3 — Physique Diagram** (`src/components/Analytics/AbstractPhysiqueDiagram.tsx`):
+**Section 3 — Physique Diagram** (`src/components/charts/AbstractPhysiqueDiagram.tsx`):
 - SVG front + back silhouettes with 7 interactive muscle regions: chest, back, shoulders, biceps, triceps, quadriceps, hamstrings/glutes
 - Two toggle modes:
-  - **Volume mode**: Colors muscles by kg of weekly volume. Blue gradient — more volume = deeper blue
+  - **Volume mode**: Colors muscles by kg of weekly volume. Blue gradient — more volume = brighter blue
   - **Percentile mode**: Colors muscles by strength percentile. Red = below average (<40th), neutral = average (40–60th), blue = above average (>60th). Uses `calculateAllMuscleGroupPercentiles()` which averages percentiles from all exercises targeting that muscle
 - Legend sorted by value (highest → lowest)
 - Clicking a muscle shows contributor details (which exercises contributed to that muscle's score)
 
-**Section 4 — Dashboard Physique Diagram** (`src/pages/DashboardPage.tsx`):
+**Section 4 — Training Volume:**
+- 9-week calendar heatmap showing total volume per day, colored by intensity
+- Dropdown to filter heatmap by muscle group
+- 10-week volume trend line chart showing weekly total volume over time
+
+**Section 5 — Dashboard Physique Diagram** (`src/pages/DashboardPage.tsx`):
 - Same diagram component but fed actual recent workout volume data
 - Maps workout sessions → exercise sets → muscle groups → total volume per muscle region
 - Also shows: total workouts, total volume, 3 most recent sessions, quick-start button
+
+### Profile Page (`src/pages/ProfilePage.tsx`)
+
+- Edit training style, difficulty, days/week, session duration, and available equipment
+- Weight unit toggle (kg / lbs)
+- Default rest timer with quick presets (30s, 60s, 90s, 120s, 180s) and a custom input
+- Exercise exclusion list — persisted and used by the generator to filter out unwanted exercises
+- On save, recalculates estimated durations for all stored plans to reflect the new rest time
+- Shows a "Saved" confirmation on success
 
 ### useAnalytics Hook (`src/hooks/useAnalytics.ts`)
 
