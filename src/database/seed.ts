@@ -2,6 +2,7 @@ import { db } from './db';
 import type { AppSettings } from './db';
 import exercisesData from '../data/exercises.json';
 import type { WeeklyPlan, DailyWorkout, RoutineExercise, WorkoutSession, WorkoutSet } from '../types';
+import type { Exercise } from '../types/exercise.types';
 
 const DEFAULT_SETTINGS: AppSettings = {
   id: 'default',
@@ -361,27 +362,21 @@ export async function seedDatabase(): Promise<void> {
       commonality: (ex.commonality ?? 5) as number,
     }));
 
-    await db.exercises.bulkAdd(exercises as never[]);
-    console.log(`Seeded ${exercises.length} exercises`);
+    await db.exercises.bulkAdd(exercises as Exercise[]);
   }
 
   const activePlan = await resolveActivePlan();
   if (!activePlan) {
-    console.log('No weekly plan found. Skipping workout sample data seeding.');
     return;
   }
 
   const sessions = generatePlanSessionsForLastSixMonths(activePlan);
   if (sessions.length === 0) {
-    console.log(`Active plan ${activePlan.id} has no workout days. Skipping workout sample data seeding.`);
     return;
   }
 
   // Rebuild sample workout history data from the active weekly plan.
   await db.workoutSessions.clear();
-  await db.workoutSessions.bulkAdd(sessions as never[]);
-  console.log(
-    `Seeded ${sessions.length} workout sessions across the last 6 months for active plan ${activePlan.id}`
-  );
+  await db.workoutSessions.bulkAdd(sessions);
 }
 

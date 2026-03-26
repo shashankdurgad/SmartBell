@@ -956,8 +956,8 @@ export function PerformanceAnalysisPage() {
                   points={volumeSeries}
                   width={480}
                   height={240}
-                  stroke= '#3d80e3'
-                  fill = 'rgba(66, 133, 232, 0.15)'
+                  stroke='#3d80e3'
+                  fill='rgba(66, 133, 232, 0.15)'
                   xTickDays={7}
                   xDomain={[tenWeeksAgoTimestamp, currentWeekTimestamp]}
                 />

@@ -128,8 +128,6 @@ async function buildDay(
     for (let i = 0; i < exCount; i++) {
       const matched = candidates[i];
 
-      console.log(matched.commonality);
-
       exercises.push({
         exerciseId: matched?.id ?? `fallback_${muscle}_${i}`,
         exerciseName: matched?.name ?? `${muscle} exercise ${i + 1}`,

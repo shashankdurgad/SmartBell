@@ -9,6 +9,7 @@ import { EmptyState } from '../components/shared/EmptyState';
 import { useExercises } from '../hooks/useExercises';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import type { WorkoutSession } from '../types';
+import type { MuscleGroup } from '../types/exercise.types';
 
 export function LibraryPage() {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export function LibraryPage() {
 
     if (selectedMuscle) {
       result = result.filter((ex) =>
-        ex.primaryMuscles.includes(selectedMuscle as never)
+        ex.primaryMuscles.includes(selectedMuscle as MuscleGroup)
       );
     }
 

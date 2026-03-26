@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { db } from '../database/db';
-import { 
-  calculatePercentile, 
+import {
+  calculatePercentile,
   calculateAllMuscleGroupPercentiles,
-  type Gender 
+  type Gender,
+  type ExerciseName,
 } from '../engine/percentileCalculator';
 import type { MuscleGroup } from '../types/exercise.types';
-import type { PersonalRecord } from '../types/workout.types';
 
 export function useMuscleGroupPercentiles(userId?: string) {
   const [muscleGroupPercentiles, setMuscleGroupPercentiles] = useState<
@@ -28,8 +28,7 @@ export function useMuscleGroupPercentiles(userId?: string) {
           return;
         }
 
-        // For now, assume default male/female - you may want to add gender to userPreferences
-        const gender: Gender = 'male'; // TODO: Get from userPreferences
+        const gender: Gender = 'male';
 
         // Get all personal records
         const records = await db.personalRecords.toArray();
@@ -98,7 +97,7 @@ export function useMuscleGroupPercentiles(userId?: string) {
         for (const standardExercise of standardExercises) {
           if (standardExercise in userStats && typeof userStats[standardExercise] === 'number') {
             const oneRM = userStats[standardExercise] as number;
-            const percentile = calculatePercentile(oneRM, gender, standardExercise as any);
+            const percentile = calculatePercentile(oneRM, gender, standardExercise as ExerciseName);
             exercisePercentiles[standardExercise] = percentile;
           }
         }
@@ -150,7 +149,7 @@ export function useExercisePercentiles(
   for (const exercise of standardExercises) {
     if (exercise in exerciseStats) {
       const oneRM = exerciseStats[exercise];
-      const percentile = calculatePercentile(oneRM, gender, exercise as any);
+      const percentile = calculatePercentile(oneRM, gender, exercise as ExerciseName);
       exercisePercentiles[exercise] = percentile;
     }
   }
