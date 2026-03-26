@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
 import { Modal } from '../components/shared/Modal';
@@ -34,6 +34,13 @@ const EXERCISE_STANDARD_NAME_MAP: Record<string, ExerciseName> = {
   'Triceps Pushdown': 'Triceps Pushdown',
 };
 
+function toLocalDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function PerformanceAnalysisPage() {
   const { history, loadHistory } = useWorkoutStore();
   const { weightUnit } = useUserStore();
@@ -68,12 +75,20 @@ export function PerformanceAnalysisPage() {
   }
 
   // Only include exercises that can produce at least one valid progress point.
-  const exercisesWithData = exercises.filter((ex) =>
-    history.some(
-      (session) =>
-        new Date(session.date).getTime() >= sixtyDaysAgoTimestamp &&
-        hasProgressDataForExercise(session, ex.id)
-    )
+  const exercisesById = useMemo(() => {
+    return new Map(exercises.map((exercise) => [exercise.id, exercise]));
+  }, [exercises]);
+
+  const exercisesWithData = useMemo(
+    () =>
+      exercises.filter((ex) =>
+        history.some(
+          (session) =>
+            new Date(session.date).getTime() >= sixtyDaysAgoTimestamp &&
+            hasProgressDataForExercise(session, ex.id)
+        )
+      ),
+    [exercises, history, sixtyDaysAgoTimestamp]
   );
 
   // Keep selection valid when data changes.
@@ -125,25 +140,26 @@ export function PerformanceAnalysisPage() {
 
   // Build series from history for the selected exercise (estimated 1RM trend)
   // Filter to last 2 months (60 days)
-  const series: SeriesPoint[] = history
-    .map((session) => {
-      const est1RM = getEstimated1RMFromSession(session, selectedExercise);
-      return {
-        date: new Date(session.date),
-        x: new Date(session.date).getTime(),
-        y: est1RM || 0,
-      };
-    })
-    .filter(p => p.y > 0 && p.x >= sixtyDaysAgoTimestamp)
-    .sort((a, b) => a.x - b.x)
-    .map((p) => ({ x: p.x, y: p.y }));
+  const series: SeriesPoint[] = useMemo(
+    () =>
+      history
+        .map((session) => {
+          const est1RM = getEstimated1RMFromSession(session, selectedExercise);
+          return {
+            x: new Date(session.date).getTime(),
+            y: est1RM || 0,
+          };
+        })
+        .filter((p) => p.y > 0 && p.x >= sixtyDaysAgoTimestamp)
+        .sort((a, b) => a.x - b.x),
+    [history, selectedExercise, sixtyDaysAgoTimestamp, weightUnit]
+  );
 
   // Calculate estimated 1RM from the most recent workout for this exercise
-  function calculateEstimated1RM(): number | null {
+  const estimated1RM = useMemo(() => {
     if (!selectedExercise) return null;
 
-    // Find the most recent session containing this exercise
-    const sortedSessions = [...history].sort((a, b) => 
+    const sortedSessions = [...history].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
@@ -155,9 +171,7 @@ export function PerformanceAnalysisPage() {
     }
 
     return null;
-  }
-
-  const estimated1RM = calculateEstimated1RM();
+  }, [history, selectedExercise, weightUnit]);
   const displayedEstimated1RM = estimated1RM;
 
   const getExerciseSetVolumeKg = (sessionExercise: WorkoutSession['exercises'][number]): number => {
@@ -242,67 +256,71 @@ export function PerformanceAnalysisPage() {
   const currentWeekTimestamp = currentWeekStart.getTime();
 
   // Group workouts by week and sum volumes
-  const weeklyVolumeMap = new Map<number, number>();
-  
-  history.forEach((session) => {
-    const sessionDate = new Date(session.date);
-    const sessionTimestamp = sessionDate.getTime();
-    
-    // Only include sessions from the last 10 weeks, excluding current week
-    if (sessionTimestamp >= tenWeeksAgoTimestamp && sessionTimestamp < currentWeekTimestamp) {
-      const weekStart = getWeekStart(sessionDate);
-      weekStart.setHours(0, 0, 0, 0);
-      const weekTimestamp = weekStart.getTime();
-      
-      const sessionVolume = calculateSessionVolume(session, selectedMuscleGroup);
-      const currentVolume = weeklyVolumeMap.get(weekTimestamp) || 0;
-      weeklyVolumeMap.set(weekTimestamp, currentVolume + sessionVolume);
-    }
-  });
+  const volumeSeries: SeriesPoint[] = useMemo(() => {
+    const weeklyVolumeMap = new Map<number, number>();
 
-  // Convert to series points (volume already in display unit from calculateSessionVolume)
-  const volumeSeries: SeriesPoint[] = Array.from(weeklyVolumeMap.entries())
-    .map(([weekTimestamp, volume]) => ({
-      x: weekTimestamp,
-      y: volume,
-    }))
-    .sort((a, b) => a.x - b.x);
+    history.forEach((session) => {
+      const sessionDate = new Date(session.date);
+      const sessionTimestamp = sessionDate.getTime();
+
+      if (sessionTimestamp >= tenWeeksAgoTimestamp && sessionTimestamp < currentWeekTimestamp) {
+        const weekStart = getWeekStart(sessionDate);
+        weekStart.setHours(0, 0, 0, 0);
+        const weekTimestamp = weekStart.getTime();
+
+        const sessionVolume = calculateSessionVolume(session, selectedMuscleGroup);
+        const currentVolume = weeklyVolumeMap.get(weekTimestamp) || 0;
+        weeklyVolumeMap.set(weekTimestamp, currentVolume + sessionVolume);
+      }
+    });
+
+    return Array.from(weeklyVolumeMap.entries())
+      .map(([weekTimestamp, volume]) => ({
+        x: weekTimestamp,
+        y: volume,
+      }))
+      .sort((a, b) => a.x - b.x);
+  }, [history, selectedMuscleGroup, weightUnit, tenWeeksAgoTimestamp, currentWeekTimestamp]);
 
   // Build volume totals per calendar day (YYYY-MM-DD)
-  const volumesByDate: Record<string, number> = history.reduce((acc: Record<string, number>, s) => {
-    const d = new Date(s.date);
-    const key = d.toISOString().slice(0, 10);
-    const sessionVolume = calculateSessionVolume(s, selectedMuscleGroup);
-    acc[key] = (acc[key] || 0) + sessionVolume;
-    return acc;
-  }, {});
+  const volumesByDate: Record<string, number> = useMemo(
+    () =>
+      history.reduce((acc: Record<string, number>, s) => {
+        const d = new Date(s.date);
+        const key = toLocalDateKey(d);
+        const sessionVolume = calculateSessionVolume(s, selectedMuscleGroup);
+        acc[key] = (acc[key] || 0) + sessionVolume;
+        return acc;
+      }, {}),
+    [history, selectedMuscleGroup, weightUnit]
+  );
 
-  const last9Weeks = (() => {
+  const last9Weeks = useMemo(() => {
     const arr: { date: Date; volume: number }[] = [];
     const today = new Date();
-    
-    // Find the start of the current week (Sunday)
-    const currentDayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+
+    const currentDayOfWeek = today.getDay();
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - currentDayOfWeek);
-    
-    // Go back 8 more weeks (9 weeks total including current week)
+
     const startDate = new Date(startOfCurrentWeek);
     startDate.setDate(startOfCurrentWeek.getDate() - (8 * 7));
-    
-    // Generate all days from start date to today
+
     const currentDate = new Date(startDate);
     while (currentDate <= today) {
-      const key = currentDate.toISOString().slice(0, 10);
+      const key = toLocalDateKey(currentDate);
       arr.push({ date: new Date(currentDate), volume: volumesByDate[key] || 0 });
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+
     return arr;
-  })();
+  }, [volumesByDate]);
 
   // Calculate total volume from calendar period
-  const totalCalendarVolume = last9Weeks.reduce((sum, day) => sum + day.volume, 0);
+  const totalCalendarVolume = useMemo(
+    () => last9Weeks.reduce((sum, day) => sum + day.volume, 0),
+    [last9Weeks]
+  );
 
   // Calculate volume per muscle group for the physique diagram using same logic as calendar
   // Sum volumes from last 9 weeks for each muscle group
@@ -317,7 +335,7 @@ export function PerformanceAnalysisPage() {
   };
 
   // Get date range for last 9 weeks (same as calendar)
-  const last9WeeksDates = last9Weeks.map(d => d.date.toISOString().slice(0, 10));
+  const last9WeeksDateSet = new Set(last9Weeks.map((d) => toLocalDateKey(d.date)));
 
   // For each diagram muscle group, calculate total volume from history
   const diagramMuscles: { key: keyof typeof muscleGroupVolumes; muscles: MuscleGroup[] }[] = [
@@ -331,12 +349,12 @@ export function PerformanceAnalysisPage() {
   ];
 
   for (const session of history) {
-    const sessionDate = new Date(session.date).toISOString().slice(0, 10);
-    if (!last9WeeksDates.includes(sessionDate)) continue;
+    const sessionDate = toLocalDateKey(new Date(session.date));
+    if (!last9WeeksDateSet.has(sessionDate)) continue;
 
     for (const diagramMuscleGroup of diagramMuscles) {
       for (const workoutExercise of session.exercises) {
-        const exercise = exercises.find(ex => ex.id === workoutExercise.exerciseId);
+        const exercise = exercisesById.get(workoutExercise.exerciseId);
         if (!exercise) continue;
 
         const contributionMultiplier = getDiagramGroupContributionMultiplier(
@@ -358,7 +376,7 @@ export function PerformanceAnalysisPage() {
     muscleGroupVolumes[key] = convertVolume(muscleGroupVolumes[key], 'kg', weightUnit);
   }
 
-  const currentExercise1RMsKg = (() => {
+  const currentExercise1RMsKg = useMemo(() => {
     const exerciseMap = new Map<string, { name: string; est1RMKg: number }>();
     const sortedSessions = [...history].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -372,7 +390,7 @@ export function PerformanceAnalysisPage() {
         const est1RMKg = getEstimated1RMKgFromSession(session, exercise.exerciseId);
         if (est1RMKg === null) continue;
 
-        const exerciseData = exercises.find((ex) => ex.id === exercise.exerciseId);
+        const exerciseData = exercisesById.get(exercise.exerciseId);
         if (!exerciseData) continue;
 
         exerciseMap.set(exercise.exerciseId, {
@@ -384,9 +402,9 @@ export function PerformanceAnalysisPage() {
     }
 
     return Array.from(exerciseMap.values());
-  })();
+  }, [history, exercisesById]);
 
-  const diagramMusclePercentiles = (() => {
+  const diagramMusclePercentiles = useMemo(() => {
     const exercisePercentiles: Record<string, number | null> = {};
 
     for (const exercise of currentExercise1RMsKg) {
@@ -459,10 +477,10 @@ export function PerformanceAnalysisPage() {
         contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbell Bench Press', 'Triceps Pushdown'),
       },
     };
-  })();
+  }, [currentExercise1RMsKg, percentileGender]);
 
   // Calculate monthly PRs for the last 6 months
-  const monthlyPRs = (() => {
+  const monthlyPRs = useMemo(() => {
     const today = new Date();
     const sixMonthsAgo = new Date(today);
     sixMonthsAgo.setMonth(today.getMonth() - 5);
@@ -519,10 +537,10 @@ export function PerformanceAnalysisPage() {
     }
 
     return months;
-  })();
+  }, [history, weightUnit]);
 
   // Calculate current estimated 1RM for all exercises with data
-  const allExercise1RMs = (() => {
+  const allExercise1RMs = useMemo(() => {
     const exerciseMap = new Map<string, { name: string; est1RM: number; bestPR: number }>();
 
     // Sort sessions by date (most recent first)
@@ -540,7 +558,7 @@ export function PerformanceAnalysisPage() {
 
         const est1RM = getEstimated1RMFromSession(session, exercise.exerciseId);
         if (est1RM !== null) {
-          const exerciseData = exercises.find(ex => ex.id === exercise.exerciseId);
+          const exerciseData = exercisesById.get(exercise.exerciseId);
           if (exerciseData) {
             exerciseMap.set(exercise.exerciseId, {
               name: exerciseData.name.replace(/_/g, ' '),
@@ -568,7 +586,7 @@ export function PerformanceAnalysisPage() {
 
     // Convert to array and sort by name
     return Array.from(exerciseMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-  })();
+  }, [history, exercisesById, weightUnit]);
 
   const filteredExercise1RMs = allExercise1RMs.filter((ex) =>
     ex.name.toLowerCase().includes(exerciseSearchQuery.trim().toLowerCase())

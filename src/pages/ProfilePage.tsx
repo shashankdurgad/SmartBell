@@ -3,12 +3,12 @@ import { PageHeader } from '../components/shared/PageHeader';
 import { Card } from '../components/shared/Card';
 import { Input } from '../components/shared/Input';
 import { Button } from '../components/shared/Button';
-import { TrainingStylePicker } from '../components/Generator/TrainingStylePicker';
-import { DifficultyPicker } from '../components/Generator/DifficultyPicker';
-import { EquipmentPicker } from '../components/Generator/EquipmentPicker';
-import { DaySelector } from '../components/Generator/DaySelector';
-import { DurationSlider } from '../components/Generator/DurationSlider';
-import { ExerciseExcluder } from '../components/Generator/ExerciseExcluder';
+import { TrainingStylePicker } from '../components/generator/TrainingStylePicker';
+import { DifficultyPicker } from '../components/generator/DifficultyPicker';
+import { EquipmentPicker } from '../components/generator/EquipmentPicker';
+import { DaySelector } from '../components/generator/DaySelector';
+import { DurationSlider } from '../components/generator/DurationSlider';
+import { ExerciseExcluder } from '../components/generator/ExerciseExcluder';
 import { db } from '../database/db';
 import { useUserStore } from '../stores/useUserStore';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
@@ -59,6 +59,10 @@ export function ProfilePage() {
   }, []);
 
   const handleSave = async () => {
+    const safeRestTimer = Number.isFinite(restTimer)
+      ? Math.min(300, Math.max(15, Math.round(restTimer)))
+      : 120;
+
     const prefs: UserPreferences = {
       id: 'default',
       trainingStyle,
@@ -66,21 +70,21 @@ export function ProfilePage() {
       availableEquipment: equipment,
       daysPerWeek,
       timePerSession,
-      defaultRestTimer: restTimer,
+      defaultRestTimer: safeRestTimer,
       excludedExercises,
     };
 
     await db.userPreferences.put(prefs);
     await setWeightUnit(selectedWeightUnit);
     // Keep workout rest timer settings in sync with profile preference.
-    await setDefaultRestSeconds(restTimer);
+    await setDefaultRestSeconds(safeRestTimer);
 
     // Recalculate estimated durations for all stored plans using the new rest time.
     const allPlans = await weeklyPlanRepo.getAll();
     for (const plan of allPlans) {
       const workouts = plan.workouts.map((w) => ({
         ...w,
-        estimatedDuration: calcWorkoutDuration(w.exercises, plan.trainingStyle, restTimer),
+        estimatedDuration: calcWorkoutDuration(w.exercises, plan.trainingStyle, safeRestTimer),
       }));
       await weeklyPlanRepo.save({
         ...plan,
@@ -91,6 +95,7 @@ export function ProfilePage() {
 
     // Refresh the in-memory store so the Workout page reflects the new durations.
     await loadPlans();
+    setRestTimer(safeRestTimer);
 
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -171,7 +176,15 @@ export function ProfilePage() {
               min={15}
               max={300}
               value={restTimer}
-              onChange={(e) => setRestTimer(Number(e.target.value))}
+              onChange={(e) => {
+                const nextRaw = e.target.value;
+                if (nextRaw === '') return;
+
+                const next = Number(nextRaw);
+                if (!Number.isFinite(next)) return;
+
+                setRestTimer(Math.min(300, Math.max(15, Math.round(next))));
+              }}
             />
           </div>
         </Card>

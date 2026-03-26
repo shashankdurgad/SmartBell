@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
-import { PlanPreview } from '../components/Generator/PlanPreview';
-import { PlanEditor } from '../components/Generator/PlanEditor';
+import { PlanPreview } from '../components/generator/PlanPreview';
+import { PlanEditor } from '../components/generator/PlanEditor';
 import { FullPageSpinner } from '../components/shared/Spinner';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import type { WeeklyPlan } from '../types';
@@ -20,7 +20,11 @@ export function PlanDetailsPage() {
 
   useEffect(() => {
     async function fetch() {
-      const allPlans = plans.length > 0 ? plans : await loadPlans().then(() => plans);
+      let allPlans = plans;
+      if (allPlans.length === 0) {
+        await loadPlans();
+        allPlans = useWeeklyPlanStore.getState().plans;
+      }
       const found = allPlans.find((p) => p.id === planId);
       setPlan(found || null);
       setIsLoading(false);

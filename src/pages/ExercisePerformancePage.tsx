@@ -47,6 +47,13 @@ function getExerciseVolumeKg(session: WorkoutSession, exerciseId: string): numbe
   }, 0);
 }
 
+function toLocalDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function ExercisePerformancePage() {
   const params = useParams<{ exerciseId: string }>();
   const rawExerciseId = params.exerciseId ?? '';
@@ -105,6 +112,7 @@ export function ExercisePerformancePage() {
 
   const latestEntry = sessionsForExercise[sessionsForExercise.length - 1];
   const bestWeight = sessionsForExercise.reduce((max, item) => Math.max(max, item.bestSet.weight), 0);
+  const displayedBestWeight = weightUnit === 'lbs' ? kgToLbs(bestWeight) : bestWeight;
   const bestEstimatedOneRm = sessionsForExercise.reduce(
     (max, item) => Math.max(max, item.estimatedOneRm),
     0
@@ -117,7 +125,7 @@ export function ExercisePerformancePage() {
 
   const volumesByDate = useMemo(() => {
     return history.reduce((acc: Record<string, number>, session) => {
-      const key = new Date(session.date).toISOString().slice(0, 10);
+      const key = toLocalDateKey(new Date(session.date));
       const sessionVolumeKg = getExerciseVolumeKg(session, exerciseId);
       const sessionVolume = convertVolume(sessionVolumeKg, 'kg', weightUnit);
 
@@ -141,7 +149,7 @@ export function ExercisePerformancePage() {
 
     const currentDate = new Date(startDate);
     while (currentDate <= today) {
-      const key = currentDate.toISOString().slice(0, 10);
+      const key = toLocalDateKey(currentDate);
       days.push({ date: new Date(currentDate), volume: volumesByDate[key] || 0 });
       currentDate.setDate(currentDate.getDate() + 1);
     }
@@ -216,7 +224,7 @@ export function ExercisePerformancePage() {
                     <div>
                       <p className="text-xs text-gray-text">Best Working Weight</p>
                       <p className="mt-1 text-2xl font-bold text-white-primary">
-                        {bestWeight.toFixed(1)}
+                        {displayedBestWeight.toFixed(1)}
                         <span className="ml-1 text-sm font-medium text-gray-text">{weightUnit}</span>
                       </p>
                     </div>
@@ -281,19 +289,25 @@ export function ExercisePerformancePage() {
                 {[...sessionsForExercise]
                   .reverse()
                   .slice(0, 8)
-                  .map((item) => (
-                    <div
-                      key={item.session.id}
-                      className="flex items-center justify-between rounded-lg bg-dark-700 px-3 py-2"
-                    >
-                      <span className="text-sm text-white">
-                        {formatDate(new Date(item.session.date))}
-                      </span>
-                      <span className="text-xs text-gray-text">
-                        {item.bestSet.weight.toFixed(1)} x {item.bestSet.completedReps}
-                      </span>
-                    </div>
-                  ))}
+                  .map((item) => {
+                    const displayedSetWeight = weightUnit === 'lbs'
+                      ? kgToLbs(item.bestSet.weight)
+                      : item.bestSet.weight;
+
+                    return (
+                      <div
+                        key={item.session.id}
+                        className="flex items-center justify-between rounded-lg bg-dark-700 px-3 py-2"
+                      >
+                        <span className="text-sm text-white">
+                          {formatDate(new Date(item.session.date))}
+                        </span>
+                        <span className="text-xs text-gray-text">
+                          {item.bestSet.completedReps} x {displayedSetWeight.toFixed(1)} {weightUnit}
+                        </span>
+                      </div>
+                    );
+                  })}
               </div>
             </Card>
               </>
