@@ -36,6 +36,7 @@ export function ProfilePage() {
   const [daysPerWeek, setDaysPerWeek] = useState(3);
   const [timePerSession, setTimePerSession] = useState(45);
   const [restTimer, setRestTimer] = useState(120);
+  const [customRestTimerInput, setCustomRestTimerInput] = useState('');
   const [selectedWeightUnit, setSelectedWeightUnit] = useState<WeightUnit>(weightUnit);
   const [excludedExercises, setExcludedExercises] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
@@ -158,7 +159,10 @@ export function ProfilePage() {
               <button
                 key={preset.value}
                 type="button"
-                onClick={() => setRestTimer(preset.value)}
+                onClick={() => {
+                  setRestTimer(preset.value);
+                  setCustomRestTimerInput('');
+                }}
                 className={`flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                   restTimer === preset.value
                     ? 'border-indigo-500 bg-indigo-500/10 text-white'
@@ -175,15 +179,27 @@ export function ProfilePage() {
               type="number"
               min={15}
               max={300}
-              value={restTimer}
+              value={customRestTimerInput}
+              placeholder={String(restTimer)}
               onChange={(e) => {
+                setCustomRestTimerInput(e.target.value);
+              }}
+              onBlur={(e) => {
                 const nextRaw = e.target.value;
-                if (nextRaw === '') return;
+                if (nextRaw === '') {
+                  setCustomRestTimerInput('');
+                  return;
+                }
 
                 const next = Number(nextRaw);
-                if (!Number.isFinite(next)) return;
+                if (!Number.isFinite(next)) {
+                  setCustomRestTimerInput('');
+                  return;
+                }
 
-                setRestTimer(Math.min(300, Math.max(15, Math.round(next))));
+                const clamped = Math.min(300, Math.max(15, Math.round(next)));
+                setRestTimer(clamped);
+                setCustomRestTimerInput(String(clamped));
               }}
             />
           </div>

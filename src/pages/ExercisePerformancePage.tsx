@@ -10,7 +10,7 @@ import { useExercises } from '../hooks/useExercises';
 import { useWorkoutStore } from '../stores/useWorkoutStore';
 import { useUserStore } from '../stores/useUserStore';
 import { estimatedMax, kgToLbs } from '../utils/calculations';
-import { convertVolume, formatDate } from '../utils/formatters';
+import { convertVolume, formatDate, formatWeight } from '../utils/formatters';
 import type { WorkoutSession, WorkoutSet } from '../types';
 
 function getBestWorkingSet(sets: WorkoutSet[]): WorkoutSet | null {
@@ -290,10 +290,6 @@ export function ExercisePerformancePage() {
                   .reverse()
                   .slice(0, 8)
                   .map((item) => {
-                    const displayedSetWeight = weightUnit === 'lbs'
-                      ? kgToLbs(item.bestSet.weight)
-                      : item.bestSet.weight;
-
                     return (
                       <div
                         key={item.session.id}
@@ -303,7 +299,7 @@ export function ExercisePerformancePage() {
                           {formatDate(new Date(item.session.date))}
                         </span>
                         <span className="text-xs text-gray-text">
-                          {item.bestSet.completedReps} x {displayedSetWeight.toFixed(1)} {weightUnit}
+                          {item.bestSet.completedReps} x {formatWeight(item.bestSet.weight, weightUnit)}
                         </span>
                       </div>
                     );
