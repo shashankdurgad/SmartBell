@@ -27,9 +27,9 @@ A client-side single-page application that generates personalized weekly workout
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| **React** | 18.x | UI component framework |
+| **React** | 19.x | UI component framework |
 | **TypeScript** | 5.x | Type safety and developer experience |
-| **Vite** | 5.x | Build tool and development server |
+| **Vite** | 7.x | Build tool and development server |
 
 ### State Management
 
@@ -65,7 +65,6 @@ A client-side single-page application that generates personalized weekly workout
 
 | Technology | Purpose |
 |------------|---------|
-| **React Hook Form** | Form state management and validation |
 | **Zod** | Runtime schema validation |
 | **date-fns** | Date manipulation and formatting |
 | **@dnd-kit** | Drag-and-drop for plan editor |
@@ -110,14 +109,14 @@ A client-side single-page application that generates personalized weekly workout
 ┌─────────────────────────────────────────────────────────────┐
 │             Data Layer (IndexedDB via Dexie)                 │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │  Exercises   │  │ WeeklyPlans  │  │  Workout     │       │
-│  │  (873 pre-   │  │  (user saved │  │  Sessions    │       │
-│  │   loaded)    │  │    plans)    │  │  (history)   │       │
+│  │  Exercises   │  │ WeeklyPlans  │  │  Daily       │       │
+│  │  (873 pre-   │  │  (user saved │  │  Workouts    │       │
+│  │   loaded)    │  │    plans)    │  │              │       │
 │  └──────────────┘  └──────────────┘  └──────────────┘       │
-│  ┌──────────────┐  ┌──────────────┐                         │
-│  │  Personal    │  │   Settings / │                         │
-│  │  Records     │  │ Preferences  │                         │
-│  └──────────────┘  └──────────────┘                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │  Workout     │  │  Personal    │  │  Settings /  │       │
+│  │  Sessions    │  │  Records     │  │ Preferences  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -232,7 +231,7 @@ src/
 │
 └── data/
     ├── exercises.json           # 873 exercises with applicability scores
-    ├── split-templates.ts       # All 7 split variants (1-7 days/week)
+    ├── split-templates.ts       # All 6 split variants (1-6 days/week)
     └── volume-config.ts         # Sets/reps/rest config per training style
 ```
 
@@ -256,11 +255,11 @@ interface Exercise {
   secondaryMuscles: MuscleGroup[];
   equipment: Equipment;
   level: 'beginner' | 'intermediate' | 'expert';
-  mechanic: 'compound' | 'isolation';
-  force: 'push' | 'pull' | 'static';
+  mechanic: 'compound' | 'isolation' | null;
+  force: 'push' | 'pull' | 'static' | null;
   instructions: string[];
   images: string[];
-  category: 'strength' | 'cardio' | 'stretching' | 'powerlifting' | 'olympic_weightlifting';
+  category: 'strength' | 'cardio' | 'stretching' | 'powerlifting' | 'olympic weightlifting' | 'strongman' | 'plyometrics';
   commonality: number;          // 0-1, used to prefer popular exercises
   applicability: {
     strength: number;           // 0-10
@@ -346,6 +345,8 @@ interface PersonalRecord {
   date: Date;
   previousValue?: number;
   improvement?: number;
+  weeklyPlanId?: string;
+  dayNumber?: number;
 }
 ```
 
@@ -358,9 +359,9 @@ interface PersonalRecord {
 #### User Input (GeneratorForm)
 
 The user fills out `src/components/Generator/GeneratorForm.tsx` which collects:
-- **Training Style** — Strength (3-5 reps), Hypertrophy (8-12 reps), Endurance (15-20 reps)
+- **Training Style** — Strength (3-6 reps), Hypertrophy (8-12 reps), Endurance (15-20 reps)
 - **Difficulty** — Beginner / Intermediate / Expert
-- **Days per week** — 1-7 days
+- **Days per week** — 1-6 days
 - **Session duration** — 15-120 min slider
 - **Available equipment** — Multi-select grouped by category (free weights, cables, machines, etc.)
 - **Excluded exercises** — Autocomplete search to blacklist specific exercises
@@ -384,7 +385,7 @@ Each split defines `MuscleAllocation[]` — a list of muscle groups with percent
 **Step 1 — Set budget per day:**
 `calcTotalSets()` estimates how many working sets fit in the session duration:
 ```
-totalSets = (sessionDuration - warmupTime) / (setDuration + restTime)
+totalSets = sessionDuration × 60 / (setDuration + restTime)
 ```
 `STYLE_CONFIG` maps training style → set duration and rest time:
 - Strength: 40s sets, 180s rest → fewer sets per hour
@@ -392,15 +393,14 @@ totalSets = (sessionDuration - warmupTime) / (setDuration + restTime)
 - Endurance: 60s sets, 60s rest → most sets per hour
 
 **Step 2 — Allocate sets to muscles:**
-`allocateSetsAcrossExercises()` distributes the set budget across muscle groups proportionally to their allocation percentages from the split template. Uses the **largest-remainder method** to ensure every muscle gets at least 1 set when rounding.
+`allocateSetsToMuscles()` distributes the set budget across muscle groups proportionally to their allocation percentages from the split template. Uses the **largest-remainder method** to ensure every muscle gets at least 1 set when rounding.
 
 **Step 3 — Exercise selection per muscle:**
 `queryExercises()` filters the 873-exercise DB by:
 - Primary/secondary muscle match
 - Available equipment
-- Applicability score threshold (≥5 for the chosen training style — strength/hypertrophy/endurance)
 - Excluded exercise IDs
-- Sorted by `commonality` score (most popular exercises first)
+- Sorted by `applicability × commonality` score (exercises that score highest for the chosen training style and are most popular appear first)
 
 **Step 4 — Distribute sets across exercises:**
 `DIFFICULTY_CONFIG` caps how many exercises per muscle group:
@@ -413,7 +413,7 @@ totalSets = (sessionDuration - warmupTime) / (setDuration + restTime)
 **Step 5 — Build daily workouts:**
 `buildDay()` assembles `DailyWorkout` objects with estimated duration:
 ```
-estimatedDuration = Σ(sets × (setDuration + restSeconds)) + warmupTime
+estimatedDuration = Σ(sets × (setDuration + restSeconds)) / 60
 ```
 
 **Step 6 — Save:**
@@ -549,7 +549,7 @@ Full analytics dashboard with 5 sections:
 - User selects multiple exercises + gender
 - App computes each exercise's best e1RM from personal records
 - Looks up against hardcoded `STRENGTH_STANDARDS` in `src/engine/percentileCalculator.ts`:
-  - 13 compound exercises (Bench, Squat, Deadlift, OHP, Row, RDL, etc.)
+  - 13 exercises (Bench Press, Squat, Deadlift, OHP, Dumbbell Bench, Barbell Curl, Seated Dumbbell Curl, Lat Pulldown, Front Squat, Triceps Pushdown, Decline EZ Bar Tricep Extension, Seated Cable Rows, Bent Over Row)
   - Percentile tiers: 5th / 20th / 50th / 80th / 95th for male and female
   - Uses **linear interpolation** between tiers to get a precise percentile
 - Displays each exercise as a horizontal bar with percentile label (e.g., "67th percentile")

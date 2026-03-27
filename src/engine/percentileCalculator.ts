@@ -27,11 +27,11 @@ const STRENGTH_STANDARDS = {
     male: { 5: 30, 20: 45, 50: 64, 80: 87, 95: 112 },
     female: { 5: 13, 20: 22, 50: 34, 80: 48, 95: 65 },
   },
-  'Dumbell Bench Press': {
+  'Dumbbell Bench Press': {
     male: { 5: 16, 20: 27, 50: 41, 80: 58, 95: 78 },
     female: { 5: 6, 20: 12, 50: 21, 80: 32, 95: 46 },
   },
-  'Seated Dumbell Curl': {
+  'Seated Dumbbell Curl': {
     male: { 5: 6, 20: 13, 50: 23, 80: 36, 95: 51 },
     female: { 5: 3, 20: 8, 50: 14, 80: 21, 95: 31 },
   },
@@ -170,8 +170,8 @@ const EXERCISE_TO_MUSCLE_GROUPS: Record<ExerciseName, MuscleGroup[]> = {
   'Barbell Full Squat': ['quadriceps', 'glutes', 'hamstrings', 'lower back'],
   'Barbell Deadlift': ['glutes', 'hamstrings', 'lower back', 'traps', 'forearms'],
   'Barbell Shoulder Press': ['shoulders', 'triceps', 'chest'],
-  'Dumbell Bench Press': ['chest', 'triceps', 'shoulders'],
-  'Seated Dumbell Curl': ['biceps', 'forearms'],
+  'Dumbbell Bench Press': ['chest', 'triceps', 'shoulders'],
+  'Seated Dumbbell Curl': ['biceps', 'forearms'],
   'Barbell Curl': ['biceps', 'forearms'],
   'Full Range-Of-Motion Lat Pulldown': ['lats', 'biceps', 'middle back'],
   'Front Squat (Clean Grip)': ['quadriceps', 'glutes', 'abdominals', 'lower back'],

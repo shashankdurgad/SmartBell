@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PageHeader } from '../components/shared/PageHeader';
-import { GeneratorForm } from '../components/generator/GeneratorForm';
-import { PlanPreview } from '../components/generator/PlanPreview';
+import { GeneratorForm } from '../components/Generator/GeneratorForm';
+import { PlanPreview } from '../components/Generator/PlanPreview';
 import { useWeeklyPlanStore } from '../stores/useWeeklyPlanStore';
 import { generateWeeklyPlan } from '../engine/generatePlan';
 import type { WeeklyPlanConstraints } from '../utils/validators';

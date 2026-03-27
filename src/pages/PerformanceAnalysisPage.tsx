@@ -27,10 +27,12 @@ const EXERCISE_STANDARD_NAME_MAP: Record<string, ExerciseName> = {
   'Barbell Shoulder Press': 'Barbell Shoulder Press',
   'Bench Press - Powerlifting': 'Bench Press - Powerlifting',
   'Bent Over Barbell Row': 'Bent Over Barbell Row',
-  'Dumbbell Bench Press': 'Dumbell Bench Press',
+  'Decline EZ Bar Triceps Extension': 'Decline EZ Bar Tricep Extension',
+  'Dumbbell Bench Press': 'Dumbbell Bench Press',
   'Front Squat (Clean Grip)': 'Front Squat (Clean Grip)',
   'Full Range-Of-Motion Lat Pulldown': 'Full Range-Of-Motion Lat Pulldown',
   'Seated Cable Rows': 'Seated Cable Rows',
+  'Seated Dumbbell Curl': 'Seated Dumbbell Curl',
   'Triceps Pushdown': 'Triceps Pushdown',
 };
 
@@ -443,7 +445,7 @@ export function PerformanceAnalysisPage() {
     return {
       chest: {
         percentile: muscleGroupPercentiles.chest,
-        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbell Bench Press'),
+        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbbell Bench Press'),
       },
       back: {
         percentile: averagePercentile(
@@ -455,7 +457,7 @@ export function PerformanceAnalysisPage() {
       },
       shoulders: {
         percentile: muscleGroupPercentiles.shoulders,
-        contributors: getContributors('Barbell Shoulder Press', 'Bench Press - Powerlifting', 'Dumbell Bench Press'),
+        contributors: getContributors('Barbell Shoulder Press', 'Bench Press - Powerlifting', 'Dumbbell Bench Press'),
       },
       quadriceps: {
         percentile: muscleGroupPercentiles.quadriceps,
@@ -474,7 +476,7 @@ export function PerformanceAnalysisPage() {
       },
       triceps: {
         percentile: muscleGroupPercentiles.triceps,
-        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbell Bench Press', 'Triceps Pushdown'),
+        contributors: getContributors('Bench Press - Powerlifting', 'Barbell Shoulder Press', 'Dumbbell Bench Press', 'Triceps Pushdown'),
       },
     };
   }, [currentExercise1RMsKg, percentileGender]);

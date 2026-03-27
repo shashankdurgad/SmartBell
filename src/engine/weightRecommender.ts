@@ -170,7 +170,7 @@ export async function getWeightRecommendation(
     };
   }
 
-  // Fewer than 3 sessions — rule-based fallback
+  // Fewer than 5 sessions — rule-based fallback
   if (lastData.rpe <= 7 && completionRate >= 1) {
     const increasedWeight = roundToIncrement(lastData.weight + increment, increment);
     const displayWeight = convertForDisplay(increasedWeight);
