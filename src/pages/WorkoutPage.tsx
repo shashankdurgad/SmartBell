@@ -35,6 +35,7 @@ export function WorkoutPage() {
       exercises: day.exercises.map((ex) => ({
         exerciseId: ex.exerciseId,
         targetSets: ex.sets,
+        targetReps: parseInt(ex.reps.split('-')[0], 10) || 8,
         sets: [],
       })),
     });

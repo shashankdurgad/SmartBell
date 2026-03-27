@@ -178,6 +178,7 @@ export function ActiveWorkout() {
     setCurrentExerciseIndex,
     endSession,
     cancelSession,
+    markPersonalRecord,
   } = useWorkoutStore();
 
   const { weightUnit, defaultRestSeconds } = useUserStore();
@@ -242,6 +243,7 @@ export function ActiveWorkout() {
             improvement: existing ? check.value - existing.value : undefined,
           };
           await personalRecordRepo.save(pr);
+          markPersonalRecord(currentExerciseIndex, check.type);
           setLatestPRExerciseName(exerciseId.replace(/_/g, ' '));
           setTimeout(() => setLatestPRExerciseName(null), 3000);
         }
@@ -319,7 +321,7 @@ export function ActiveWorkout() {
           <SetLogger
             setNumber={workingSetsLogged + 1}
             targetSets={currentExercise?.targetSets ?? 0}
-            targetReps={8}
+            targetReps={currentExercise?.targetReps ?? 8}
             recommendation={recommendations[currentExercise?.exerciseId] ?? null}
             weightUnit={weightUnit}
             loggedSets={loggedSets}

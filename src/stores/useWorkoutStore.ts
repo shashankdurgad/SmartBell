@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { WorkoutSession, WorkoutExercise, WorkoutSet } from '../types';
+import type { WorkoutSession, WorkoutExercise, WorkoutSet, PRType } from '../types';
 import { workoutRepo } from '../database/repositories/workoutRepo';
 
 interface WorkoutState {
@@ -19,6 +19,7 @@ interface WorkoutState {
   startRest: (seconds: number) => void;
   tickRest: () => void;
   skipRest: () => void;
+  markPersonalRecord: (exerciseIndex: number, type: PRType) => void;
   cancelSession: () => void;
 }
 
@@ -142,6 +143,14 @@ export const useWorkoutStore = create<WorkoutState>((set, get) => ({
 
   skipRest: () => {
     set({ isResting: false, restTimeRemaining: 0 });
+  },
+
+  markPersonalRecord: (exerciseIndex: number, type: PRType) => {
+    const { activeSession } = get();
+    if (!activeSession) return;
+    const exercises = [...activeSession.exercises];
+    exercises[exerciseIndex] = { ...exercises[exerciseIndex], personalRecord: type };
+    set({ activeSession: { ...activeSession, exercises } });
   },
 
   cancelSession: () => {

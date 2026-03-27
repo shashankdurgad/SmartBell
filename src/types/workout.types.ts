@@ -14,6 +14,7 @@ export interface WorkoutExercise {
   exerciseId: string;
   sets: WorkoutSet[];
   targetSets: number;
+  targetReps: number;
   personalRecord?: PRType;
 }
 
