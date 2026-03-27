@@ -661,3 +661,9 @@ Total:       $0/month
 - Nutrition tracking integration
 - PWA / offline service worker
 - Data export / import
+
+---
+
+## Use of Generative AI
+
+Generative AI was used to assist the development of this application.
